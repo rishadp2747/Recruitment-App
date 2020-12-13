@@ -67,3 +67,10 @@ Route::get('/dashboard/jobs/applied/rejected', [App\Http\Controllers\jobsControl
 
 Route::get('/dashboard/jobs/applied/reviewing', [App\Http\Controllers\jobsController::class, 'reviewingview'])->name('reviewingJob')->middleware('verified');
 
+Route::get('/dashboard/students/delete', [App\Http\Controllers\jobsController::class, 'allowedusersview'])->name('studentdelete')->middleware('verified');
+
+Route::post('/dashboard/students/delete', [App\Http\Controllers\jobsController::class, 'deleteuserfromdb'])->name('studentdelete')->middleware('verified');
+
+Route::get('/dashboard/students/add', [App\Http\Controllers\jobsController::class, 'adduserview'])->name('studentadd')->middleware('verified');
+
+Route::post('/dashboard/students/add', [App\Http\Controllers\jobsController::class, 'addusertodb'])->name('studentadd')->middleware('verified');

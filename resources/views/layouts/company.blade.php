@@ -44,11 +44,27 @@
       @php
         $route = Route::currentRouteName();  
       @endphp
+      
       <!-- Nav Item - Dashboard -->
       <li class="nav-item @if($route=='home'){{ 'active' }} @endif">
-      <a class="nav-link" href="{{ route('home') }}">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
+        <a class="nav-link" href="{{ route('home') }}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+        </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item @if($route=='studentadd'){{ 'active' }} @endif">
+        <a class="nav-link" href="{{ route('studentadd') }}">
+          <i class="fas fa-user-plus"></i>
+            <span>Add Student</span></a>
+      </li>
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item @if($route=='studentdelete'){{ 'active' }} @endif">
+        <a class="nav-link" href="{{ route('studentdelete') }}">
+          <i class="fas fa-user-times"></i>
+            <span>Delete Student</span></a>
       </li>
 
       <!-- Divider -->

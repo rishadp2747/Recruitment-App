@@ -35,6 +35,11 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4"><i class="fas fa-user-plus"></i>  <b>Register</b></h1>
               </div>
+              @if (\Session::has('info'))
+                     <div class="alert alert-danger">
+                         {!! \Session::get('info') !!}
+                      </div>
+              @endif
             <form class="user" method="POST" action="{{ route('register') }}">
               @csrf
                   <div class="form-group">

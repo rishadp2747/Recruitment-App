@@ -89,14 +89,25 @@ class HomeController extends Controller
           }
         }
 
+        if($req->cert===null){
+          if($req->certval===null){
+               return back()->with('errorinfo','You have to upload certificates.')->withInput($req->input());
+          }
+        }
+
         $req->validate([
             'name' => 'required|string|min:2|max:100',
             'age' => 'required|integer|min:18|max:100',
             'address' => 'required|string|min:10|max:500',
-            'qualifications' => 'required|string|min:5|max:200',
+            'bio' => 'required|string|min:5|max:200',
             'skills' => 'required|string|min:5|max:200',
             'dob' => 'required|date_format:Y-m-d',
-            'phoneno' => 'required|digits:10'
+            'phoneno' => 'required|digits:10',
+            'volunteership' => 'required|string|min:5|max:200',
+            'backlogs' => 'required|integer|min:0|max:100',
+            'current_backlogs' => 'required|integer|min:0|max:100',
+            'linkedin' => 'required|url',
+            'github' => 'required|url'
         ]);
 
         #$new = (explode("-",$req->dob));
@@ -136,6 +147,23 @@ class HomeController extends Controller
           $req->cv = $req->cvval;
         }
 
+        if($req->file('cert')){
+          $req->validate([
+            'cert' => 'mimes:pdf|max:2048'
+           ]);
+          if($req->certval!==null){
+            File::delete(public_path('storage/uploads/student/certificates/'.$req->certval));
+          }
+          $file2 = $req->file('cert');
+          $ext2 = $file2->getClientOriginalExtension();
+          $fname2 =  str_replace(' ', '', strtolower($req->name)).'certificates'.time().'.'.$ext2;
+          $req->file('cert')->storeAs('uploads/student/certificates', $fname2, 'public');
+          $req->cert = $fname2;
+        }
+        else{
+          $req->cert = $req->certval;
+        }
+
         if($req->photoval===null){
           if($req->name!=$uname){
             $datas = User::where('Email',$email)->first();
@@ -148,10 +176,16 @@ class HomeController extends Controller
         $details->DOB = $req->dob;
         $details->Phoneno = $req->phoneno;
         $details->Address = $req->address;
-        $details->Qualifications = $req->qualifications;
+        $details->Bio = $req->bio;
         $details->Skills = $req->skills;
         $details->CV = $req->cv;
+        $details->Certificates = $req->cert;
         $details->Photo = $req->photo;
+        $details->Volunteership = $req->volunteership;
+        $details->Backlogs = $req->backlogs;
+        $details->Current_Backlogs = $req->current_backlogs;
+        $details->Linkedin = $req->linkedin;
+        $details->Github = $req->github;
         if($details->save()){
           session()->flash('status', 'Profile updated Successfully !');
           return redirect()->route('home');
@@ -173,10 +207,16 @@ class HomeController extends Controller
           $details->DOB = $req->dob;
           $details->Phoneno = $req->phoneno;
           $details->Address = $req->address;
-          $details->Qualifications = $req->qualifications;
+          $details->Bio = $req->bio;
           $details->Skills = $req->skills;
           $details->CV = $req->cv;
+          $details->Certificates = $req->cert;
           $details->Photo = $req->photo;
+          $details->Volunteership = $req->volunteership;
+          $details->Backlogs = $req->backlogs;
+          $details->Current_Backlogs = $req->current_backlogs;
+          $details->Linkedin = $req->linkedin;
+          $details->Github = $req->github;
           if($details->save()){
             session()->flash('status', 'Profile updated Successfully !');
             return redirect()->route('home');

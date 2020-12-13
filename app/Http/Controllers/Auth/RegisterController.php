@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\Allowed_users;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -55,6 +56,16 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'user_type' => ['required','integer','in:0,1'],
         ]);
+    }
+
+    protected function allowed_check(array $data)
+    {
+        if (Allowed_users::where('email', '=', $data['email'])->exists() || $data['user_type']==1) {
+            return 'yes';
+         }
+         else{
+            return 'no';
+         }
     }
 
     /**

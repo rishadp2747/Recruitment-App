@@ -50,14 +50,20 @@
                  @enderror
               </div>
               <div class="form-group">
-                <textarea class="form-control form-control-user" placeholder="Qualifications" name="qualifications">@if(old('qualifications')!== null){{ old('qualifications') }}@elseif(isset($data->Qualifications)){{ $data->Qualifications }}@else{{ '' }}@endif</textarea>
-                @error('qualifications')
+                <textarea class="form-control form-control-user" placeholder="Bio" name="bio">@if(old('bio')!== null){{ old('bio') }}@elseif(isset($data->Bio)){{ $data->Bio }}@else{{ '' }}@endif</textarea>
+                @error('bio')
                   <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                  @enderror
               </div>
               <div class="form-group">
                 <textarea class="form-control form-control-user" placeholder="Skills" name="skills">@if(old('skills')!== null){{ old('skills') }}@elseif(isset($data->Skills)){{ $data->Skills }}@else{{ '' }}@endif</textarea>
                 @error('skills')
+                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+                 @enderror
+              </div>
+              <div class="form-group">
+                <textarea class="form-control form-control-user" placeholder="Volunteership" name="volunteership">@if(old('volunteership')!== null){{ old('volunteership') }}@elseif(isset($data->Volunteership)){{ $data->Volunteership }}@else{{ '' }}@endif</textarea>
+                @error('volunteership')
                   <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                  @enderror
               </div>
@@ -70,6 +76,34 @@
               <div class="form-group">
                 <input type="tel" class="form-control form-control-user" placeholder="Phone Number" name="phoneno" value="@if(old('phoneno')!== null){{ old('phoneno') }}@elseif(isset($data->Phoneno)){{ $data->Phoneno }}@else{{ '' }}@endif">
                 @error('phoneno')
+                <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+               @enderror
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                <input type="number" class="form-control form-control-user" placeholder="History of backlogs" name="backlogs" value="@if(old('backlogs')!== null){{ old('backlogs') }}@elseif(isset($data->Backlogs)){{ $data->Backlogs }}@else{{ '' }}@endif">
+                  @error('backlogs')
+                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+                 @enderror
+                </div>
+                <div class="col-sm-6">
+                <input type="number" class="form-control form-control-user" placeholder="Current backlogs" name="current_backlogs" value="@if(old('current_backlogs')!== null){{ old('current_backlogs') }}@elseif(isset($data->Current_Backlogs)){{ $data->Current_Backlogs }}@else{{ '' }}@endif">
+                  @error('current_backlogs')
+                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+                 @enderror
+                </div>
+              </div>
+
+            <div class="form-group">
+                <input type="url" class="form-control form-control-user" placeholder="Linkedin URL" name="linkedin" value="@if(old('linkedin')!== null){{ old('linkedin') }}@elseif(isset($data->Linkedin)){{ $data->Linkedin }}@else{{ '' }}@endif">
+                @error('linkedin')
+                <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+               @enderror
+            </div>
+            <div class="form-group">
+                <input type="url" class="form-control form-control-user" placeholder="Github URL" name="github" value="@if(old('github')!== null){{ old('github') }}@elseif(isset($data->Github)){{ $data->Github }}@else{{ '' }}@endif">
+                @error('github')
                 <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                @enderror
             </div>
@@ -103,6 +137,35 @@
                 </div>
                 </div>
               </div>
+              <div class="form-group row justify-content-center">
+                <div class="col-sm-6">
+                  <div class="row justify-content-center">
+                    <button type="button" class="btn btn-danger btn-user btn-block" onclick="clickcert()"><i class="fas fa-upload"></i> <b>Upload Certificates</b></button>
+                </div>
+                <input type="file" name="cert" id="cert" onChange='getoutputcert()'>
+                <input type="hidden" name="certval" value="@if(isset($data->Certificates)){{ $data->Certificates }}@endif" > 
+                @error('cv')
+                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+                 @enderror
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                  <div class="row justify-content-center">
+                  <label>Certificates Upload status => @if(isset($data->Certificates))<b class="green">Already Uploaded</b>@else<b class="red">Not Uploaded</b>@endif</label>
+                </div>
+                @if(isset($data->CV))
+                <div class="row justify-content-center">
+                  <label>To download your uploaded Certificates <a href="{{ url('storage/uploads/student/certificates/'.$data->Certificates) }}" class="btn btn-success btn-user btn-block"><b>click here</b></a></label>
+                </div>
+                @endif
+                </div>
+                <div class="col-sm-6">
+                  <div class="row justify-content-center">
+                  <label id="fileoutcert">No file chosen to update your Certificates</label>
+                </div>
+                </div>
+              </div>
               <button type="submit" class="btn btn-primary btn-user btn-block">
                 <i class="fas fa-pencil-alt"></i> <b>Update Details</b>
               </button>
@@ -118,44 +181,11 @@
       </div>
     </div>
   </div>
-  <script type="text/javascript">
-    var photoview = document.getElementById('photoview');
-    var photo = document.getElementById('photo');
-    var cv = document.getElementById('cv');
-    function clickPhotoUp(){
-      photo.click();
-    }
-    document.getElementById("photo").addEventListener("change", function(e) {
-  
-    photoview.src = e.target.files[0];
-    photoview.src = URL.createObjectURL(e.target.files[0]);
-  
-  });
-    function clickcv(){
-        cv.click();
-    }
-    function getFile(filePath) {
-          return filePath.substr(filePath.lastIndexOf('\\') + 1).split('.')[0];
-      }
-    function getoutput() {
-      console.log('in');
-          var output = document.getElementById('fileout');
-          var file = document.getElementById('cv');
-          var name = getFile(file.value);
-          var ext = file.value.split('.')[1];
-          if(name!==''){
-            var name1 = '<b><span class="red">Selected </span></b> <b>=><b> <b class="black">'+name+'.'+ext+'</b> (CV) for upoad';
-           }
-          else{
-            var name1 = ''; 
-           }
-          //extension.value = inputfile.value.split('.')[1];
-          output.innerHTML = name1;
-      }
-  </script><script type="text/javascript">
+<script type="text/javascript">
   var photoview = document.getElementById('photoview');
   var photo = document.getElementById('photo');
   var cv = document.getElementById('cv');
+  var cert = document.getElementById('cert');
   function clickPhotoUp(){
     photo.click();
   }
@@ -168,6 +198,9 @@
   function clickcv(){
       cv.click();
   }
+  function clickcert(){
+      cert.click();
+  }
   function getFile(filePath) {
         return filePath.substr(filePath.lastIndexOf('\\') + 1).split('.')[0];
     }
@@ -178,13 +211,28 @@
         var name = getFile(file.value);
         var ext = file.value.split('.')[1];
         if(name!==''){
-          var name1 = '<b><span class="red">Selected </span></b> <b>=><b> <b class="black">'+name+'.'+ext+'</b> (CV) for upoad';
+          var name1 = '<b><span class="red">Selected </span></b> <b>=><b> <b class="black">'+name+'.'+ext+'</b> (CV) for upload';
          }
         else{
           var name1 = 'No file chosen to update your CV'; 
          }
         //extension.value = inputfile.value.split('.')[1];
         output.innerHTML = name1;
+    }
+    function getoutputcert() {
+    console.log('in');
+        var output1 = document.getElementById('fileoutcert');
+        var file1 = document.getElementById('cert');
+        var name4 = getFile(file1.value);
+        var ext2 = file1.value.split('.')[1];
+        if(name4!==''){
+          var name2 = '<b><span class="red">Selected </span></b> <b>=><b> <b class="black">'+name4+'.'+ext2+'</b> (Certificates) for upload';
+         }
+        else{
+          var name2 = 'No file chosen to update your Certificates'; 
+         }
+        //extension.value = inputfile.value.split('.')[1];
+        output1.innerHTML = name2;
     }
 </script>
 @endsection
