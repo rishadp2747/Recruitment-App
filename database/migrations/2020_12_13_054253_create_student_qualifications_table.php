@@ -15,6 +15,13 @@ class CreateStudentQualificationsTable extends Migration
     {
         Schema::create('student_qualifications', function (Blueprint $table) {
             $table->id();
+            $table->string('Email');
+            $table->string('Course',100);
+            $table->string('CGPA',50);
+            $table->string('Board',200);
+            $table->string('Institution',200);
+            $table->date('Join');
+            $table->date('Pass');
             $table->timestamps();
         });
     }

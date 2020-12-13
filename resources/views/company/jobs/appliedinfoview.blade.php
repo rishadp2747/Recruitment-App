@@ -119,7 +119,7 @@
                                 <p><b class="black">Address</b> : {{ $student->Address }}</p>
                                 <p><b class="black">Age</b> : {{ $student->Age }}</p>
                                 <p><b class="black">Date of Birth</b> : {{ $student->DOB }}</p>
-                                <p><b class="black">Qualifications</b> : {{ $student->Qualifications }}</p>
+                                <p><b class="black">Bio</b> : {{ $student->Bio }}</p>
                                 <p><b class="black">Skills</b> : {{ $student->Skills }}</p>
                               </div>
                               <a  href="{{ url('storage/uploads/student/cv/'.$student->CV) }}" class="btn btn-primary btn-user btn-block">
