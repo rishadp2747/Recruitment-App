@@ -118,7 +118,7 @@
               <div class="d-flex flex-wrap ">
                 @foreach ($asap as $item)
                 <div class="form-check m-3">
-                  <input class="form-check-input" type="checkbox" value="{{$item->id}}" id='asapcourses{{$item->id}}'>
+                  <input class="form-check-input" type="checkbox" value="{{$item->course_name}}" id='asapcourses{{$item->id}}'>
                   <label class="form-check-label" for="defaultCheck1">
                       {{$item->course_name}}
                   </label>
@@ -146,7 +146,7 @@
                       <label class="form-check-label" for="defaultCheck1">Volunteership</label>
                       <select class="selectpicker w-50 m-3" multiple data-live-search="true">
                         @foreach ($volunteership as $item)
-                          <option value='{{$item->id}}' >{{$item->volunteerships}}</options>
+                          <option value='{{$item->volunteerships}}' >{{$item->volunteerships}}</options>
                         @endforeach
                       </select>
                     </div>
