@@ -10,7 +10,7 @@
   <meta name="author" content="">
   <link rel="icon" type="image/png" href="<?php echo URL::asset('img/fav1.png'); ?>"/>
 
-  <title>Company Dashboard</title>
+  <title>Admin Dashboard</title>
 
   <!-- Custom fonts for this template-->
   <link href="<?php echo URL::asset('vendor/fontawesome-free/css/all.min.css'); ?>" rel="stylesheet" type="text/css">
@@ -29,7 +29,7 @@
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-red sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-black sidebar sidebar-dark accordion toggled" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
@@ -59,6 +59,24 @@
         <a class="nav-link" href="{{ route('studentadd') }}">
           <i class="fas fa-user-plus"></i>
             <span>Add Student</span></a>
+      </li>
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item @if($route=='studentdelete'){{ 'active' }} @endif">
+        <a class="nav-link" href="{{ route('studentdelete') }}">
+          <i class="fas fa-user-times"></i>
+            <span>Delete Student</span></a>
+      </li>
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item @if($route=='companyapproval'){{ 'active' }} @endif">
+        <a class="nav-link" href="{{ route('companyapproval') }}">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Approve Company</span></a>
+      </li>
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item @if($route=='companydelete'){{ 'active' }} @endif">
+        <a class="nav-link" href="{{ route('companydelete') }}">
+            <i class="fas fa-store-alt-slash"></i>
+            <span>Delete Company</span></a>
       </li>
 
       <!-- Divider -->
@@ -155,7 +173,7 @@
             <i class="fa fa-bars"></i>
           </button>
 
-          <p class="main-dash-name"><i class="fas fa-building"></i> Company Dashboard</p>
+          <p class="main-dash-name"><i class="fas fa-user-cog"></i> Admin Dashboard</p>
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">

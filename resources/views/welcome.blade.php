@@ -36,9 +36,9 @@
             <div class="row">
               <div class="col-lg-12">
                 <div class="p-5">
-                  <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4"><i class="fas fa-users"></i> <b>Recruitments App</b></h1>
-                  </div>
+                  <div class="row justify-content-center">
+                    <img src="<?php echo URL::asset('img/asap_portal.png'); ?>" width="200" height="80">
+                 </div>
                   <div class="text-center">
                     <p class="p text-gray-900 mb-4">Navigate to the respective option.</p>
                   </div>

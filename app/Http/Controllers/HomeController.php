@@ -39,9 +39,34 @@ class HomeController extends Controller
           $data = array( 'uname' => $uname );
           return view('company.dashboard')->with($data);
         }
+        elseif($u_type==2){
+          $data = array( 'uname' => $uname );
+          return view('admin.dashboard')->with($data);
+        }
         else{
             Auth::logout();
             return redirect('login')->with('info', 'User Type is not valid !');
+        }
+    }
+
+    public function approval_checker()
+    {
+        $user = Auth::user();
+        $u_type = $user->user_type;
+        $uname = $user->name;
+        $approval_s = $user->approved;
+        if($approval_s==0){
+          return view('auth.approval');
+        }
+        elseif($approval_s==1){
+          return redirect('dashboard');
+        }
+        elseif($approval_s==2){
+          return view('auth.rejected');
+        }
+        else{
+            Auth::logout();
+            return redirect('login')->with('info', 'Something Went Wrong !');
         }
     }
 
@@ -62,6 +87,10 @@ class HomeController extends Controller
         $data = Companydetail::where('Email',$email)->get()->first();
         $data = array('uname' => $uname , 'data' => $data , 'email' => $email);
         return view('company.profile')->with($data);
+      }
+      elseif($u_type==2){
+        session()->flash('status', 'Profile page is disabled for the admin !');
+        return redirect()->route('home');
       }
       else{
           Auth::logout();
@@ -306,6 +335,10 @@ class HomeController extends Controller
 
         #session()->flash('status', 'Profile page under construction !');
         #return redirect()->route('home');
+      }
+      elseif($u_type==2){
+        session()->flash('status', 'Profile page is disabled for the admin !');
+        return redirect()->route('home');
       }
       else{
           Auth::logout();

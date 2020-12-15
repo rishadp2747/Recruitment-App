@@ -54,13 +54,12 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'user_type' => ['required','integer','in:0,1'],
         ]);
     }
 
     protected function allowed_check(array $data)
     {
-        if (Allowed_users::where('email', '=', $data['email'])->exists() || $data['user_type']==1) {
+        if (Allowed_users::where('email', '=', $data['email'])->exists()) {
             return 'yes';
          }
          else{
@@ -80,7 +79,19 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'user_type' => $data['user_type'],
+            'user_type' => 0,
+            'approved' => 1,
+        ]);
+    }
+
+    protected function createComp(array $data)
+    {
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'user_type' => 1,
+            'approved' => 0,
         ]);
     }
 }

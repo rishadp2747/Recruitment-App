@@ -30,10 +30,10 @@
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-users"></i>
+        <div class="sidebar-brand-icon">
+          <img src="<?php echo URL::asset('img/asap.png'); ?>" width="50" height="50">
         </div>
-        <div class="sidebar-brand-text mx-3">Recruitments App</div>
+        <div class="sidebar-brand-text mx-3">Placement Portal</div>
       </a>
 
       <!-- Divider -->

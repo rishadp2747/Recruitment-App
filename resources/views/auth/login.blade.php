@@ -37,6 +37,10 @@
             <div class="row">
               <div class="col-lg-12">
                 <div class="p-5">
+                  <div class="row justify-content-center">
+                    <img src="<?php echo URL::asset('img/asap_portal.png'); ?>" width="200" height="80">
+                 </div>
+                 <hr>
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4"><i class="fas fa-sign-in-alt"></i> <b>Login</b></h1>
                   </div>

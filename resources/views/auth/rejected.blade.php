@@ -9,9 +9,9 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <link rel="icon" type="image/png" href="img/fav1.png"/>
+  <link rel="icon" type="image/png" href="<?php echo URL::asset('img/fav1.png'); ?>"/>
 
-  <title>Verify Your Email Address</title>
+  <title>Account Rejected</title>
 
   <!-- Custom fonts for this template-->
   <link href="<?php echo URL::asset('vendor/fontawesome-free/css/all.min.css'); ?>" rel="stylesheet" type="text/css">
@@ -22,7 +22,7 @@
 
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-gradient-red-2">
 
   <div class="container">
 
@@ -37,31 +37,18 @@
             <div class="row">
               <div class="col-lg-12">
                 <div class="p-5">
-                  <div class="row justify-content-center">
-                    <img src="<?php echo URL::asset('img/asap_portal.png'); ?>" width="200" height="80">
-                 </div>
-             <hr>
+                    <div class="row justify-content-center">
+                       <img src="<?php echo URL::asset('img/asap_portal.png'); ?>" width="200" height="80">
+                    </div>
+                <hr>
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-2"><i class="fas fa-envelope-open-text"></i> <b>Verify Email</b></h1>
-                    <p class="mb-4">Before proceeding, please check your email for a verification link.</p>
+                    <h1 class="h4 text-gray-900 mb-2"><i class="far fa-times-circle"></i> <b>Account Rejected</b></h1>
+                    <p class="mb-4">Sorry to say that we could not approve your account.</p>
                   </div>
-                  <hr>
-                  <div class="text-center">
-                    <p class="mb-4">If you did not received the email, click on the below button.</p>
-                  </div>
-                  @if (session('resent'))
-                        <div class="alert alert-success" role="alert">
-                            {{ __('A fresh verification link has been sent to your registered email address.') }}
-                        </div>
-                  @endif
-                  <form class="user" method="POST" action="{{ route('verification.resend') }}">
-                    @csrf
-                    <button type="submit" class="btn btn-danger btn-user btn-block"><b>Resend Email</b></button>
-                  </form>
                   <hr>
                   @auth
                   <div class="text-center">
-                  <a class="medium" onclick="event.preventDefault();document.getElementById('logout-form').submit();" style="cursor:pointer;color:#0000CD;"><strong>Log Out</strong></a>
+                    <button onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="btn btn-danger btn-user btn-block">Log Out</button>
                   <form id="logout-form" action="{{ route('logout') }}" method="POST">
                     @csrf
                   </form>

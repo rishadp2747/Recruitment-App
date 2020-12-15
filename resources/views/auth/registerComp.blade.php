@@ -9,9 +9,9 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <link rel="icon" type="image/png" href="img/fav1.png"/>
+  <link rel="icon" type="image/png" href="<?php echo URL::asset('img/fav1.png'); ?>"/>
 
-  <title>Student Register</title>
+  <title>Company Register</title>
 
   <!-- Custom fonts for this template-->
   <link href="<?php echo URL::asset('vendor/fontawesome-free/css/all.min.css'); ?>" rel="stylesheet" type="text/css">
@@ -35,19 +35,19 @@
               <div class="row justify-content-center">
                 <img src="<?php echo URL::asset('img/asap_portal.png'); ?>" width="200" height="80">
              </div>
-         <hr>
+             <hr>
               <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4"><i class="fas fa-user-graduate"></i>  <b>Student Register</b></h1>
+                <h1 class="h4 text-gray-900 mb-4"><i class="fas fa-building"></i>  <b>Company Register</b></h1>
               </div>
               @if (\Session::has('info'))
                      <div class="alert alert-danger">
                          {!! \Session::get('info') !!}
                       </div>
               @endif
-            <form class="user" method="POST" action="{{ route('register') }}">
+            <form class="user" method="POST" action="{{ route('comp_reg') }}">
               @csrf
                   <div class="form-group">
-                    <input type="text" class="form-control form-control-user @error('name') is-invalid @enderror" id="name" placeholder="Full Name" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                    <input type="text" class="form-control form-control-user @error('name') is-invalid @enderror" id="name" placeholder="Company Name" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                     @error('name')
                      <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                     @enderror
