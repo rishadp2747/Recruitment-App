@@ -20,9 +20,16 @@ class Studentdetail extends Model
         'Age',
         'DOB',
         'Address',
-        'Qualifications',
         'Skills',
         'CV',
         'Phoneno',
+        'Certificates',
+        'Volunteership',
+        'Linkedin',
+        'Github',
+        'Bio',
+        'Gender',
+        'Asap_Skills',
+        'Aadhaar',
     ];
 }

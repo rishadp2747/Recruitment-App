@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Studentdetail;
 use App\Models\Companydetail;
+use App\Models\Qualifications;
+use App\Models\AsapCourses;
+use App\Models\Students_qualifications;
+use App\Models\Volunteership;
 use App\Models\User;
 use Auth;
 use File;
@@ -77,8 +81,19 @@ class HomeController extends Controller
       $uname = $user->name;
       $email = $user->email;
       if($u_type==0){
+        $qualification = Qualifications::all();
+        $asap_courses = AsapCourses::all();
+        $volunteership = Volunteership::all();
+        $stud_qual = Students_qualifications::where('Email',$email)->get();
+
         $data = Studentdetail::where('Email',$email)->get()->first();
-        $data = array('uname' => $uname , 'data' => $data , 'email' => $email);
+        if($data){
+          $stat = 'yes';
+        }
+        else{
+          $stat = 'no';
+        }
+        $data = array('stud_qual' => $stud_qual, 'status' => $stat, 'uname' => $uname , 'data' => $data , 'email' => $email, 'qualifications' => $qualification, 'asap' => $asap_courses, 'volunteership' => $volunteership );
         return view('student.profile')->with($data);
       }
       elseif($u_type==1){
@@ -106,6 +121,12 @@ class HomeController extends Controller
       $email = $user->email;
       if($u_type==0){
 
+        $data_dd = Studentdetail::where('Email',$email)->get()->first();
+        if($data_dd){
+          session()->flash('errorinfo', 'Profile updation failed, updation only allowed once !');
+          return redirect()->route('profile'); 
+        }
+
         if($req->photo===null){
              if($req->photoval===null){
                return back()->with('errorinfo','You have to upload a image (photo).')->withInput($req->input());
@@ -132,15 +153,59 @@ class HomeController extends Controller
             'skills' => 'required|string|min:5|max:200',
             'dob' => 'required|date_format:Y-m-d',
             'phoneno' => 'required|digits:10',
-            'volunteership' => 'required|string|min:5|max:200',
-            'backlogs' => 'required|integer|min:0|max:100',
-            'current_backlogs' => 'required|integer|min:0|max:100',
-            'linkedin' => 'required|url',
-            'github' => 'required|url'
+            'gender' => 'required|in:male,female,other',
+            'aadhaar' => 'required|integer',
+            'qualification0' => 'required|string',
+            'board0' => 'required|string',
+            'institution0' => 'required|string',
+            'cgpa0' => 'required|integer|min:1|max:100',
+            'join0' => 'required|date_format:Y-m-d',
+            'pass0' => 'required|date_format:Y-m-d'
         ]);
 
-        #$new = (explode("-",$req->dob));
-        #$req->dob = $new[2].'-'.$new[1].'-'.$new[0];
+        $numb_val = 0;
+          
+        for($i=0;$i<100;$i++){
+          $name= 'cgpa'.strval($i);
+          if(!empty($req->$name)){
+            $numb_val=$numb_val+1;
+          }
+          else{
+            break;
+          }
+        }
+
+        if(empty($req->asapskills)){
+          $asa = 'unknown';
+        }
+        else{
+        $asa = '';
+        foreach($req->asapskills as $asp){
+           $asa = $asa . $asp . ',';
+        }
+
+        $asa = substr($asa, 0, -1);
+       }
+
+       if(empty($req->volunteership)){
+        $vol = 'unknown';
+      }
+      else{
+        $vol = '';
+        foreach($req->volunteership as $vols){
+           $vol = $vol . $vols . ',';
+        }
+
+        $vol = substr($vol, 0, -1);
+      }
+
+      if(empty($req->linkedin)){
+        $req->linkedin = 'unknown';
+      }
+
+      if(empty($req->github)){
+        $req->github = 'unknown';
+      }
 
         if($req->file('photo')){
           $req->validate([
@@ -210,12 +275,51 @@ class HomeController extends Controller
         $details->CV = $req->cv;
         $details->Certificates = $req->cert;
         $details->Photo = $req->photo;
-        $details->Volunteership = $req->volunteership;
-        $details->Backlogs = $req->backlogs;
-        $details->Current_Backlogs = $req->current_backlogs;
+        $details->Volunteership = $vol;
+        $details->Asap_Skills = $asa;
+        $details->Aadhaar = $req->aadhaar;
+        $details->Gender = $req->gender;
         $details->Linkedin = $req->linkedin;
         $details->Github = $req->github;
         if($details->save()){
+          for($i=0;$i<$numb_val;$i++){
+            $acc = new Students_qualifications();
+            $acc->email = $email;
+            $na1 = 'course'.strval($i);
+            $na2 = 'cgpa'.strval($i);
+            $na3 = 'board'.strval($i);
+            $na4 = 'institution'.strval($i);
+            $na5 = 'join'.strval($i);
+            $na6 = 'pass'.strval($i);
+            $na7 = 'cback'.strval($i);
+            $na8 = 'hback'.strval($i);
+            $na9 = 'qualification'.strval($i);
+            if($i==0){
+              $req->course0 = "unknown";
+              $req->cback0 = 0;
+              $req->hback0 = 0;
+            }
+            $acc->course = $req->$na1;
+            $acc->cgpa = $req->$na2;
+            $acc->board = $req->$na3;
+            $acc->institution = $req->$na4;
+            $acc->join = $req->$na5;
+            $acc->pass = $req->$na6;
+            $acc->cbacklogs = $req->$na7;
+            $acc->hbacklogs = $req->$na8;
+            $acc->qualification = $req->$na9;
+            if($acc->save()){
+              continue;
+            }
+            else{
+              $data = Studentdetail::where('Email',$email);
+              $count = $data->delete();
+              $data2 = Students_qualifications::where('email',$email);
+              $count2 = $data2->delete();
+              session()->flash('errorinfo', 'Something went wrong while updating your profile, please try again !');
+              return redirect()->route('profile'); 
+            }
+          }
           session()->flash('status', 'Profile updated Successfully !');
           return redirect()->route('home');
         } 
@@ -241,12 +345,51 @@ class HomeController extends Controller
           $details->CV = $req->cv;
           $details->Certificates = $req->cert;
           $details->Photo = $req->photo;
-          $details->Volunteership = $req->volunteership;
-          $details->Backlogs = $req->backlogs;
-          $details->Current_Backlogs = $req->current_backlogs;
+          $details->Volunteership = $vol;
+          $details->Asap_Skills = $asa;
+          $details->Aadhaar = $req->aadhaar;
+          $details->Gender = $req->gender;
           $details->Linkedin = $req->linkedin;
           $details->Github = $req->github;
           if($details->save()){
+            for($i=0;$i<$numb_val;$i++){
+              $acc = new Students_qualifications();
+              $acc->email = $email;
+              $na1 = 'course'.strval($i);
+              $na2 = 'cgpa'.strval($i);
+              $na3 = 'board'.strval($i);
+              $na4 = 'institution'.strval($i);
+              $na5 = 'join'.strval($i);
+              $na6 = 'pass'.strval($i);
+              $na7 = 'cback'.strval($i);
+              $na8 = 'hback'.strval($i);
+              $na9 = 'qualification'.strval($i);
+              if($i==0){
+                $req->course0 = 'unknown';
+                $req->cback0 = 0;
+                $req->hback0 = 0;
+              }
+              $acc->course = $req->$na1;
+              $acc->cgpa = $req->$na2;
+              $acc->board = $req->$na3;
+              $acc->institution = $req->$na4;
+              $acc->join = $req->$na5;
+              $acc->pass = $req->$na6;
+              $acc->cbacklogs = $req->$na7;
+              $acc->hbacklogs = $req->$na8;
+              $acc->qualification = $req->$na9;
+              if($acc->save()){
+                continue;
+              }
+              else{
+                $data = Studentdetail::where('Email',$email);
+                $count = $data->delete();
+                $data2 = Students_qualifications::where('email',$email);
+                $count2 = $data2->delete();
+                session()->flash('errorinfo', 'Something went wrong while updating your profile, please try again !');
+                return redirect()->route('profile'); 
+              }
+            }
             session()->flash('status', 'Profile updated Successfully !');
             return redirect()->route('home');
           } 
