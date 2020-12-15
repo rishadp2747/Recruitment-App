@@ -19,6 +19,22 @@
   <!-- Custom styles for this template-->
   <link href="<?php echo URL::asset('css/sb-admin-2.css'); ?>" rel="stylesheet">
 
+
+  <style>
+
+        form.user .form-control-user{
+          border-radius:0px;
+        }
+  </style>
+
+
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
 </head>
 
 <body id="page-top">
@@ -209,6 +225,9 @@
 
   <!-- Page level custom scripts -->
   <script src="<?php echo URL::asset('js/demo/datatables-demo.js'); ?>"></script>
+
+  <script src="{{ asset('js/app.js') }}" defer></script>
+    
 
 </body>
 

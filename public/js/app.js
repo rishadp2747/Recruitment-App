@@ -49730,6 +49730,8 @@ module.exports = function(module) {
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+__webpack_require__(/*! ./sl.js */ "./resources/js/sl.js");
+
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /**
  * The following block of code may be used to automatically register your
@@ -49868,6 +49870,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/sl.js":
+/*!****************************!*\
+  !*** ./resources/js/sl.js ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  $('select').selectpicker();
+  $('#addQ').click(function () {
+    alert("asd");
+  });
+});
+
+/***/ }),
+
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -49886,8 +49904,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Nihal\Desktop\final\recruitment_project\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Nihal\Desktop\final\recruitment_project\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /media/rishad/Documents/IEEE/REc/REcc/code/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /media/rishad/Documents/IEEE/REc/REcc/code/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

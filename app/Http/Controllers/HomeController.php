@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Studentdetail;
 use App\Models\Companydetail;
 use App\Models\User;
+use App\Models\Qualifications;
+use App\Models\AsapCourses;
+use App\Models\Volunteership;
+
 use Auth;
 use File;
 
@@ -52,8 +56,13 @@ class HomeController extends Controller
       $uname = $user->name;
       $email = $user->email;
       if($u_type==0){
+
+        $qualification = Qualifications::all();
+        $asap_courses = AsapCourses::all();
+        $volunteership = Volunteership::all();
+
         $data = Studentdetail::where('Email',$email)->get()->first();
-        $data = array('uname' => $uname , 'data' => $data , 'email' => $email);
+        $data = array('uname' => $uname , 'data' => $data , 'email' => $email, 'qualifications' => $qualification, 'asap' => $asap_courses, 'volunteership' => $volunteership );
         return view('student.profile')->with($data);
       }
       elseif($u_type==1){

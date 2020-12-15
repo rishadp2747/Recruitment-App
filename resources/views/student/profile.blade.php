@@ -31,347 +31,302 @@
               </div>
               <div class="form-group row">
                 <div class="col-sm-6 mb-3 mb-sm-0">
+                <label for="name">Name <span style="color:red">*</span></label>
                 <input type="text" class="form-control form-control-user" placeholder="Name" name="name" value="@if(old('name')!== null){{ old('name') }}@elseif(isset($uname)){{ $uname }}@else{{ '' }}@endif">
                 @error('name')
                   <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                  @enderror
                 </div>
                 <div class="col-sm-6">
+                <label for="qulatification">Age <span style="color:red">*</span></label>
                 <input type="number" class="form-control form-control-user" placeholder="Age" name="age" value="@if(old('age')!== null){{ old('age') }}@elseif(isset($data->Age)){{ $data->Age }}@else{{ '' }}@endif">
                   @error('age')
                   <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                  @enderror
                 </div>
               </div>
-              <div class="form-group">
-                <textarea class="form-control form-control-user" placeholder="Address" name="address">@if(old('address')!== null){{ old('address') }}@elseif(isset($data->Address)){{ $data->Address }}@else{{ '' }}@endif</textarea>
-                @error('address')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
+
+              <div class="row">
+                <div class="col-6">
+                  <div class="form-group">
+                  <label for="gender">Address<span style="color:red">*</span></label>
+                    <textarea class="form-control form-control-user" placeholder="Address" name="address">@if(old('address')!== null){{ old('address') }}@elseif(isset($data->Address)){{ $data->Address }}@else{{ '' }}@endif</textarea>
+                    @error('address')
+                      <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+                    @enderror
+                  </div>
+
+                </div>
+
+                <div class="col-6">
+                  <div class="form-group">
+                  <label for="gender">Bio<span style="color:red">*</span></label>
+                  <textarea class="form-control form-control-user" placeholder="Bio" name="bio">@if(old('bio')!== null){{ old('bio') }}@elseif(isset($data->Bio)){{ $data->Bio }}@else{{ '' }}@endif</textarea>
+                  @error('bio')
+                    <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+                  @enderror
+                </div>
+
+                </div>
               </div>
-              <div class="form-group">
-                <textarea class="form-control form-control-user" placeholder="Bio" name="bio">@if(old('bio')!== null){{ old('bio') }}@elseif(isset($data->Bio)){{ $data->Bio }}@else{{ '' }}@endif</textarea>
-                @error('bio')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
+              
+              
+
+              <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                    <label for="gender">Date of Birth<span style="color:red">*</span></label>
+                      <input type="text" onfocus="(this.type='date')" class="form-control form-control-user" id="exampleInputPassword" placeholder="Date of Birth" name="dob" value="@if(old('dob')!== null){{ old('dob') }}@elseif(isset($data->DOB)){{ $data->DOB }}@else{{ '' }}@endif">
+                      @error('dob')
+                      <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+                    @enderror
+                  </div>
+                </div>
+
+                <div class="col-4">
+                  <div class="form-group">
+                     <label for="phoneno">Mobile Number<span style="color:red">*</span></label>
+                      <input type="tel" class="form-control form-control-user" placeholder="Phone Number" name="phoneno" value="@if(old('phoneno')!== null){{ old('phoneno') }}@elseif(isset($data->Phoneno)){{ $data->Phoneno }}@else{{ '' }}@endif">
+                      @error('phoneno')
+                      <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+                    @enderror
+                  </div>
+                </div>
+
+                <div class="col-4">
+                  <div class="form-group">
+                  <label for="gender">Gender<span style="color:red">*</span></label>
+                    <select class="form-control " name="gender" id="gender">
+                      <option selected value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="other">Other</option>
+                    </select>
+                      @error('gender')
+                        <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+                      @enderror
+                  </div>  
+                </div>
               </div>
-              <div class="form-group">
-                <textarea class="form-control form-control-user" placeholder="Skills" name="skills">@if(old('skills')!== null){{ old('skills') }}@elseif(isset($data->Skills)){{ $data->Skills }}@else{{ '' }}@endif</textarea>
-                @error('skills')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
+
+              
+             
+
+             
+     
+            <div class="form-group">
+            <label for="exampleInputEmail1">Asap Skills</label>
+              <div class="d-flex flex-wrap ">
+                @foreach ($asap as $item)
+                <div class="form-check m-3">
+                  <input class="form-check-input" type="checkbox" value="{{$item->id}}" id='asapcourses{{$item->id}}'>
+                  <label class="form-check-label" for="defaultCheck1">
+                      {{$item->course_name}}
+                  </label>
+                </div>
+                @endforeach
               </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                    <label for="exampleInputEmail1">Other Skills<span style="color:red">*</span></label>
+                    <textarea class="form-control form-control-user" placeholder="Skills" name="skills">@if(old('skills')!== null){{ old('skills') }}@elseif(isset($data->Skills)){{ $data->Skills }}@else{{ '' }}@endif</textarea>
+                    @error('skills')
+                      <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+                    @enderror
+                  </div>
+
+
+                </div>
+
+                <div class="col-6">
+
+                <div class="form-group">
+                      <label class="form-check-label" for="defaultCheck1">Volunteership</label>
+                      <select class="selectpicker w-50 m-3" multiple data-live-search="true">
+                        @foreach ($volunteership as $item)
+                          <option value='{{$item->id}}' >{{$item->volunteerships}}</options>
+                        @endforeach
+                      </select>
+                    </div>
+
+              </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-6">
+                    <div class="form-group">
+                    <label class="form-check-label" for="defaultCheck1">Linkedin</label>
+                    <input type="url" class="form-control form-control-user" placeholder="Linkedin URL" name="linkedin" value="@if(old('linkedin')!== null){{ old('linkedin') }}@elseif(isset($data->Linkedin)){{ $data->Linkedin }}@else{{ '' }}@endif">
+                    @error('linkedin')
+                    <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+                  @enderror
+                </div>
+
+
+                </div>
+
+                <div class="col-6">
+                  <div class="form-group">
+                  <label class="form-check-label" for="defaultCheck1">Git</label>
+                      <input type="url" class="form-control form-control-user" placeholder="Gith URL" name="github" value="@if(old('github')!== null){{ old('github') }}@elseif(isset($data->Github)){{ $data->Github }}@else{{ '' }}@endif">
+                      @error('github')
+                      <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+                    @enderror
+                  </div>
+
+
+                </div>
+
+            
+           
+
+            </div>
+
+
+
+    
+
+              
+
+
+
+  <!---
               <div class="form-group">
                 <textarea class="form-control form-control-user" placeholder="Volunteership" name="volunteership">@if(old('volunteership')!== null){{ old('volunteership') }}@elseif(isset($data->Volunteership)){{ $data->Volunteership }}@else{{ '' }}@endif</textarea>
                 @error('volunteership')
                   <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                  @enderror
               </div>
-              <div class="form-group">
-                  <input type="text" onfocus="(this.type='date')" class="form-control form-control-user" id="exampleInputPassword" placeholder="Date of Birth" name="dob" value="@if(old('dob')!== null){{ old('dob') }}@elseif(isset($data->DOB)){{ $data->DOB }}@else{{ '' }}@endif">
-                  @error('dob')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-              </div>
-              <div class="form-group">
-                <input type="tel" class="form-control form-control-user" placeholder="Phone Number" name="phoneno" value="@if(old('phoneno')!== null){{ old('phoneno') }}@elseif(isset($data->Phoneno)){{ $data->Phoneno }}@else{{ '' }}@endif">
-                @error('phoneno')
-                <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-               @enderror
-            </div>
+
+
+              -->
+
+
+            
+
             <hr>
 
             <div class="acad0">
             <div class="form-group">
-                <p class="op p-2">Academic details 1</p>
+                <p class="op p-2">Educational Details</p>
             </div>
-            <div class="form-group row">
-                <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="text" class="form-control form-control-user" placeholder="Course" name="course0" value="@if(old('course0')!== null){{ old('course0') }}@elseif(isset($data->Course0)){{ $data->Course0 }}@else{{ '' }}@endif">
-                  @error('course0')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-                <div class="col-sm-6">
-                <input type="text" class="form-control form-control-user" placeholder="CGPA/Percentage" name="cgpa0" value="@if(old('cgpa0')!== null){{ old('cgpa0') }}@elseif(isset($data->CGPA0)){{ $data->CGPA0 }}@else{{ '' }}@endif">
-                  @error('cgpa0')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
+
+            <div class="row">
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="qulatification">Qualification <span style="color:red">*</span></label>
+                    <select class="form-control" name="qualification0" id="qualification1">
+                        @foreach ($qualifications as $item)
+                            <option value='{{$item->id}}' >{{$item->qualification}}</options>
+                          @endforeach
+                    </select>
+                      @error('qualification1')
+                        <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+                      @enderror
+                  </div>
+              </div> 
+            </div>
+
+
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="qulatification">Board <span style="color:red">*</span> ( eg: CBSE, Kerala State Board ) </label>
+                    <input type="text" class="form-control form-control-user" placeholder="Board" name="board0" value="@if(old('board0')!== null){{ old('board0') }}@elseif(isset($data->Board0)){{ $data->Board0 }}@else{{ '' }}@endif">
+                    @error('board0')
+                    <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+                  @enderror
                 </div>
               </div>
-              <div class="form-group">
-                <input type="text" class="form-control form-control-user" placeholder="Board/University" name="board0" value="@if(old('board0')!== null){{ old('board0') }}@elseif(isset($data->Board0)){{ $data->Board0 }}@else{{ '' }}@endif">
-                @error('board0')
-                <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-               @enderror
+
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="qulatification">Institution Name<span style="color:red">*</span></label>
+                    <input type="text" class="form-control form-control-user" placeholder="Institution Name" name="institution0" value="@if(old('institution0')!== null){{ old('institution0') }}@elseif(isset($data->Institution0)){{ $data->Institution0 }}@else{{ '' }}@endif">
+                    @error('institution0')
+                    <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+                  @enderror
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-                <input type="text" class="form-control form-control-user" placeholder="Institution/School" name="institution0" value="@if(old('institution0')!== null){{ old('institution0') }}@elseif(isset($data->Institution0)){{ $data->Institution0 }}@else{{ '' }}@endif">
-                @error('institution0')
-                <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-               @enderror
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-6 mb-3 mb-sm-0">
+
+
+            <div class="row">
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="percentage">Percentage<span style="color:red">*</span> (Covert cgpa into percentage) </label>
+                  <input type="text" class="form-control form-control-user" placeholder="Percentage" name="cgpa0" value="@if(old('cgpa0')!== null){{ old('cgpa0') }}@elseif(isset($data->CGPA0)){{ $data->CGPA0 }}@else{{ '' }}@endif">
+                    @error('cgpa0')
+                    <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+                  @enderror
+                </div>
+              </div>
+
+              <div class="col-4">
+                <div class="form-group">
+                <label for="join">Year of Joining<span style="color:red">*</span></label>
                 <input type="text" onfocus="(this.type='date')" class="form-control form-control-user" placeholder="Year of joining" name="join0" value="@if(old('join0')!== null){{ old('join0') }}@elseif(isset($data->Join0)){{ $data->Join0 }}@else{{ '' }}@endif">
                   @error('join0')
                   <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                  @enderror
+
                 </div>
-                <div class="col-sm-6">
+              </div>
+
+              <div class="col-4">
+                <div class="form-group">
+                <label for="join">Year of Passing<span style="color:red">*</span></label>
                 <input type="text" onfocus="(this.type='date')" class="form-control form-control-user" placeholder="Year of passing" name="pass0" value="@if(old('pass0')!== null){{ old('pass0') }}@elseif(isset($data->Pass0)){{ $data->Pass0 }}@else{{ '' }}@endif">
                   @error('pass0')
                   <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                  @enderror
                 </div>
               </div>
-             </div>
+            </div>
+          </div>
 
-             <div class="acad1 hidden">
-            <div class="form-group">
-                <p class="op p-2">Academic details 2</p>
+          <div class="row d-none" id="qual">
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="qulatification">Qualification <span style="color:red">*</span></label>
+                    <select class="form-control" name="qualification1" id="copyQual">
+                        @foreach ($qualifications as $item)
+                            <option value='{{$item->id}}' >{{$item->qualification}}</options>
+                          @endforeach
+                    </select>
+                      @error('qualification1')
+                        <p class="p-2 red-alert" role="alert">{{ $message }}</p>
+                      @enderror
+                  </div>
+              </div> 
             </div>
-            <div class="form-group row">
-                <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="text" class="form-control form-control-user" placeholder="Course" name="course1" value="@if(old('course1')!== null){{ old('course1') }}@elseif(isset($data->Course1)){{ $data->Course1 }}@else{{ '' }}@endif">
-                  @error('course1')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-                <div class="col-sm-6">
-                <input type="text" class="form-control form-control-user" placeholder="CGPA/Percentage" name="cgpa1" value="@if(old('cgpa1')!== null){{ old('cgpa1') }}@elseif(isset($data->CGPA1)){{ $data->CGPA1 }}@else{{ '' }}@endif">
-                  @error('cgpa1')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-              </div>
-              <div class="form-group">
-                <input type="text" class="form-control form-control-user" placeholder="Board/University" name="board1" value="@if(old('board1')!== null){{ old('board1') }}@elseif(isset($data->Board1)){{ $data->Board1 }}@else{{ '' }}@endif">
-                @error('board1')
-                <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-               @enderror
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control form-control-user" placeholder="Institution/School" name="institution1" value="@if(old('institution1')!== null){{ old('institution1') }}@elseif(isset($data->Institution1)){{ $data->Institution1 }}@else{{ '' }}@endif">
-                @error('institution1')
-                <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-               @enderror
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="text" onfocus="(this.type='date')" class="form-control form-control-user" placeholder="Year of joining" name="join1" value="@if(old('join1')!== null){{ old('join1') }}@elseif(isset($data->Join1)){{ $data->Join1 }}@else{{ '' }}@endif">
-                  @error('join1')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-                <div class="col-sm-6">
-                <input type="text" onfocus="(this.type='date')" class="form-control form-control-user" placeholder="Year of passing" name="pass1" value="@if(old('pass1')!== null){{ old('pass1') }}@elseif(isset($data->Pass1)){{ $data->Pass1 }}@else{{ '' }}@endif">
-                  @error('pass1')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-              </div>
-              <div class="form-group row justify-content-center">
-              <div class="col-6">
-              <button onclick="removefield(1)" type="button" class="btn btn-danger btn-user btn-block">
-                <i class="fas fa-trash-alt"></i> <b>Delete this field</b>
-              </button>
-              </div>
-              </div>
-             </div>
 
-             <div class="acad2 hidden">
-            <div class="form-group">
-                <p class="op p-2">Academic details 3</p>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="text" class="form-control form-control-user" placeholder="Course" name="course2" value="@if(old('course2')!== null){{ old('course2') }}@elseif(isset($data->Course2)){{ $data->Course2 }}@else{{ '' }}@endif">
-                  @error('course2')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-                <div class="col-sm-6">
-                <input type="text" class="form-control form-control-user" placeholder="CGPA/Percentage" name="cgpa2" value="@if(old('cgpa2')!== null){{ old('cgpa2') }}@elseif(isset($data->CGPA2)){{ $data->CGPA2 }}@else{{ '' }}@endif">
-                  @error('cgpa2')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-              </div>
-              <div class="form-group">
-                <input type="text" class="form-control form-control-user" placeholder="Board/University" name="board2" value="@if(old('board2')!== null){{ old('board2') }}@elseif(isset($data->Board2)){{ $data->Board2 }}@else{{ '' }}@endif">
-                @error('board2')
-                <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-               @enderror
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control form-control-user" placeholder="Institution/School" name="institution2" value="@if(old('institution2')!== null){{ old('institution2') }}@elseif(isset($data->Institution2)){{ $data->Institution2 }}@else{{ '' }}@endif">
-                @error('institution2')
-                <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-               @enderror
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="text" onfocus="(this.type='date')" class="form-control form-control-user" placeholder="Year of joining" name="join2" value="@if(old('join2')!== null){{ old('join2') }}@elseif(isset($data->Join2)){{ $data->Join2 }}@else{{ '' }}@endif">
-                  @error('join2')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-                <div class="col-sm-6">
-                <input type="text" onfocus="(this.type='date')" class="form-control form-control-user" placeholder="Year of passing" name="pass2" value="@if(old('pass2')!== null){{ old('pass2') }}@elseif(isset($data->Pass2)){{ $data->Pass2 }}@else{{ '' }}@endif">
-                  @error('pass2')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-              </div>
-              <div class="form-group row justify-content-center">
-              <div class="col-6">
-              <button onclick="removefield(2)" type="button" class="btn btn-danger btn-user btn-block">
-                <i class="fas fa-trash-alt"></i> <b>Delete this field</b>
-              </button>
-              </div>
-              </div>
-             </div>
+        
+          <div id="addQualification">
+          </div>
 
-             <div class="acad3 hidden">
-            <div class="form-group">
-                <p class="op p-2">Academic details 4</p>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="text" class="form-control form-control-user" placeholder="Course" name="course3" value="@if(old('course3')!== null){{ old('course3') }}@elseif(isset($data->Course3)){{ $data->Course3 }}@else{{ '' }}@endif">
-                  @error('course3')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-                <div class="col-sm-6">
-                <input type="text" class="form-control form-control-user" placeholder="CGPA/Percentage" name="cgpa3" value="@if(old('cgpa3')!== null){{ old('cgpa3') }}@elseif(isset($data->CGPA3)){{ $data->CGPA3 }}@else{{ '' }}@endif">
-                  @error('cgpa3')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-              </div>
-              <div class="form-group">
-                <input type="text" class="form-control form-control-user" placeholder="Board/University" name="board3" value="@if(old('board3')!== null){{ old('board3') }}@elseif(isset($data->Board3)){{ $data->Board3 }}@else{{ '' }}@endif">
-                @error('board3')
-                <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-               @enderror
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control form-control-user" placeholder="Institution/School" name="institution3" value="@if(old('institution3')!== null){{ old('institution3') }}@elseif(isset($data->Institution3)){{ $data->Institution3 }}@else{{ '' }}@endif">
-                @error('institution3')
-                <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-               @enderror
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="text" onfocus="(this.type='date')" class="form-control form-control-user" placeholder="Year of joining" name="join3" value="@if(old('join3')!== null){{ old('join3') }}@elseif(isset($data->Join3)){{ $data->Join3 }}@else{{ '' }}@endif">
-                  @error('join3')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-                <div class="col-sm-6">
-                <input type="text" onfocus="(this.type='date')" class="form-control form-control-user" placeholder="Year of passing" name="pass3" value="@if(old('pass3')!== null){{ old('pass3') }}@elseif(isset($data->Pass3)){{ $data->Pass3 }}@else{{ '' }}@endif">
-                  @error('pass3')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-              </div>
-              <div class="form-group row justify-content-center">
-              <div class="col-6">
-              <button onclick="removefield(3)" type="button" class="btn btn-danger btn-user btn-block">
-                <i class="fas fa-trash-alt"></i> <b>Delete this field</b>
-              </button>
-              </div>
-              </div>
-             </div>
 
-             <div class="acad4 hidden">
-            <div class="form-group">
-                <p class="op p-2">Academic details 5</p>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="text" class="form-control form-control-user" placeholder="Course" name="course4" value="@if(old('course4')!== null){{ old('course4') }}@elseif(isset($data->Course4)){{ $data->Course4 }}@else{{ '' }}@endif">
-                  @error('course4')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-                <div class="col-sm-6">
-                <input type="text" class="form-control form-control-user" placeholder="CGPA/Percentage" name="cgpa4" value="@if(old('cgpa4')!== null){{ old('cgpa4') }}@elseif(isset($data->CGPA4)){{ $data->CGPA4 }}@else{{ '' }}@endif">
-                  @error('cgpa4')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-              </div>
-              <div class="form-group">
-                <input type="text" class="form-control form-control-user" placeholder="Board/University" name="board4" value="@if(old('board4')!== null){{ old('board4') }}@elseif(isset($data->Board4)){{ $data->Board4 }}@else{{ '' }}@endif">
-                @error('board4')
-                <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-               @enderror
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control form-control-user" placeholder="Institution/School" name="institution1" value="@if(old('institution4')!== null){{ old('institution4') }}@elseif(isset($data->Institution4)){{ $data->Institution4 }}@else{{ '' }}@endif">
-                @error('institution4')
-                <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-               @enderror
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="text" onfocus="(this.type='date')" class="form-control form-control-user" placeholder="Year of joining" name="join4" value="@if(old('join4')!== null){{ old('join4') }}@elseif(isset($data->Join4)){{ $data->Join4 }}@else{{ '' }}@endif">
-                  @error('join4')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-                <div class="col-sm-6">
-                <input type="text" onfocus="(this.type='date')" class="form-control form-control-user" placeholder="Year of passing" name="pass4" value="@if(old('pass4')!== null){{ old('pass4') }}@elseif(isset($data->Pass4)){{ $data->Pass4 }}@else{{ '' }}@endif">
-                  @error('pass4')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-              </div>
-              <div class="form-group row justify-content-center">
-              <div class="col-6">
-              <button onclick="removefield(4)" type="button" class="btn btn-danger btn-user btn-block">
-                <i class="fas fa-trash-alt"></i> <b>Delete this field</b>
-              </button>
-              </div>
-              </div>
-             </div>
-
+          <div class="d-flex">
               <div class="form-group row">
-              <button onclick="addfield()" type="button" class="btn btn-primary btn-user btn-block adf">
-                <i class="fas fa-plus"></i> <b>Add new field</b>
-              </button>
-              </div>
-              <hr>
-            <div class="form-group row">
-                <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="number" class="form-control form-control-user" placeholder="History of backlogs" name="backlogs" value="@if(old('backlogs')!== null){{ old('backlogs') }}@elseif(isset($data->Backlogs)){{ $data->Backlogs }}@else{{ '' }}@endif">
-                  @error('backlogs')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
+                <div id="addQ" class="btn btn-primary btn-user btn-block adf">
+                  <i class="fas fa-plus"></i> <b>Add Qualification</b>
                 </div>
-                <div class="col-sm-6">
-                <input type="number" class="form-control form-control-user" placeholder="Current backlogs" name="current_backlogs" value="@if(old('current_backlogs')!== null){{ old('current_backlogs') }}@elseif(isset($data->Current_Backlogs)){{ $data->Current_Backlogs }}@else{{ '' }}@endif">
-                  @error('current_backlogs')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-                </div>
-              </div>
+              </div>  
+            </div>
 
-            <div class="form-group">
-                <input type="url" class="form-control form-control-user" placeholder="Linkedin URL" name="linkedin" value="@if(old('linkedin')!== null){{ old('linkedin') }}@elseif(isset($data->Linkedin)){{ $data->Linkedin }}@else{{ '' }}@endif">
-                @error('linkedin')
-                <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-               @enderror
-            </div>
-            <div class="form-group">
-                <input type="url" class="form-control form-control-user" placeholder="Github URL" name="github" value="@if(old('github')!== null){{ old('github') }}@elseif(isset($data->Github)){{ $data->Github }}@else{{ '' }}@endif">
-                @error('github')
-                <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-               @enderror
-            </div>
+
+            <hr>
+
+
+
+            <div class="row">
+
+              <div class="col-6">
+              
               <div class="form-group row justify-content-center">
                 <div class="col-sm-6">
                   <div class="row justify-content-center">
@@ -402,6 +357,12 @@
                 </div>
                 </div>
               </div>
+              
+              </div>
+
+
+              <div class="col-6">
+
               <div class="form-group row justify-content-center">
                 <div class="col-sm-6">
                   <div class="row justify-content-center">
@@ -431,7 +392,32 @@
                 </div>
                 </div>
               </div>
-              <button type="submit" class="btn btn-primary btn-user btn-block">
+
+
+
+              </div>
+
+            </div>
+ 
+
+          
+            
+
+            <hr>
+
+            <div class="row">
+              <div class="col-12">
+
+              <input class="form-check-input" type="checkbox" name="ok" id='asapcourses{{$item->id}}'>
+                  <label class="form-check-label" for="defaultCheck1">
+                      I here by delcare
+                  </label>
+
+              </div>
+
+
+            </div>
+              <button type="submit" class="btn btn-primary btn-user btn-block my-5">
                 <i class="fas fa-pencil-alt"></i> <b>Update Details</b>
               </button>
             </form>
@@ -446,7 +432,119 @@
       </div>
     </div>
   </div>
+
+  
 <script type="text/javascript">
+
+
+$(document).ready(function() {
+  var id = 1
+
+
+  $("#addQ").click(function(){
+
+    var qual = $("#qual").html();
+
+    qSet = $('#copyQual');
+
+    qSet.attr('name','qualification'+id);
+    //alert(qSet.attr('name'));
+
+ 
+    
+    
+
+    //alert(qual);
+
+    var row1 = "<hr><div class='row'><div class='col-4'><div class='form-group'><label for='qulatification'>Qualification <span style='color:red'>*</span></label><select class='form-control' name='qualification"+id+"' id='qualification"+id+"'>"+qSet.html()+"</select></div></div></div>";
+     
+    var row2 = ' <div class="row">'+
+              '<div class="col-4">'+
+                '<div class="form-group">'+
+                  '<label for="qulatification">Board/University<span style="color:red">*</span></label>'+
+                   '<input type="text" class="form-control form-control-user" placeholder="Board" name=board'+id+'>'+
+                '</div>'+
+              '</div>'+
+
+              '<div class="col-4">'+
+                '<div class="form-group">'+
+                 '<label for="qulatification">Institution Name<span style="color:red">*</span></label>'+
+                   '<input type="text" class="form-control form-control-user" placeholder="Institution Name" name=institution'+id+' >'+
+                '</div>'+
+              '</div>'+
+
+              '<div class="col-4">'+
+                '<div class="form-group">'+
+                  '<label for="qulatification">Course Name<span style="color:red">*</span></label>'+
+                    '<input type="text" class="form-control form-control-user" placeholder="Course Name" name=course'+id+'>'+
+                '</div>'+
+             '</div>'+
+            '</div>'
+
+    var row3 = '<div class="row">'+
+
+                  '<div class="col-4">'+
+                    '<div class="form-group">'+
+                      '<label for="percentage">Percentage<span style="color:red">*</span> (Covert cgpa into percentage) </label>'+
+                      '<input type="number" class="form-control form-control-user" placeholder="Percentage" name=cgpa'+id+'>'+
+                    '</div>'+
+                  '</div>'+
+
+                  '<div class="col-2">'+
+                    '<div class="form-group">'+
+                    '<label for="join">Date of Joining<span style="color:red">*</span></label>'+
+                    '<input type="text" onfocus="(this.type=date)" class="form-control form-control-user" placeholder="Year of joining" name=join'+id+'>'+
+
+                    '</div>'+
+                  '</div>'+
+
+                  '<div class="col-2">'+
+                    '<div class="form-group">'+
+                    '<label for="join">Date of Passing<span style="color:red">*</span></label>'+
+                    '<input type="text" onfocus="(this.type=date)" class="form-control form-control-user" placeholder="Year of passing" name=pass'+id+'>'+
+                    '</div>'+
+                  '</div>'+
+
+                  '<div class="col-2">'+
+                    '<div class="form-group">'+
+                    '<label for="join">History of Backlogs<span style="color:red">*</span></label>'+
+                    '<input type="number" class="form-control form-control-user" placeholder="History of Backlogs" name=hback'+id+'>'+
+                    '</div>'+
+                  '</div>'+
+
+                  '<div class="col-2">'+
+                    '<div class="form-group">'+
+                    '<label for="join">Current Backlogs<span style="color:red">*</span></label>'+
+                    '<input type="number" class="form-control form-control-user" placeholder="Current Backlogs" name=cback'+id+'>'+
+                    '</div>'+
+                  '</div>'+
+
+                  '</div>'
+  
+
+
+    $('#addQualification').append(row1);
+    $('#addQualification').append(row2);
+    $('#addQualification').append(row3);
+
+    id = id+1
+
+    
+
+  });
+
+});
+
+
+
+
+
+
+
+
+
+
+
   var photoview = document.getElementById('photoview');
   var photo = document.getElementById('photo');
   var cv = document.getElementById('cv');
@@ -524,5 +622,7 @@
         //extension.value = inputfile.value.split('.')[1];
         output1.innerHTML = name2;
     }
+
+   
 </script>
 @endsection
