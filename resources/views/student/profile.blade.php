@@ -20,7 +20,7 @@
                        {!! \Session::get('successinfo') !!}
                     </div>
                 @endif
-                <p>*Please note that profile is only allowed once, so please cross check the data before submitting.</p>
+                <p>*Please note that profile updation is only allowed once, so please cross check the data before submitting.</p>
                 <p>*While uploading the photo please keep in mind that the allowed photo types are jpg and png. Maximum allowed upload size is 1MB.</p>
                 <p>*While uploading the CV/certificate please keep in mind that the allowed CV/certificate type is pdf. Maximum allowed upload size is 2MB.</p>
                 <p>*All certificates should be in a single pdf.</p>
@@ -490,7 +490,7 @@
 
               <input @if($status=='yes'){{ 'disabled checked' }}@endif class="form-check-input" type="checkbox" name="ok" id='asapcourses' required>
                   <label class="form-check-label" for="defaultCheck1">
-                      I here by delcare.
+                      I here by delcare that the above informations are correct to the best of my knowledge.
                   </label>
 
               </div>

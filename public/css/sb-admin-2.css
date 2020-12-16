@@ -10363,6 +10363,12 @@ a:focus {
     background-size: cover;
 }
 
+.bg-gradient-green {
+    background-color: #117864;
+    background-image: linear-gradient(180deg, #117864 10%, #148F77 100%);
+    background-size: cover;
+}
+
 .bg-gradient-dark2 {
     background-color: #161616;
     background-image: linear-gradient(180deg, #161616 10%, #000000 100%);

@@ -17,7 +17,7 @@ class Companydetail extends Model
     protected $fillable = [
         'Photo',
         'Email',
-        'Description',
+        'URL',
         'Address',
         'Phoneno',
     ];

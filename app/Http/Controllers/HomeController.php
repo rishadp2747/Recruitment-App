@@ -97,10 +97,15 @@ class HomeController extends Controller
         return view('student.profile')->with($data);
       }
       elseif($u_type==1){
-        #session()->flash('status', 'Profile page under construction !');
-        #return redirect()->route('home');
         $data = Companydetail::where('Email',$email)->get()->first();
-        $data = array('uname' => $uname , 'data' => $data , 'email' => $email);
+        if($data){
+          $stat = 'yes';
+        }
+        else{
+          $stat = 'no';
+        }
+        $data = Companydetail::where('Email',$email)->get()->first();
+        $data = array('status' => $stat, 'uname' => $uname , 'data' => $data , 'email' => $email);
         return view('company.profile')->with($data);
       }
       elseif($u_type==2){
@@ -403,6 +408,12 @@ class HomeController extends Controller
       }
       elseif($u_type==1){
 
+        $data_dd = Companydetail::where('Email',$email)->get()->first();
+        if($data_dd){
+          session()->flash('errorinfo', 'Profile updation failed, updation only allowed once !');
+          return redirect()->route('profile'); 
+        }
+
         if($req->photo===null){
           if($req->photoval===null){
             return back()->with('errorinfo','You have to upload a image (photo).')->withInput($req->input());
@@ -411,8 +422,6 @@ class HomeController extends Controller
 
         $req->validate([
           'name' => 'required|string|min:2|max:100',
-          'address' => 'required|string|min:10|max:500',
-          'description' => 'required|string|min:5|max:200',
           'phoneno' => 'required|digits:10'
          ]);
 
@@ -439,11 +448,17 @@ class HomeController extends Controller
             $datas->name = $req->name;
             $datas->save();
           }
+          if(empty($req->address)){
+            $req->address = 'unknown';
+          }
+          if(empty($req->url)){
+            $req->url = 'unknown';
+          }
           $details = new Companydetail();
           $details->Email = $email;
           $details->Phoneno = $req->phoneno;
           $details->Address = $req->address;
-          $details->Description = $req->description;
+          $details->URL = $req->url;
           $details->Photo = $req->photo;
           if($details->save()){
             session()->flash('status', 'Profile updated Successfully !');
@@ -460,11 +475,17 @@ class HomeController extends Controller
               $datas->name = $req->name;
               $datas->save();
             }
+            if(empty($req->address)){
+              $req->address = 'unknown';
+            }
+            if(empty($req->url)){
+              $req->url = 'unknown';
+            }
             $details = Companydetail::where('Email',$email)->first();
             $details->Email = $email;
             $details->Phoneno = $req->phoneno;
             $details->Address = $req->address;
-            $details->Description = $req->description;
+            $details->URL = $req->url;
             $details->Photo = $req->photo;
             if($details->save()){
               session()->flash('status', 'Profile updated Successfully !');

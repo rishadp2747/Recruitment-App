@@ -7,6 +7,7 @@ use App\Models\Job;
 use App\Models\Companydetail;
 use App\Models\Appliedjob;
 use App\Models\Studentdetail;
+use App\Models\Qualifications;
 use App\Models\User;
 use App\Models\Allowed_users;
 use Auth;
@@ -20,7 +21,8 @@ class jobsController extends Controller
           $u_type = $user->user_type;
           $uname = $user->name;
           if($u_type==1){
-          $data = array( 'uname' => $uname );
+            $qualification = Qualifications::all();
+          $data = array( 'uname' => $uname, 'qualifications' => $qualification );
           return view('company.jobs.add')->with($data);
           }
           else{
@@ -45,24 +47,32 @@ class jobsController extends Controller
             else{
           $req->validate([
               'title' => 'required|max:100|min:5|string',
-              'salary' => 'required|integer|min:1',
-              'description' => 'required|string|min:10|max:100',
-              'minage' => 'required|integer|min:18|max:100',
-              'maxage' => 'required|integer|min:18|max:100',
-              'skills' => 'required|string|min:4|max:100',
-              'qualification' => 'required|string|min:4|max:100'
+              'minage' => 'nullable|integer|min:18|max:100',
+              'maxage' => 'nullable|integer|min:18|max:100',
+              'skills' => 'nullable|string|min:4|max:100',
+              'qualification' => 'nullable|integer|max:100',
+              'cgpa' => 'nullable|integer|max:100',
+              'course' => 'nullable|string|min:1|max:100',
+              'hbacklogs' => 'nullable|integer|max:100',
+              'cbacklogs' => 'nullable|integer|max:100',
+              'last' => 'nullable|date_format:Y-m-d',
+              'gender' => 'nullable|in:male,female,any',
           ]);
           $key = substr(str_shuffle($email),0,10);
           $job = new Job;
           $job->Job_Id = $key;
           $job->Job_Title = $req->title;
           $job->Email = $email;
-          $job->Salary = $req->salary;
-          $job->Min_Qualification = $req->qualification;
-          $job->Project_Description = $req->description;
           $job->Skills_Required = $req->skills;
           $job->Min_Age = $req->minage;
           $job->Max_Age = $req->maxage;
+          $job->cbacklogs = $req->cbacklogs;
+          $job->hbacklogs = $req->hbacklogs;
+          $job->qualification = $req->qualification;
+          $job->course = $req->course;
+          $job->cgpa = $req->cgpa;
+          $job->gender = $req->gender;
+          $job->last_date = $req->last;
           if($job->save()){
             session()->flash('status', 'Job Added Successfully !');
             return redirect()->route('home');
@@ -86,9 +96,9 @@ class jobsController extends Controller
         $uname = $user->name;
         $email = $user->email;
         if($u_type==1){
-
+          $qualification = Qualifications::all();
           $jobs = Job::where('Email',$email)->get();
-          $data = array( 'jobs' => $jobs, 'uname' => $uname);
+          $data = array( 'jobs' => $jobs, 'uname' => $uname, 'qualifications' => $qualification);
           return view('company.jobs.view')->with($data);
 
         }
@@ -124,14 +134,14 @@ class jobsController extends Controller
       $uname = $user->name;
       $email = $user->email;
       if($u_type==1){
-
+        $qualification = Qualifications::all();
         $jobs = Job::where('Job_Id',$id)->where('Email',$email)->get();
         $count = count($jobs);
         if(!$count>0){
           session()->flash('errorinfo', 'Trying to access wrong Job_Id !');
           return redirect()->route('updateJob');
         }
-        $data = array( 'jobs' => $jobs, 'uname' => $uname);
+        $data = array( 'jobs' => $jobs, 'uname' => $uname, 'qualifications' => $qualification);
         return view('company.jobs.updateview')->with($data);
 
       }
@@ -151,13 +161,17 @@ class jobsController extends Controller
         
         $req->validate([
           'title' => 'required|max:100|min:5|string',
-          'salary' => 'required|integer|min:1',
-          'description' => 'required|string|min:10|max:100',
-          'minage' => 'required|integer|min:18|max:100',
-          'maxage' => 'required|integer|min:18|max:100',
-          'skills' => 'required|string|min:4|max:100',
-          'qualification' => 'required|string|min:4|max:100'
-          ]);
+          'minage' => 'nullable|integer|min:18|max:100',
+          'maxage' => 'nullable|integer|min:18|max:100',
+          'skills' => 'nullable|string|min:4|max:100',
+          'qualification' => 'nullable|integer|max:100',
+          'cgpa' => 'nullable|integer|max:100',
+          'course' => 'nullable|string|min:1|max:100',
+          'hbacklogs' => 'nullable|integer|max:100',
+          'cbacklogs' => 'nullable|integer|max:100',
+          'last' => 'nullable|date_format:Y-m-d',
+          'gender' => 'nullable|in:male,female,any',
+      ]);
           $job = Job::where('Job_Id',$req->id)->where('Email',$email)->first();
           if($job==null){
             session()->flash('errorinfo', 'Something went wrong while updating the job, please try again !');
@@ -165,12 +179,16 @@ class jobsController extends Controller
           }
           $job->Job_Title = $req->title;
           $job->Email = $email;
-          $job->Salary = $req->salary;
-          $job->Min_Qualification = $req->qualification;
-          $job->Project_Description = $req->description;
           $job->Skills_Required = $req->skills;
           $job->Min_Age = $req->minage;
           $job->Max_Age = $req->maxage;
+          $job->cbacklogs = $req->cbacklogs;
+          $job->hbacklogs = $req->hbacklogs;
+          $job->qualification = $req->qualification;
+          $job->course = $req->course;
+          $job->cgpa = $req->cgpa;
+          $job->gender = $req->gender;
+          $job->last_date = $req->last;
           if($job->save()){
             session()->flash('status', 'Job Updated Successfully !');
             return redirect()->route('home');
@@ -336,10 +354,41 @@ class jobsController extends Controller
         else{
         foreach($d as $item){
         $n[] = User::select('name')->where('email',$item->Student_Email)->get()->first();
+        $f[] = User::where('email',$item->Student_Email)->get()->first();
         }
         $c = count($n);
-        $data = array( 'applied' => $d, 'uname' => $uname, 'count' => $c, 'name' => $n, 'info' => 'Applications Approved');
+        $data = array( 'applied' => $d, 'uname' => $uname, 'stud_det' => $f, 'count' => $c, 'name' => $n, 'info' => 'Applications Approved');
         return view('company.jobs.appliedview')->with($data);
+        }
+
+      }
+      else{
+        session()->flash('status', 'You are not allowed to do that operation !');
+        return redirect()->route('home');
+      }
+    }
+
+    public function selectedview()
+    {
+      $user = Auth::user();
+      $u_type = $user->user_type;
+      $uname = $user->name;
+      $email = $user->email;
+      if($u_type==1){
+
+        $d = Appliedjob::where('Company_Email',$email)->whereIn('Status', ['Approved', 'Selected', 'NotSelected'])->get();
+        if($d->isEmpty()){
+          $data = array('uname' => $uname, 'info' => 'Application Selection');
+          return view('company.jobs.selectedview')->with($data);
+        }
+        else{
+        foreach($d as $item){
+        $n[] = User::select('name')->where('email',$item->Student_Email)->get()->first();
+        $f[] = User::where('email',$item->Student_Email)->get()->first();
+        }
+        $c = count($n);
+        $data = array( 'applied' => $d, 'uname' => $uname, 'stud_det' => $f, 'count' => $c, 'name' => $n, 'info' => 'Application Selection');
+        return view('company.jobs.selectedview')->with($data);
         }
 
       }
@@ -435,6 +484,51 @@ class jobsController extends Controller
         }
         else{
           if($d->Status=='Rejected' || $d->Status=='Approved'){
+            session()->flash('errorinfo', "Sorry the application has already been ".$d->Status.", so you cannot make any changes to the status !");
+            return redirect()->back();
+          }
+          else{
+            $change = Appliedjob::where('U_Id',$req->u_id)->where('Company_Email',$email)->first();
+            $change->Status = $req->status;
+            if($change->save()){
+              session()->flash('successinfo', 'Status changed Successfully !');
+              return redirect()->back();
+            } 
+            else{
+              session()->flash('errorinfo', 'Something went wrong while changing the status, please try again !');
+              return redirect()->back();  
+            }
+          }
+          
+        }
+
+      }
+      else{
+        session()->flash('status', 'You are not allowed to do that operation !');
+        return redirect()->route('home');
+      }
+    }
+
+    public function statuschangeselected(Request $req)
+    {
+      $user = Auth::user();
+      $u_type = $user->user_type;
+      $uname = $user->name;
+      $email = $user->email;
+      if($u_type==1){
+
+        $req->validate([
+          'u_id' => 'required|string',
+          'status' => 'required|string|in:Selected,NotSelected'
+        ]);
+
+        $d = Appliedjob::where('U_Id',$req->u_id)->where('Company_Email',$email)->get()->first();
+        if($d===null){
+          session()->flash('errorinfo', "Application id and your job id's do not match, so not possible to update the status of the job !");
+          return redirect()->back();
+        }
+        else{
+          if($d->Status=='Rejected'){
             session()->flash('errorinfo', "Sorry the application has already been ".$d->Status.", so you cannot make any changes to the status !");
             return redirect()->back();
           }

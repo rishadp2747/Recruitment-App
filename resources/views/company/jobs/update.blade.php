@@ -22,9 +22,9 @@
                   <thead>
                     <tr>
                       <th>Job Title</th>
-                      <th>Salary</th>
-                      <th>Job Description</th>
-                      <th>Min Qualification</th>
+                      <th>Preferred Gender</th>
+                      <th>Age</th>
+                      <th>Last Date</th>
                       <th>Updated At</th>
                       <th>Operation</th>
                     </tr>
@@ -32,9 +32,9 @@
                   <tfoot>
                     <tr>
                       <th>Job Title</th>
-                      <th>Salary</th>
-                      <th>Job Description</th>
-                      <th>Min Qualification</th>
+                      <th>Preferred Gender</th>
+                      <th>Age</th>
+                      <th>Last Date</th>
                       <th>Updated At</th>
                       <th>Operation</th>
                     </tr>
@@ -42,10 +42,10 @@
                   <tbody>
 @foreach ($jobs as $item)
    <tr>
-   <td>{{$item->Job_Title}}</td>
-   <td>{{$item->Salary}}</td>
-   <td>{{$item->Project_Description}}</td>
-   <td>{{$item->Min_Qualification}}</td>
+    <td>{{$item->Job_Title}}</td>
+    <td>{{$item->gender}}</td>
+    <td>{{$item->Min_Age}} - {{$item->Max_Age}}</td>
+    <td>{{$item->last_date}}</td>
    <td>{{$item->updated_at}}</td>
    <td><a href="{{ route('updateJob')}}/{{ $item->Job_Id }}" class="btn btn-facebook btn-block"><i class="fas fa-pencil-alt"></i> Update</a></td>
    </tr>

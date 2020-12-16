@@ -6,8 +6,8 @@
 @endphp
 @php
 
-$path = public_path('storage/uploads/company/students/approved'.str_replace(' ', '', strtolower($uname)).'.csv');
-$path_url = url('storage/uploads/company/students/approved'.str_replace(' ', '', strtolower($uname)).'.csv');
+$path = public_path('storage/uploads/company/students/selection'.str_replace(' ', '', strtolower($uname)).'.csv');
+$path_url = url('storage/uploads/company/students/selection'.str_replace(' ', '', strtolower($uname)).'.csv');
 
 if(file_exists($path)){
    File::delete($path);
@@ -33,11 +33,8 @@ fclose($fp);
                        {!! \Session::get('successinfo') !!}
                     </div>
                 @endif
-          <p class="mb-4">For further details click on know more.</p>
-          @php
-           $route = Route::currentRouteName();  
-          @endphp
-          @if ($route=='approvedJob' && isset($applied))
+          <p class="mb-4">Mark the applications as selected or not selected.</p>
+          @if (isset($applied))
           <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
               <!-- Nested Row within Card Body -->
@@ -87,7 +84,8 @@ fclose($fp);
    <td>{{$name[$i]->name}}</td>
    <td>{{$item->created_at}}</td>
    <td>{{$item->Status}}</td>
-   <td><a href="/dashboard/jobs/company/applied/{{ $item->U_Id }}" class="btn btn-facebook btn-block"><i class="fas fa-info-circle"></i> Know More</a></td>
+   <td><form method="POST" action="{{ route('statuschangeselectedJob') }}">@csrf<input type="hidden" name="u_id" value="{{ $applied->U_Id }}"><input type="hidden" name="status" value="Selected"><button class="btn btn-success btn-block"><i class="fas fa-clipboard-check"></i> Selected</button></form><br>
+    <form method="POST" action="{{ route('statuschangeselectedJob') }}">@csrf<input type="hidden" name="u_id" value="{{ $applied->U_Id }}"><input type="hidden" name="status" value="NotSelected"><button class="btn btn-google btn-block"><i class="fas fa-times-circle"></i> Not Selected</button></form></td>
    </tr>
    @php
      $i++;  

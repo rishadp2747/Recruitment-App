@@ -23,9 +23,9 @@
                   <thead>
                     <tr>
                       <th>Job Title</th>
-                      <th>Salary</th>
-                      <th>Job Description</th>
-                      <th>Min Qualification</th>
+                      <th>Preferred Gender</th>
+                      <th>Age</th>
+                      <th>Last Date</th>
                       <th>Created At</th>
                       <th>Operation</th>
                     </tr>
@@ -33,9 +33,9 @@
                   <tfoot>
                     <tr>
                       <th>Job Title</th>
-                      <th>Salary</th>
-                      <th>Job Description</th>
-                      <th>Min Qualification</th>
+                      <th>Preferred Gender</th>
+                      <th>Age</th>
+                      <th>Last Date</th>
                       <th>Created At</th>
                       <th>Operation</th>
                     </tr>
@@ -43,10 +43,10 @@
                   <tbody>
 @foreach ($jobs as $item)
    <tr>
-   <td>{{$item->Job_Title}}</td>
-   <td>{{$item->Salary}}</td>
-   <td>{{$item->Project_Description}}</td>
-   <td>{{$item->Min_Qualification}}</td>
+    <td>{{$item->Job_Title}}</td>
+    <td>{{$item->gender}}</td>
+    <td>{{$item->Min_Age}} - {{$item->Max_Age}}</td>
+    <td>{{$item->last_date}}</td>
    <td>{{$item->created_at}}</td>
    <td><form method="POST" action="{{ route('deleteJob') }}">@csrf<input type="hidden" name="id" value="{{ $item->Job_Id }}"><button class="btn btn-google btn-block"><i class="fas fa-trash-alt"></i> Delete</button></form></td>
    </tr>

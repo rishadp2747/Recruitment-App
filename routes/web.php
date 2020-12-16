@@ -67,9 +67,13 @@ Route::get('/dashboard/jobs/applied/view', [App\Http\Controllers\jobsController:
 
 Route::post('/dashboard/jobs/applied/change/status', [App\Http\Controllers\jobsController::class, 'statuschange'])->name('statuschangeJob')->middleware('approval');
 
+Route::post('/dashboard/jobs/applied/change/selection/status', [App\Http\Controllers\jobsController::class, 'statuschangeselected'])->name('statuschangeselectedJob')->middleware('approval');
+
 Route::get('/dashboard/jobs/applied/waitlisted', [App\Http\Controllers\jobsController::class, 'waitlistedview'])->name('waitlistedJob')->middleware('approval');
 
 Route::get('/dashboard/jobs/applied/approved', [App\Http\Controllers\jobsController::class, 'approvedview'])->name('approvedJob')->middleware('approval');
+
+Route::get('/dashboard/jobs/applied/selection', [App\Http\Controllers\jobsController::class, 'selectedview'])->name('selectedJob')->middleware('approval');
 
 Route::get('/dashboard/jobs/applied/rejected', [App\Http\Controllers\jobsController::class, 'rejectedview'])->name('rejectedJob')->middleware('approval');
 

@@ -20,43 +20,49 @@
                        {!! \Session::get('successinfo') !!}
                     </div>
                 @endif
+                <p>*Please note that profile updation is only allowed once, so please cross check the data before submitting.</p>
+                <p>*While uploading the photo please keep in mind that the allowed photo types are jpg and png. Maximum allowed upload size is 1MB.</p>
             <form class="user" method="POST" action="{{ route('profile') }}" enctype="multipart/form-data">
               @csrf
               <div class="form-group row justify-content-center">
               <img class="rounded-circle border-grey" width="120" height="120" src="@if(isset($data->Photo)){{ url('storage/uploads/company/photo/'.$data->Photo) }} @else{{ url('/img/default.png') }}@endif" id="photoview" onclick="clickPhotoUp()">
-                <input type="file" name="photo" id="photo" >
+                <input @if($status=='yes'){{ 'disabled' }}@endif type="file" name="photo" id="photo" >
                 @error('photo')
                   <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                  @enderror
               </div>
               <div class="form-group row">
                 <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="text" class="form-control form-control-user" placeholder="Name" name="name" value="@if(old('name')!== null){{ old('name') }}@elseif(isset($uname)){{ $uname }}@else{{ '' }}@endif" required>
+                  <label class="mx-1" for="name" style="color:#161616;"><b>Company Name</b><span style="color:red"> *</span></label>
+                <input @if($status=='yes'){{ 'disabled' }}@endif type="text" class="form-control form-control-user" placeholder="Name" name="name" value="@if(old('name')!== null){{ old('name') }}@elseif(isset($uname)){{ $uname }}@else{{ '' }}@endif" required>
                 @error('name')
                   <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                  @enderror
                 </div>
                 <div class="col-sm-6">
-                <input type="tel" class="form-control form-control-user" placeholder="Phone Number" name="phoneno" value="@if(old('phoneno')!== null){{ old('phoneno') }}@elseif(isset($data->Phoneno)){{ $data->Phoneno }}@else{{ '' }}@endif" required>
+                  <label class="mx-1" for="phoneno" style="color:#161616;"><b>Phone Number</b><span style="color:red"> *</span></label>
+                <input @if($status=='yes'){{ 'disabled' }}@endif type="tel" class="form-control form-control-user" placeholder="Phone Number" name="phoneno" value="@if(old('phoneno')!== null){{ old('phoneno') }}@elseif(isset($data->Phoneno)){{ $data->Phoneno }}@else{{ '' }}@endif" required>
                 @error('phoneno')
                 <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                @enderror
                 </div>
               </div>
               <div class="form-group">
-                <textarea class="form-control form-control-user" placeholder="Address" name="address" required>@if(old('address')!== null){{ old('address') }}@elseif(isset($data->Address)){{ $data->Address }}@else{{ '' }}@endif</textarea>
+                <label class="mx-1" for="address" style="color:#161616;"><b>Company Address</b></label>
+                <textarea @if($status=='yes'){{ 'disabled' }}@endif class="form-control form-control-user" placeholder="Address" name="address">@if(old('address')!== null){{ old('address') }}@elseif(isset($data->Address)){{ $data->Address }}@else{{ '' }}@endif</textarea>
                 @error('address')
                   <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                  @enderror
               </div>
               <div class="form-group">
-                <textarea class="form-control form-control-user" placeholder="Description" name="description" required>@if(old('description')!== null){{ old('description') }}@elseif(isset($data->Description)){{ $data->Description }}@else{{ '' }}@endif</textarea>
+                <label class="mx-1" for="url" style="color:#161616;"><b>Company URL</b></label>
+                <input @if($status=='yes'){{ 'disabled' }}@endif type="text" class="form-control form-control-user" placeholder="url" name="url" value="@if(old('url')!== null){{ old('url') }}@elseif(isset($data->URL)){{ $data->URL }}@else{{ '' }}@endif">
                 @error('description')
                   <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                  @enderror
               </div>
               <input type="hidden" name="photoval" value="@if(isset($data->Photo)){{ $data->Photo }}@endif" >
-              <button type="submit" class="btn btn-primary btn-user btn-block">
+              <button @if($status=='yes'){{ 'disabled' }}@endif type="submit" class="btn btn-primary btn-user btn-block">
                 <i class="fas fa-pencil-alt"></i> <b>Update Details</b>
               </button>
             </form>

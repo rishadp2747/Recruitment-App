@@ -12,20 +12,18 @@
                   <thead>
                     <tr>
                       <th>Job Title</th>
-                      <th>Salary</th>
-                      <th>Job Description</th>
-                      <th>Min Qualification</th>
+                      <th>Preferred Gender</th>
                       <th>Age</th>
+                      <th>Last Date</th>
                       <th>Created At</th>
                     </tr>
                   </thead>
                   <tfoot>
                     <tr>
                       <th>Job Title</th>
-                      <th>Salary</th>
-                      <th>Job Description</th>
-                      <th>Min Qualification</th>
+                      <th>Preferred Gender</th>
                       <th>Age</th>
+                      <th>Last Date</th>
                       <th>Created At</th>
                     </tr>
                   </tfoot>
@@ -33,10 +31,9 @@
 @foreach ($jobs as $item)
    <tr>
    <td>{{$item->Job_Title}}</td>
-   <td>{{$item->Salary}}</td>
-   <td>{{$item->Project_Description}}</td>
-   <td>{{$item->Min_Qualification}}</td>
+   <td>{{$item->gender}}</td>
    <td>{{$item->Min_Age}} - {{$item->Max_Age}}</td>
+   <td>{{$item->last_date}}</td>
    <td>{{$item->created_at}}</td>
    </tr>
 @endforeach

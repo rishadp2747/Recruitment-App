@@ -29,7 +29,7 @@
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-red sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-green sidebar sidebar-dark accordion toggled" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
@@ -121,6 +121,13 @@
         <a class="nav-link" href="{{ route('approvedJob') }}">
           <i class="fas fa-check-circle"></i>
           <span>Approved Applications</span></a>
+      </li>
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item @if($route=='selectedJob'){{ 'active' }} @endif">
+        <a class="nav-link" href="{{ route('selectedJob') }}">
+          <i class="fas fa-clipboard-check"></i>
+          <span>Selected Applications</span></a>
       </li>
 
       <!-- Nav Item - Dashboard -->
