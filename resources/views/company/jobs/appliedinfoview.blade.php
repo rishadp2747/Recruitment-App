@@ -100,11 +100,16 @@
                               </div>
                               <div class="form-group">
                                 <p><b class="black">Title</b> : {{ $job->Job_Title }}</p>
-                                <p><b class="black">Salary</b> : {{ $job->Salary }}</p>
-                                <p><b class="black">Minimum Qualification Required</b> : {{ $job->Min_Qualification }}</p>
-                                <p><b class="black">Description</b> : {{ $job->Project_Description }}</p>
-                                <p><b class="black">Skills Required</b> : {{ $job->Skills_Required }}</p>
-                                <p><b class="black">Age</b> : {{ $job->Min_Age }} - {{ $job->Max_Age }}</p>
+                                <p><b class="black">Minimum Qualification Required</b> : @if(!empty($job->qualification))@foreach($qualifications as $item)@if($job->qualification==$item->id){{ $item->qualification }}@endif @endforeach @else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Course</b> : @if(!empty($job->course)){{ $job->course }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Minimum Percentage</b> : @if(!empty($job->cgpa)){{ $job->cgpa.'%' }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Maximum Backlogs</b> : @if(!empty($job->hbacklogs)){{ $job->hbacklogs }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Maximum Current Backlogs</b> : @if(!empty($job->cbacklogs)){{ $job->cbacklogs }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Skills Required</b> : @if(!empty($job->Skills_Required)){{ $job->Skills_Required }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Minimum Age</b> : @if(!empty($job->Min_Age)){{ $job->Min_Age }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Maximum Age</b> : @if(!empty($job->Max_Age)){{ $job->Max_Age }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Preferred Gender</b> : @if(!empty($job->gender)){{ $job->gender }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Last Date for applying</b> : @if(!empty($job->last_date)){{ $job->last_date }}@else{{ 'Not Specified' }}@endif</p>
                                 <p><b class="black">Job Posted on</b> : {{ $job->created_at }}</p>
                                 <p><b class="black">Job Last Updated on</b> : {{ $job->updated_at }}</p>
                               </div>
@@ -114,16 +119,106 @@
                               </div>
                               <div class="form-group">
                                 <p><b class="black">Photo</b> : <img class="rounded-circle border-grey" width="120" height="120" src="{{ url('storage/uploads/student/photo/'.$student->Photo) }}" id="photoview"></p>
-                                <p><b class="black">Email</b> : {{ $student->Email }}</p>
-                                <p><b class="black">Phone</b> : {{ $student->Phoneno }}</p>
-                                <p><b class="black">Address</b> : {{ $student->Address }}</p>
-                                <p><b class="black">Age</b> : {{ $student->Age }}</p>
-                                <p><b class="black">Date of Birth</b> : {{ $student->DOB }}</p>
-                                <p><b class="black">Bio</b> : {{ $student->Bio }}</p>
-                                <p><b class="black">Skills</b> : {{ $student->Skills }}</p>
+                                <p><b class="black">Full Name</b> : @if(!empty($stud_n->name)){{ $stud_n->name }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Email</b> : @if(!empty($student->Email)){{ $student->Email }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Phone</b> : @if(!empty($student->Phoneno)){{ $student->Phoneno }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Gender</b> : @if(!empty($student->Gender)){{ $student->Gender }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Address</b> : @if(!empty($student->Address)){{ $student->Address }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Aadhaar Number</b> : @if(!empty($student->Aadhaar)){{ $student->Aadhaar }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Age</b> : @if(!empty($student->Age)){{ $student->Age }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Date of Birth</b> : @if(!empty($student->DOB)){{ $student->DOB }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Bio</b> : @if(!empty($student->Bio)){{ $student->Bio }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Skills</b> : @if(!empty($student->Skills)){{ $student->Skills }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">ASAP Skills</b> : @if(!empty($student->Asap_Skills)){{ $student->Asap_Skills }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Volunteership</b> : @if(!empty($student->Volunteership)){{ $student->Volunteership }}@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Linkedin url</b> : @if(!empty($student->Linkedin))<a target="_blank" href='{{ $student->Linkedin }}'>{{ $student->Linkedin }}</a>@else{{ 'Not Specified' }}@endif</p>
+                                <p><b class="black">Git url</b> : @if(!empty($student->Github))<a target="_blank" href='{{ $student->Github }}'>{{ $student->Github }}</a>@else{{ 'Not Specified' }}@endif</p>
                               </div>
+                              @php
+                              $ne = 1;
+                             @endphp
+                           @foreach($stud_qual as $it)
+                                       <div class="form-group">
+                                           <p class="op p-2">Educational Details {{ $ne }}</p>
+                                       </div>
+                                       @php
+                                        $ne = $ne +1;
+                                       @endphp
+                                    <div class="row">
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Board</label>
+                                            <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->board)){{ $it->board }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+                           
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Institution Name</label>
+                                            <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->institution)){{ $it->institution }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Course</label>
+                                            <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->course)){{ $it->course }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+                                    </div>
+                           
+                                    <div class="row">
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">CGPA</label>
+                                            <input type="number" class="form-control form-control-user" disabled value="@if(isset($it->cgpa)){{ $it->cgpa }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+                           
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Backlogs</label>
+                                            <input type="number" class="form-control form-control-user" disabled value="@if(isset($it->hbacklogs)){{ $it->hbacklogs }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+                           
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Current Backlogs</label>
+                                            <input type="number" class="form-control form-control-user" disabled value="@if(isset($it->cbacklogs)){{ $it->cbacklogs }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+                                    </div>
+                           
+                                    <div class="row">
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Date of joining</label>
+                                            <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->join)){{ $it->join }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+                           
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Date of passing</label>
+                                            <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->pass)){{ $it->pass }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+                           
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Qualification</label>
+                                            <input type="text" class="form-control form-control-user" disabled value="@foreach($qualifications as $items)@if($items->id==$it->qualification){{ $items->qualification }}@endif @endforeach">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <hr>
+                                    @endforeach
                               <a  href="{{ url('storage/uploads/student/cv/'.$student->CV) }}" class="btn btn-primary btn-user btn-block">
                                 <i class="fas fa-file-alt"></i> <b> Download applicant CV</b>
+                              </a>
+                              <a  href="{{ url('storage/uploads/student/certificates/'.$student->Certificates) }}" class="btn btn-primary btn-user btn-block">
+                                <i class="fas fa-file-alt"></i> <b> Download applicant Certificates</b>
                               </a>
                             </form>
                             @else 

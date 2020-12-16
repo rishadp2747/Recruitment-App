@@ -8,6 +8,7 @@ use App\Models\Companydetail;
 use App\Models\Appliedjob;
 use App\Models\Studentdetail;
 use App\Models\Qualifications;
+use App\Models\Students_qualifications;
 use App\Models\User;
 use App\Models\Allowed_users;
 use Auth;
@@ -354,7 +355,7 @@ class jobsController extends Controller
         else{
         foreach($d as $item){
         $n[] = User::select('name')->where('email',$item->Student_Email)->get()->first();
-        $f[] = User::where('email',$item->Student_Email)->get()->first();
+        $f[] = Studentdetail::where('email',$item->Student_Email)->get()->first();
         }
         $c = count($n);
         $data = array( 'applied' => $d, 'uname' => $uname, 'stud_det' => $f, 'count' => $c, 'name' => $n, 'info' => 'Applications Approved');
@@ -384,7 +385,7 @@ class jobsController extends Controller
         else{
         foreach($d as $item){
         $n[] = User::select('name')->where('email',$item->Student_Email)->get()->first();
-        $f[] = User::where('email',$item->Student_Email)->get()->first();
+        $f[] = Studentdetail::where('email',$item->Student_Email)->get()->first();
         }
         $c = count($n);
         $data = array( 'applied' => $d, 'uname' => $uname, 'stud_det' => $f, 'count' => $c, 'name' => $n, 'info' => 'Application Selection');
@@ -452,8 +453,11 @@ class jobsController extends Controller
             session()->flash('status', 'No job data available, for the application ( You deleted the job ) !');
             return redirect()->route('home');
           }
+          $qualification = Qualifications::all();
+          $stud_n = User::select('name')->where('Email',$d->Student_Email)->get()->first();
           $student = Studentdetail::where('Email',$d->Student_Email)->get()->first();
-          $data = array( 'applied' => $d, 'uname' => $uname, 'job' => $job, 'student' => $student);
+          $stud_qual = Students_qualifications::where('email',$d->Student_Email)->get();
+          $data = array( 'stud_qual' => $stud_qual, 'stud_n' => $stud_n, 'applied' => $d, 'uname' => $uname, 'job' => $job, 'student' => $student, 'qualifications' => $qualification);
           return view('company.jobs.appliedinfoview')->with($data);
         }
 

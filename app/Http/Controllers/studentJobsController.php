@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Job;
 use App\Models\Studentdetail;
 use App\Models\Companydetail;
+use App\Models\Qualifications;
 use App\Models\Appliedjob;
+use App\Models\User;
 use Auth;
 
 class studentJobsController extends Controller
@@ -46,7 +48,7 @@ class studentJobsController extends Controller
       $uname = $user->name;
       $email = $user->email;
       if($u_type==0){
-
+        $qualification = Qualifications::all();
         $data = Studentdetail::where('Email',$email)->get()->first();
 
         if($data===null){
@@ -60,8 +62,9 @@ class studentJobsController extends Controller
             return redirect()->route('home');
           }
           else{
+          $c_name = User::select('name')->where('email',$dataj->Email)->get()->first();
           $datac = Companydetail::where('Email',$dataj->Email)->get()->first();
-          $data = array( 'id' => $id, 'uname' => $uname, 'dataj' => $dataj, 'datac' => $datac );
+          $data = array( 'c_name' => $c_name, 'id' => $id, 'uname' => $uname, 'dataj' => $dataj, 'datac' => $datac , 'qualifications' => $qualification);
           return view('student.jobs.applyview')->with($data);
           }
         }
@@ -153,8 +156,10 @@ class studentJobsController extends Controller
             return redirect()->route('home');
           }
           else{
+          $qualification = Qualifications::all();
+          $c_name = User::select('name')->where('email',$dataj->Email)->get()->first();
           $datac = Companydetail::where('Email',$dataj->Email)->get()->first();
-          $data = array( 'id' => $id, 'uname' => $uname, 'dataj' => $dataj, 'datac' => $datac , 'status' => $d->Status, 'date' => $d->created_at, 'date_up' => $d->updated_at);
+          $data = array( 'c_name' => $c_name, 'id' => $id, 'uname' => $uname, 'dataj' => $dataj, 'datac' => $datac , 'status' => $d->Status, 'date' => $d->created_at, 'date_up' => $d->updated_at, 'qualifications' => $qualification);
           return view('student.jobs.appliedinfoview')->with($data);
           }
          }

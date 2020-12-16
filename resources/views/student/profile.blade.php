@@ -347,19 +347,26 @@
          @else
          @foreach($stud_qual as $it)
          <div class="row">
-           <div class="col-6">
+           <div class="col-4">
              <div class="form-group">
                <label for="qulatification">Board</label>
                  <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->board)){{ $it->board }}@else{{ '' }}@endif">
              </div>
            </div>
 
-           <div class="col-6">
+           <div class="col-4">
              <div class="form-group">
                <label for="qulatification">Institution Name</label>
                  <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->institution)){{ $it->institution }}@else{{ '' }}@endif">
              </div>
            </div>
+
+           <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Course</label>
+                                            <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->course)){{ $it->course }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
          </div>
 
          <div class="row">

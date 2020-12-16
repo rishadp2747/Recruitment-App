@@ -13,11 +13,23 @@ if(file_exists($path)){
    File::delete($path);
 }
 if(isset($applied)){
-$ex = (array_merge($applied,$stud_del));
+$numb = 0;
+$numb2 = 0;
+$name_arr = array('Student Email','Job Title','Status','Age','DOB','Phone No.','Skills','Volunteership','Linkedin URL','Github URL','Bio','Gender','Asap_Skills','Aadhaar');
+  foreach($applied as $ap){
+    $numb = $numb +1;
+    ${"new" . $numb} = array($ap->Student_Email,$ap->Job_Title,$ap->Status);
+  }
+  foreach($stud_det as $st){
+    $numb2 = $numb2 +1;
+    ${"new_2" . $numb2} = array($st->Age,$st->DOB,$st->Phoneno,$st->Skills,$st->Volunteership,$st->Linkedin,$st->Github,$st->Bio,$st->Gender, $st->Asap_Skills,$st->Aadhaar);
+    ${"final" . $numb2} = (array_merge(${"new" . $numb2},${"new_2" . $numb2}));
+  }
 $fp = fopen($path, 'w');
-foreach ($ex as $fields) { 
-    fputcsv($fp, $fields); 
-} 
+fputcsv($fp, $name_arr);
+for($f=1;$f<=$numb;$f++){
+	fputcsv($fp, ${"final" . $f});
+}
 fclose($fp); 
 }
 
@@ -84,8 +96,8 @@ fclose($fp);
    <td>{{$name[$i]->name}}</td>
    <td>{{$item->created_at}}</td>
    <td>{{$item->Status}}</td>
-   <td><form method="POST" action="{{ route('statuschangeselectedJob') }}">@csrf<input type="hidden" name="u_id" value="{{ $applied->U_Id }}"><input type="hidden" name="status" value="Selected"><button class="btn btn-success btn-block"><i class="fas fa-clipboard-check"></i> Selected</button></form><br>
-    <form method="POST" action="{{ route('statuschangeselectedJob') }}">@csrf<input type="hidden" name="u_id" value="{{ $applied->U_Id }}"><input type="hidden" name="status" value="NotSelected"><button class="btn btn-google btn-block"><i class="fas fa-times-circle"></i> Not Selected</button></form></td>
+   <td><form method="POST" action="{{ route('statuschangeselectedJob') }}">@csrf<input type="hidden" name="u_id" value="{{ $item->U_Id }}"><input type="hidden" name="status" value="Selected"><button class="btn btn-success btn-block"><i class="fas fa-clipboard-check"></i> Selected</button></form><br>
+    <form method="POST" action="{{ route('statuschangeselectedJob') }}">@csrf<input type="hidden" name="u_id" value="{{ $item->U_Id }}"><input type="hidden" name="status" value="NotSelected"><button class="btn btn-google btn-block"><i class="fas fa-times-circle"></i> Not Selected</button></form></td>
    </tr>
    @php
      $i++;  

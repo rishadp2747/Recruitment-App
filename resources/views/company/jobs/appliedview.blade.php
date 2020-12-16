@@ -12,13 +12,25 @@ $path_url = url('storage/uploads/company/students/approved'.str_replace(' ', '',
 if(file_exists($path)){
    File::delete($path);
 }
-if(isset($applied)){
-$ex = (array_merge($applied,$stud_del));
+if(isset($applied) && isset($stud_det)){
+$numb = 0;
+$numb2 = 0;
+$name_arr = array('Student Email','Job Title','Status','Age','DOB','Phone No.','Skills','Volunteership','Linkedin URL','Github URL','Bio','Gender','Asap_Skills','Aadhaar');
+  foreach($applied as $ap){
+    $numb = $numb +1;
+    ${"new" . $numb} = array($ap->Student_Email,$ap->Job_Title,$ap->Status);
+  }
+  foreach($stud_det as $st){
+    $numb2 = $numb2 +1;
+    ${"new_2" . $numb2} = array($st->Age,$st->DOB,$st->Phoneno,$st->Skills,$st->Volunteership,$st->Linkedin,$st->Github,$st->Bio,$st->Gender, $st->Asap_Skills,$st->Aadhaar);
+    ${"final" . $numb2} = (array_merge(${"new" . $numb2},${"new_2" . $numb2}));
+  }
 $fp = fopen($path, 'w');
-foreach ($ex as $fields) { 
-    fputcsv($fp, $fields); 
-} 
-fclose($fp); 
+fputcsv($fp, $name_arr);
+for($f=1;$f<=$numb;$f++){
+	fputcsv($fp, ${"final" . $f});
+}
+fclose($fp);
 }
 
 @endphp

@@ -23,20 +23,18 @@
                   <thead>
                     <tr>
                       <th>Job Title</th>
-                      <th>Salary</th>
-                      <th>Job Description</th>
-                      <th>Min Qualification</th>
-                      <th>Created At</th>
+                      <th>Preferred Gender</th>
+                      <th>Age</th>
+                      <th>Last Date</th>
                       <th>Operation</th>
                     </tr>
                   </thead>
                   <tfoot>
                     <tr>
                       <th>Job Title</th>
-                      <th>Salary</th>
-                      <th>Job Description</th>
-                      <th>Min Qualification</th>
-                      <th>Created At</th>
+                      <th>Preferred Gender</th>
+                      <th>Age</th>
+                      <th>Last Date</th>
                       <th>Operation</th>
                     </tr>
                   </tfoot>
@@ -44,10 +42,9 @@
 @foreach ($jobs as $item)
    <tr>
    <td>{{$item->Job_Title}}</td>
-   <td>{{$item->Salary}}</td>
-   <td>{{$item->Project_Description}}</td>
-   <td>{{$item->Min_Qualification}}</td>
-   <td>{{$item->created_at}}</td>
+   <td>{{$item->gender}}</td>
+    <td>{{$item->Min_Age}} - {{$item->Max_Age}}</td>
+    <td>{{$item->last_date}}</td>
    <td><a href="/dashboard/jobs/student/apply/{{ $item->Job_Id }}" class="btn btn-facebook btn-block"><i class="far fa-hand-point-up"></i> Apply Now</a></td>
    </tr>
 @endforeach
