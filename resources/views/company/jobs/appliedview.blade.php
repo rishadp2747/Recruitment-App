@@ -7,8 +7,6 @@
 @php
 $route = Route::currentRouteName();
 
-$max_qual = $data_num;
-
 if($route=='approvedJob'){
 $path = public_path('storage/uploads/company/students/approved'.str_replace(' ', '', strtolower($uname)).'.csv');
 $path_url = url('storage/uploads/company/students/approved'.str_replace(' ', '', strtolower($uname)).'.csv');
@@ -28,6 +26,7 @@ if(file_exists($path)){
 }
 }
 if(isset($applied) && isset($stud_det)){
+$max_qual = $data_num;
 $numb = 0;
 $numb2 = 0;
 $name_arr = array('Index','Application Id','Job Id','Job Name','Applied On','Application Status','Student Email','Job Title','Status','Age','DOB','Phone No.','Skills','Volunteership','Linkedin URL','Github URL','Bio','Gender','Asap_Skills','Aadhaar');
