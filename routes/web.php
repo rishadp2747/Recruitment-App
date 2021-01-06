@@ -96,3 +96,7 @@ Route::get('/dashboard/company/approval', [App\Http\Controllers\UsersController:
 Route::post('/dashboard/company/approve', [App\Http\Controllers\UsersController::class, 'companyapprove'])->name('companyapprove')->middleware('approval');
 
 Route::post('/dashboard/company/reject', [App\Http\Controllers\UsersController::class, 'companyreject'])->name('companyreject')->middleware('approval');
+
+Route::get('/dashboard/change-password', [App\Http\Controllers\ChangePasswordController::class, 'index'])->name('changepassword');
+
+Route::post('/dashboard/change-password', [App\Http\Controllers\ChangePasswordController::class, 'store'])->name('changepasswordtodb');

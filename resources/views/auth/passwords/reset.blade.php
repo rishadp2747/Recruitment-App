@@ -23,7 +23,12 @@
 </head>
 
 <body class="bg-gradient-primary">
-
+<!-- Loader -->
+<div class="loader">
+  <img src="<?php echo URL::asset('img/asap_portal.png'); ?>" width="200" height="40">
+  <img src="<?php echo URL::asset('img/white.jpg'); ?>" width="80" height="80">
+  <img src="<?php echo URL::asset('img/806.gif'); ?>" style="width: 80px; height: 80px;" alt="Loading...">
+</div>
   <div class="container">
 
     <!-- Outer Row -->
@@ -37,6 +42,10 @@
             <div class="row">
               <div class="col-lg-12">
                 <div class="p-5">
+                  <div class="row justify-content-center">
+                    <img src="<?php echo URL::asset('img/asap_portal.png'); ?>" width="200" height="80">
+                 </div>
+                 <hr>
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-2"><i class="fas fa-key"></i> <b>Reset Password</b></h1>
                     <p class="mb-4">Now you may change your password, by typing in your new password in the below columns.</p>
@@ -101,3 +110,12 @@
 </body>
 
 </html>
+<script type="text/javascript">
+  window.addEventListener("load", function () {
+    setTimeout(load_it, 1000);
+  });
+  function load_it(){
+      const loader = document.querySelector(".loader");
+      loader.className += " hidden"; // class "loader hidden"
+  }
+  </script>

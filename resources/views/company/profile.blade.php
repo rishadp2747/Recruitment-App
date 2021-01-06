@@ -20,9 +20,12 @@
                        {!! \Session::get('successinfo') !!}
                     </div>
                 @endif
+                @if($status=='no')
                 <p>*Please note that profile updation is only allowed once, so please cross check the data before submitting.</p>
                 <p>*While uploading the photo please keep in mind that the allowed photo types are jpg and png. Maximum allowed upload size is 1MB.</p>
-            <form class="user" method="POST" action="{{ route('profile') }}" enctype="multipart/form-data">
+                <a class="btn btn-danger btn-user btn-block cnsnt" href="#"><i class="fas fa-eye"></i> I have read the above sentence</a>
+                @endif
+            <form class="user u_form  @if($status=='no') {{ 'hidden' }} @endif" method="POST" action="{{ route('profile') }}" enctype="multipart/form-data">
               @csrf
               <div class="form-group row justify-content-center">
               <img class="rounded-circle border-grey" width="120" height="120" src="@if(isset($data->Photo)){{ url('storage/uploads/company/photo/'.$data->Photo) }} @else{{ url('/img/default.png') }}@endif" id="photoview" onclick="clickPhotoUp()">
@@ -89,6 +92,12 @@
     photoview.src = e.target.files[0];
     photoview.src = URL.createObjectURL(e.target.files[0]);
   
+  });
+  var u_form = document.querySelector(".u_form");
+  var consent = document.querySelector(".cnsnt");
+  consent.addEventListener("click",function(){
+    u_form.classList.remove("hidden");
+    consent.classList.add("hidden");
   });
   </script>
 @endsection

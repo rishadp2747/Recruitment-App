@@ -7,6 +7,7 @@ use App\Models\Job;
 use App\Models\Studentdetail;
 use App\Models\Companydetail;
 use App\Models\Qualifications;
+use App\Models\Jobs_qualifications;
 use App\Models\Appliedjob;
 use App\Models\User;
 use Auth;
@@ -62,9 +63,10 @@ class studentJobsController extends Controller
             return redirect()->route('home');
           }
           else{
+          $comp_qual = Jobs_qualifications::where('Job_Id',$id)->get();
           $c_name = User::select('name')->where('email',$dataj->Email)->get()->first();
           $datac = Companydetail::where('Email',$dataj->Email)->get()->first();
-          $data = array( 'c_name' => $c_name, 'id' => $id, 'uname' => $uname, 'dataj' => $dataj, 'datac' => $datac , 'qualifications' => $qualification);
+          $data = array( 'comp_qual' => $comp_qual, 'c_name' => $c_name, 'id' => $id, 'uname' => $uname, 'dataj' => $dataj, 'datac' => $datac , 'qualifications' => $qualification);
           return view('student.jobs.applyview')->with($data);
           }
         }
@@ -156,10 +158,11 @@ class studentJobsController extends Controller
             return redirect()->route('home');
           }
           else{
+          $comp_qual = Jobs_qualifications::where('Job_Id',$d->Job_Id)->get();
           $qualification = Qualifications::all();
           $c_name = User::select('name')->where('email',$dataj->Email)->get()->first();
           $datac = Companydetail::where('Email',$dataj->Email)->get()->first();
-          $data = array( 'c_name' => $c_name, 'id' => $id, 'uname' => $uname, 'dataj' => $dataj, 'datac' => $datac , 'status' => $d->Status, 'date' => $d->created_at, 'date_up' => $d->updated_at, 'qualifications' => $qualification);
+          $data = array( 'comp_qual' => $comp_qual, 'c_name' => $c_name, 'id' => $id, 'uname' => $uname, 'dataj' => $dataj, 'datac' => $datac , 'status' => $d->Status, 'date' => $d->created_at, 'date_up' => $d->updated_at, 'qualifications' => $qualification);
           return view('student.jobs.appliedinfoview')->with($data);
           }
          }

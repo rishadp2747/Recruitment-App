@@ -78,11 +78,65 @@
                               </div>
                               <div class="form-group">
                                 <p><b class="black">Title</b> : {{ $dataj->Job_Title }}</p>
-                                <p><b class="black">Minimum Qualification Required</b> : @if(!empty($dataj->qualification))@foreach($qualifications as $item)@if($dataj->qualification==$item->id){{ $item->qualification }}@endif @endforeach @else{{ 'Not Specified' }}@endif</p>
-                                <p><b class="black">Course</b> : @if(!empty($dataj->course)){{ $dataj->course }}@else{{ 'Not Specified' }}@endif</p>
-                                <p><b class="black">Minimum Percentage</b> : @if(!empty($dataj->cgpa)){{ $dataj->cgpa.'%' }}@else{{ 'Not Specified' }}@endif</p>
-                                <p><b class="black">Maximum Backlogs</b> : @if(!empty($dataj->hbacklogs)){{ $dataj->hbacklogs }}@else{{ 'Not Specified' }}@endif</p>
-                                <p><b class="black">Maximum Current Backlogs</b> : @if(!empty($dataj->cbacklogs)){{ $dataj->cbacklogs }}@else{{ 'Not Specified' }}@endif</p>
+                                @php
+                              $gh = 1;
+                             @endphp
+                           @foreach($comp_qual as $it)
+                                       <div class="form-group">
+                                           <p class="op p-2">Minimum Education Required {{ $gh }}</p>
+                                       </div>
+                                       @php
+                                        $gh = $gh +1;
+                                       @endphp
+                                    <div class="row">
+                                     
+                                     <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Qualification</label>
+                                            <input type="text" class="form-control form-control-user" disabled value="@foreach($qualifications as $items)@if($items->id==$it->qualification){{ $items->qualification }}@endif @endforeach">
+                                        </div>
+                                      </div>
+
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Course</label>
+                                            <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->course)){{ $it->course }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Specialisation</label>
+                                            <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->specialisation)){{ $it->specialisation }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+
+                                    </div>
+                           
+                                    <div class="row">
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">CGPA/Percentage</label>
+                                            <input type="number" class="form-control form-control-user" disabled value="@if(isset($it->cgpa)){{ $it->cgpa }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+                           
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Maximum Backlogs</label>
+                                            <input type="number" class="form-control form-control-user" disabled value="@if(isset($it->hbacklogs)){{ $it->hbacklogs }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+                           
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Maximum Current Backlogs</label>
+                                            <input type="number" class="form-control form-control-user" disabled value="@if(isset($it->cbacklogs)){{ $it->cbacklogs }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <hr>
+                                    @endforeach
                                 <p><b class="black">Skills Required</b> : @if(!empty($dataj->Skills_Required)){{ $dataj->Skills_Required }}@else{{ 'Not Specified' }}@endif</p>
                                 <p><b class="black">Minimum Age</b> : @if(!empty($dataj->Min_Age)){{ $dataj->Min_Age }}@else{{ 'Not Specified' }}@endif</p>
                                 <p><b class="black">Maximum Age</b> : @if(!empty($dataj->Max_Age)){{ $dataj->Max_Age }}@else{{ 'Not Specified' }}@endif</p>

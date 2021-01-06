@@ -9,9 +9,11 @@ use App\Models\Appliedjob;
 use App\Models\Studentdetail;
 use App\Models\Qualifications;
 use App\Models\Students_qualifications;
+use App\Models\Jobs_qualifications;
 use App\Models\User;
 use App\Models\Allowed_users;
 use Auth;
+use DB;
 
 class jobsController extends Controller
 {
@@ -42,23 +44,36 @@ class jobsController extends Controller
             $data = Companydetail::where('Email',$email)->get()->first();
 
             if($data===null){
-              session()->flash('errorinfo', 'In order to post a new job you have to update your profile first !');
-              return redirect()->route('profile');
+              session()->flash('errorinfo', 'In order to do any operation in this dashboard you have to complete your profile first. To complete your profile please <a href="./dashboard/profile">click here</a> !');
+              return redirect()->route('home');
             }
             else{
           $req->validate([
-              'title' => 'required|max:100|min:5|string',
+              'title' => 'required|max:100|min:1|string',
               'minage' => 'nullable|integer|min:18|max:100',
               'maxage' => 'nullable|integer|min:18|max:100',
-              'skills' => 'nullable|string|min:4|max:100',
-              'qualification' => 'nullable|integer|max:100',
-              'cgpa' => 'nullable|integer|max:100',
-              'course' => 'nullable|string|min:1|max:100',
-              'hbacklogs' => 'nullable|integer|max:100',
-              'cbacklogs' => 'nullable|integer|max:100',
+              'skills' => 'nullable|string|min:1|max:100',
+              'qualification0' => 'nullable|integer|max:100',
+              'specialisation0' => 'nullable|string|max:100',
+              'cgpa0' => 'nullable|integer|max:100',
+              'course0' => 'nullable|string|min:1|max:100',
+              'hbacklogs0' => 'nullable|integer|max:100',
+              'cbacklogs0' => 'nullable|integer|max:100',
               'last' => 'nullable|date_format:Y-m-d',
               'gender' => 'nullable|in:male,female,any',
           ]);
+          $numb_val = 0;
+          
+        for($i=0;$i<100;$i++){
+          $name= 'qualification'.strval($i);
+          if(!empty($req->$name) && isset($req->$name)){
+            $numb_val=$numb_val+1;
+          }
+          else{
+            break;
+          }
+        }
+
           $key = substr(str_shuffle($email),0,10);
           $job = new Job;
           $job->Job_Id = $key;
@@ -67,14 +82,36 @@ class jobsController extends Controller
           $job->Skills_Required = $req->skills;
           $job->Min_Age = $req->minage;
           $job->Max_Age = $req->maxage;
-          $job->cbacklogs = $req->cbacklogs;
-          $job->hbacklogs = $req->hbacklogs;
-          $job->qualification = $req->qualification;
-          $job->course = $req->course;
-          $job->cgpa = $req->cgpa;
           $job->gender = $req->gender;
           $job->last_date = $req->last;
           if($job->save()){
+            for($i=0;$i<$numb_val;$i++){
+              $acc = new Jobs_qualifications();
+              $na1 = 'qualification'.strval($i);
+              $na2 = 'course'.strval($i);
+              $na3 = 'specialisation'.strval($i);
+              $na4 = 'cgpa'.strval($i);
+              $na5 = 'hbacklogs'.strval($i);
+              $na6 = 'cbacklogs'.strval($i);
+              $acc->Job_Id = $key;
+              $acc->cbacklogs = $req->$na6;
+              $acc->hbacklogs = $req->$na5;
+              $acc->qualification = $req->$na1;
+              $acc->course = $req->$na2;
+              $acc->specialisation = $req->$na3;
+              $acc->cgpa = $req->$na4;
+              if($acc->save()){
+                continue;
+              }
+              else{
+                $data = Job::where('Job_Id',$key);
+                $count = $data->delete();
+                $data2 = Jobs_qualifications::where('Job_Id',$key);
+                $count2 = $data2->delete();
+                session()->flash('errorinfo', 'Something went wrong while adding the job, please try again !');
+                return redirect()->route('home'); 
+              }
+            }
             session()->flash('status', 'Job Added Successfully !');
             return redirect()->route('home');
           } 
@@ -137,12 +174,13 @@ class jobsController extends Controller
       if($u_type==1){
         $qualification = Qualifications::all();
         $jobs = Job::where('Job_Id',$id)->where('Email',$email)->get();
+        $stud_qual = Jobs_qualifications::where('Job_Id',$id)->get();
         $count = count($jobs);
         if(!$count>0){
           session()->flash('errorinfo', 'Trying to access wrong Job_Id !');
           return redirect()->route('updateJob');
         }
-        $data = array( 'jobs' => $jobs, 'uname' => $uname, 'qualifications' => $qualification);
+        $data = array('stud_qual' => $stud_qual, 'jobs' => $jobs, 'uname' => $uname, 'qualifications' => $qualification);
         return view('company.jobs.updateview')->with($data);
 
       }
@@ -165,14 +203,20 @@ class jobsController extends Controller
           'minage' => 'nullable|integer|min:18|max:100',
           'maxage' => 'nullable|integer|min:18|max:100',
           'skills' => 'nullable|string|min:4|max:100',
-          'qualification' => 'nullable|integer|max:100',
-          'cgpa' => 'nullable|integer|max:100',
-          'course' => 'nullable|string|min:1|max:100',
-          'hbacklogs' => 'nullable|integer|max:100',
-          'cbacklogs' => 'nullable|integer|max:100',
           'last' => 'nullable|date_format:Y-m-d',
           'gender' => 'nullable|in:male,female,any',
       ]);
+      $numb_val = 0;
+          
+        for($i=0;$i<100;$i++){
+          $name= 'qualification'.strval($i);
+          if(!empty($req->$name) && isset($req->$name)){
+            $numb_val=$numb_val+1;
+          }
+          else{
+            break;
+          }
+        }
           $job = Job::where('Job_Id',$req->id)->where('Email',$email)->first();
           if($job==null){
             session()->flash('errorinfo', 'Something went wrong while updating the job, please try again !');
@@ -183,14 +227,36 @@ class jobsController extends Controller
           $job->Skills_Required = $req->skills;
           $job->Min_Age = $req->minage;
           $job->Max_Age = $req->maxage;
-          $job->cbacklogs = $req->cbacklogs;
-          $job->hbacklogs = $req->hbacklogs;
-          $job->qualification = $req->qualification;
-          $job->course = $req->course;
-          $job->cgpa = $req->cgpa;
           $job->gender = $req->gender;
           $job->last_date = $req->last;
           if($job->save()){
+            $data4 = Jobs_qualifications::where('Job_Id',$req->id);
+            $count4 = $data4->delete();
+            for($i=0;$i<$numb_val;$i++){
+              $acc = new Jobs_qualifications();
+              $na1 = 'qualification'.strval($i);
+              $na2 = 'course'.strval($i);
+              $na3 = 'specialisation'.strval($i);
+              $na4 = 'cgpa'.strval($i);
+              $na5 = 'hbacklogs'.strval($i);
+              $na6 = 'cbacklogs'.strval($i);
+              $acc->Job_Id = $req->id;
+              $acc->cbacklogs = $req->$na6;
+              $acc->hbacklogs = $req->$na5;
+              $acc->qualification = $req->$na1;
+              $acc->course = $req->$na2;
+              $acc->specialisation = $req->$na3;
+              $acc->cgpa = $req->$na4;
+              if($acc->save()){
+                continue;
+              }
+              else{
+                $data2 = Jobs_qualifications::where('Job_Id',$req->id);
+                $count2 = $data2->delete();
+                session()->flash('errorinfo', 'Something went wrong while updating the job, please try again !');
+                return redirect()->route('home'); 
+              }
+            }
             session()->flash('status', 'Job Updated Successfully !');
             return redirect()->route('home');
           } 
@@ -237,6 +303,8 @@ class jobsController extends Controller
         $data = Job::where('Job_Id',$id)->where('Email',$email);
         $count = $data->delete();
         if($count===1){
+          $data2 = Jobs_qualifications::where('Job_Id',$id);
+          $count2 = $data2->delete();
           session()->flash('status', 'Job Deleted Successfully !');
           return redirect()->route('home');
         }
@@ -295,11 +363,25 @@ class jobsController extends Controller
           return view('company.jobs.appliedview')->with($data);
         }
         else{
+          $data_num = Students_qualifications::select(DB::raw('COUNT(email) AS occurrences'))
+                          ->groupBy('email')
+                          ->orderBy('occurrences', 'DESC')
+                          ->limit(1)
+                          ->get();
+        $vv = 0;
+        $hg = 0;
         foreach($d as $item){
         $n[] = User::select('name')->where('email',$item->Student_Email)->get()->first();
+        $f[] = Studentdetail::where('email',$item->Student_Email)->get()->first();
+        $j[] = Students_qualifications::where('email',$item->Student_Email)->get();
+        $val = $j[$hg]->count();
+        if($val>$vv){
+          $vv = $val;
+        }
+        $hg = $hg + 1;
         }
         $c = count($n);
-        $data = array( 'applied' => $d, 'uname' => $uname, 'count' => $c, 'name' => $n, 'info' => 'Applications under Review');
+        $data = array( 'applied' => $d, 'uname' => $uname, 'stud_qual' => $j, 'data_num' => $vv, 'stud_det' => $f, 'count' => $c, 'name' => $n, 'info' => 'Applications under Review');
         return view('company.jobs.appliedview')->with($data);
         }
 
@@ -324,11 +406,25 @@ class jobsController extends Controller
           return view('company.jobs.appliedview')->with($data);
         }
         else{
+          $data_num = Students_qualifications::select(DB::raw('COUNT(email) AS occurrences'))
+                          ->groupBy('email')
+                          ->orderBy('occurrences', 'DESC')
+                          ->limit(1)
+                          ->get();
+        $vv = 0;
+        $hg = 0;
         foreach($d as $item){
         $n[] = User::select('name')->where('email',$item->Student_Email)->get()->first();
+        $f[] = Studentdetail::where('email',$item->Student_Email)->get()->first();
+        $j[] = Students_qualifications::where('email',$item->Student_Email)->get();
+        $val = $j[$hg]->count();
+        if($val>$vv){
+          $vv = $val;
+        }
+        $hg = $hg + 1;
         }
         $c = count($n);
-        $data = array( 'applied' => $d, 'uname' => $uname, 'count' => $c, 'name' => $n, 'info' => 'Applications Waitlisted');
+        $data = array( 'applied' => $d, 'uname' => $uname, 'stud_qual' => $j, 'data_num' => $vv, 'stud_det' => $f, 'count' => $c, 'name' => $n, 'info' => 'Applications Waitlisted');
         return view('company.jobs.appliedview')->with($data);
         }
 
@@ -353,12 +449,25 @@ class jobsController extends Controller
           return view('company.jobs.appliedview')->with($data);
         }
         else{
+          $data_num = Students_qualifications::select(DB::raw('COUNT(email) AS occurrences'))
+                          ->groupBy('email')
+                          ->orderBy('occurrences', 'DESC')
+                          ->limit(1)
+                          ->get();
+        $vv = 0;
+        $hg = 0;
         foreach($d as $item){
         $n[] = User::select('name')->where('email',$item->Student_Email)->get()->first();
         $f[] = Studentdetail::where('email',$item->Student_Email)->get()->first();
+        $j[] = Students_qualifications::where('email',$item->Student_Email)->get();
+        $val = $j[$hg]->count();
+        if($val>$vv){
+          $vv = $val;
+        }
+        $hg = $hg + 1;
         }
         $c = count($n);
-        $data = array( 'applied' => $d, 'uname' => $uname, 'stud_det' => $f, 'count' => $c, 'name' => $n, 'info' => 'Applications Approved');
+        $data = array( 'applied' => $d, 'uname' => $uname, 'stud_qual' => $j, 'data_num' => $vv, 'stud_det' => $f, 'count' => $c, 'name' => $n, 'info' => 'Applications Approved');
         return view('company.jobs.appliedview')->with($data);
         }
 
@@ -383,12 +492,25 @@ class jobsController extends Controller
           return view('company.jobs.selectedview')->with($data);
         }
         else{
+          $data_num = Students_qualifications::select(DB::raw('COUNT(email) AS occurrences'))
+                          ->groupBy('email')
+                          ->orderBy('occurrences', 'DESC')
+                          ->limit(1)
+                          ->get();
+        $vv = 0;
+        $hg = 0;
         foreach($d as $item){
         $n[] = User::select('name')->where('email',$item->Student_Email)->get()->first();
         $f[] = Studentdetail::where('email',$item->Student_Email)->get()->first();
+        $j[] = Students_qualifications::where('email',$item->Student_Email)->get();
+        $val = $j[$hg]->count();
+        if($val>$vv){
+          $vv = $val;
+        }
+        $hg = $hg + 1;
         }
         $c = count($n);
-        $data = array( 'applied' => $d, 'uname' => $uname, 'stud_det' => $f, 'count' => $c, 'name' => $n, 'info' => 'Application Selection');
+        $data = array( 'applied' => $d, 'uname' => $uname, 'stud_qual' => $j, 'data_num' => $vv, 'stud_det' => $f, 'count' => $c, 'name' => $n, 'info' => 'Application Selection');
         return view('company.jobs.selectedview')->with($data);
         }
 
@@ -453,11 +575,12 @@ class jobsController extends Controller
             session()->flash('status', 'No job data available, for the application ( You deleted the job ) !');
             return redirect()->route('home');
           }
+          $comp_qual = Jobs_qualifications::where('Job_Id',$d->Job_Id)->get();
           $qualification = Qualifications::all();
           $stud_n = User::select('name')->where('Email',$d->Student_Email)->get()->first();
           $student = Studentdetail::where('Email',$d->Student_Email)->get()->first();
           $stud_qual = Students_qualifications::where('email',$d->Student_Email)->get();
-          $data = array( 'stud_qual' => $stud_qual, 'stud_n' => $stud_n, 'applied' => $d, 'uname' => $uname, 'job' => $job, 'student' => $student, 'qualifications' => $qualification);
+          $data = array( 'comp_qual' => $comp_qual, 'stud_qual' => $stud_qual, 'stud_n' => $stud_n, 'applied' => $d, 'uname' => $uname, 'job' => $job, 'student' => $student, 'qualifications' => $qualification);
           return view('company.jobs.appliedinfoview')->with($data);
         }
 

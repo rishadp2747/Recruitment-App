@@ -11,6 +11,7 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
+                      <th>Job Id</th>
                       <th>Job Title</th>
                       <th>Preferred Gender</th>
                       <th>Age</th>
@@ -20,6 +21,7 @@
                   </thead>
                   <tfoot>
                     <tr>
+                      <th>Job Id</th>
                       <th>Job Title</th>
                       <th>Preferred Gender</th>
                       <th>Age</th>
@@ -30,6 +32,7 @@
                   <tbody>
 @foreach ($jobs as $item)
    <tr>
+   <td>{{$item->Job_Id}}</td>
    <td>{{$item->Job_Title}}</td>
    <td>{{$item->gender}}</td>
    <td>{{$item->Min_Age}} - {{$item->Max_Age}}</td>

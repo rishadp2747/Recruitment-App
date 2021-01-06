@@ -41,9 +41,17 @@
                                 <div class="alert alert-success">
                                     Application Status : {!! $applied->Status !!}.
                                 </div>
+                             @elseif($applied->Status=="Selected")
+                                <div class="alert alert-success">
+                                    Application Status : {!! $applied->Status !!} <i class="fas fa-check-circle"></i>.
+                                </div>
                              @elseif($applied->Status=="Rejected")
                                 <div class="alert alert-danger">
                                     Application Status : {!! $applied->Status !!}.
+                                </div>
+                             @elseif($applied->Status=="NotSelected")
+                                <div class="alert alert-danger">
+                                    Application Status : {!! $applied->Status !!} <i class="fas fa-times-circle"></i>.
                                 </div>
                              @endif
                                 <p><b class="black">Submitted On</b> : {{ $applied->created_at }}</p>
@@ -89,9 +97,17 @@
 <div class="text-center status-show-red p-2">
           <i class="fas fa-times-circle"></i> Application Rejected on {{ $applied->updated_at }}
         </div>
+@elseif($applied->Status=="NotSelected")
+<div class="text-center status-show-red p-2">
+          <i class="fas fa-times-circle"></i> Candidate finally Rejected on {{ $applied->updated_at }}
+        </div>
 @elseif($applied->Status=="Approved")
         <div class="text-center status-show-green p-2">
           <i class="fas fa-check-circle"></i> Application Approved on {{ $applied->updated_at }}
+        </div>
+@elseif($applied->Status=="Selected")
+        <div class="text-center status-show-green p-2">
+          <i class="fas fa-check-circle"></i> Candidate Selected on {{ $applied->updated_at }}
         </div>
 @endif
                               <hr>
@@ -100,11 +116,65 @@
                               </div>
                               <div class="form-group">
                                 <p><b class="black">Title</b> : {{ $job->Job_Title }}</p>
-                                <p><b class="black">Minimum Qualification Required</b> : @if(!empty($job->qualification))@foreach($qualifications as $item)@if($job->qualification==$item->id){{ $item->qualification }}@endif @endforeach @else{{ 'Not Specified' }}@endif</p>
-                                <p><b class="black">Course</b> : @if(!empty($job->course)){{ $job->course }}@else{{ 'Not Specified' }}@endif</p>
-                                <p><b class="black">Minimum Percentage</b> : @if(!empty($job->cgpa)){{ $job->cgpa.'%' }}@else{{ 'Not Specified' }}@endif</p>
-                                <p><b class="black">Maximum Backlogs</b> : @if(!empty($job->hbacklogs)){{ $job->hbacklogs }}@else{{ 'Not Specified' }}@endif</p>
-                                <p><b class="black">Maximum Current Backlogs</b> : @if(!empty($job->cbacklogs)){{ $job->cbacklogs }}@else{{ 'Not Specified' }}@endif</p>
+                                @php
+                              $gh = 1;
+                             @endphp
+                           @foreach($comp_qual as $it)
+                                       <div class="form-group">
+                                           <p class="op p-2">Minimum Education Required {{ $gh }}</p>
+                                       </div>
+                                       @php
+                                        $gh = $gh +1;
+                                       @endphp
+                                    <div class="row">
+                                     
+                                     <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Qualification</label>
+                                            <input type="text" class="form-control form-control-user" disabled value="@foreach($qualifications as $items)@if($items->id==$it->qualification){{ $items->qualification }}@endif @endforeach">
+                                        </div>
+                                      </div>
+
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Course</label>
+                                            <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->course)){{ $it->course }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Specialisation</label>
+                                            <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->specialisation)){{ $it->specialisation }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+
+                                    </div>
+                           
+                                    <div class="row">
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">CGPA/Percentage</label>
+                                            <input type="number" class="form-control form-control-user" disabled value="@if(isset($it->cgpa)){{ $it->cgpa }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+                           
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Maximum Backlogs</label>
+                                            <input type="number" class="form-control form-control-user" disabled value="@if(isset($it->hbacklogs)){{ $it->hbacklogs }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+                           
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Maximum Current Backlogs</label>
+                                            <input type="number" class="form-control form-control-user" disabled value="@if(isset($it->cbacklogs)){{ $it->cbacklogs }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <hr>
+                                    @endforeach
                                 <p><b class="black">Skills Required</b> : @if(!empty($job->Skills_Required)){{ $job->Skills_Required }}@else{{ 'Not Specified' }}@endif</p>
                                 <p><b class="black">Minimum Age</b> : @if(!empty($job->Min_Age)){{ $job->Min_Age }}@else{{ 'Not Specified' }}@endif</p>
                                 <p><b class="black">Maximum Age</b> : @if(!empty($job->Max_Age)){{ $job->Max_Age }}@else{{ 'Not Specified' }}@endif</p>
@@ -145,17 +215,11 @@
                                         $ne = $ne +1;
                                        @endphp
                                     <div class="row">
-                                      <div class="col-4">
+                                     
+                                     <div class="col-4">
                                         <div class="form-group">
-                                          <label for="qulatification">Board</label>
-                                            <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->board)){{ $it->board }}@else{{ '' }}@endif">
-                                        </div>
-                                      </div>
-                           
-                                      <div class="col-4">
-                                        <div class="form-group">
-                                          <label for="qulatification">Institution Name</label>
-                                            <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->institution)){{ $it->institution }}@else{{ '' }}@endif">
+                                          <label for="qulatification">Qualification</label>
+                                            <input type="text" class="form-control form-control-user" disabled value="@foreach($qualifications as $items)@if($items->id==$it->qualification){{ $items->qualification }}@endif @endforeach">
                                         </div>
                                       </div>
 
@@ -163,6 +227,29 @@
                                         <div class="form-group">
                                           <label for="qulatification">Course</label>
                                             <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->course)){{ $it->course }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+
+                                      <div class="col-4">
+                                        <div class="form-group">
+                                          <label for="qulatification">Specialisation</label>
+                                            <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->specialisation)){{ $it->specialisation }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                      <div class="col-6">
+                                        <div class="form-group">
+                                          <label for="qulatification">Board/University</label>
+                                            <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->board)){{ $it->board }}@else{{ '' }}@endif">
+                                        </div>
+                                      </div>
+                                      <div class="col-6">
+                                        <div class="form-group">
+                                          <label for="qulatification">Institution Name</label>
+                                            <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->institution)){{ $it->institution }}@else{{ '' }}@endif">
                                         </div>
                                       </div>
                                     </div>
@@ -191,27 +278,20 @@
                                     </div>
                            
                                     <div class="row">
-                                      <div class="col-4">
+                                      <div class="col-6">
                                         <div class="form-group">
                                           <label for="qulatification">Date of joining</label>
                                             <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->join)){{ $it->join }}@else{{ '' }}@endif">
                                         </div>
                                       </div>
                            
-                                      <div class="col-4">
+                                      <div class="col-6">
                                         <div class="form-group">
                                           <label for="qulatification">Date of passing</label>
                                             <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->pass)){{ $it->pass }}@else{{ '' }}@endif">
                                         </div>
                                       </div>
-                           
-                                      <div class="col-4">
-                                        <div class="form-group">
-                                          <label for="qulatification">Qualification</label>
-                                            <input type="text" class="form-control form-control-user" disabled value="@foreach($qualifications as $items)@if($items->id==$it->qualification){{ $items->qualification }}@endif @endforeach">
-                                        </div>
-                                      </div>
-                                    </div>
+                                     </div>
                                     <hr>
                                     @endforeach
                               <a  href="{{ url('storage/uploads/student/cv/'.$student->CV) }}" class="btn btn-primary btn-user btn-block">

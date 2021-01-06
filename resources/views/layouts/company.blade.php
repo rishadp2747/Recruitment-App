@@ -25,6 +25,12 @@
 </head>
 
 <body id="page-top">
+<!-- Loader -->
+<div class="loader">
+  <img src="<?php echo URL::asset('img/asap_portal.png'); ?>" width="200" height="40">
+  <img src="<?php echo URL::asset('img/white.jpg'); ?>" width="80" height="80">
+  <img src="<?php echo URL::asset('img/806.gif'); ?>" style="width: 80px; height: 80px;" alt="Loading...">
+</div>
   <!-- Page Wrapper -->
   <div id="wrapper">
 
@@ -127,7 +133,7 @@
       <li class="nav-item @if($route=='selectedJob'){{ 'active' }} @endif">
         <a class="nav-link" href="{{ route('selectedJob') }}">
           <i class="fas fa-clipboard-check"></i>
-          <span>Selected Applications</span></a>
+          <span>Final Applications</span></a>
       </li>
 
       <!-- Nav Item - Dashboard -->
@@ -182,6 +188,10 @@
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
                 </a>
+                <a class="dropdown-item" href="{{ route('changepassword') }}">
+                  <i class="fas fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Change Password
+                </a>
                 <!--<a class="dropdown-item" href="#">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
@@ -209,6 +219,13 @@
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
+          @endif
+          @if($route!='profile')
+          @if (\Session::has('errorinfo_prof'))
+                   <div class="alert alert-danger">
+                       {!! \Session::get('errorinfo_prof') !!}
+                    </div>
+          @endif
           @endif
 
           @yield('content')
@@ -282,4 +299,13 @@
 </body>
 
 </html>
+<script type="text/javascript">
+  window.addEventListener("load", function () {
+    setTimeout(load_it, 1000);
+  });
+  function load_it(){
+      const loader = document.querySelector(".loader");
+      loader.className += " hidden"; // class "loader hidden"
+  }
+  </script>
 @endauth

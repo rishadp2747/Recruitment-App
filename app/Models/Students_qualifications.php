@@ -22,6 +22,7 @@ class Students_qualifications extends Model
         'pass',
         'qualification',
         'course',
+        'specialisation',
         'cbacklogs',
         'hbacklogs',
     ];

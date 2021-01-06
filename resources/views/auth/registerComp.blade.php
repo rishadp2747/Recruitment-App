@@ -23,7 +23,12 @@
 </head>
 
 <body class="bg-gradient-primary">
-
+<!-- Loader -->
+<div class="loader">
+  <img src="<?php echo URL::asset('img/asap_portal.png'); ?>" width="200" height="40">
+  <img src="<?php echo URL::asset('img/white.jpg'); ?>" width="80" height="80">
+  <img src="<?php echo URL::asset('img/806.gif'); ?>" style="width: 80px; height: 80px;" alt="Loading...">
+</div>
   <div class="container">
 
     <div class="card o-hidden border-0 shadow-lg my-5">
@@ -100,3 +105,12 @@
 </body>
 
 </html>
+<script type="text/javascript">
+  window.addEventListener("load", function () {
+    setTimeout(load_it, 1000);
+  });
+  function load_it(){
+      const loader = document.querySelector(".loader");
+      loader.className += " hidden"; // class "loader hidden"
+  }
+  </script>

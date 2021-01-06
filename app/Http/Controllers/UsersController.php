@@ -18,6 +18,7 @@ class UsersController extends Controller
           $user = Auth::user();
           $u_type = $user->user_type;
           $uname = $user->name;
+          $email = $user->email;
           if($u_type==1){
             $data = array( 'uname' => $uname );
             return view('company.jobs.studentaddview')->with($data);
@@ -39,6 +40,11 @@ class UsersController extends Controller
       $uname = $user->name;
       $email = $user->email;
       if($u_type==1 || $u_type==2){
+        $data_check = Companydetail::where('Email',$email)->get()->first();
+          if($data_check===null){
+            session()->flash('errorinfo_prof', 'In order to do any operation in this dashboard you have to complete your profile first. To complete your profile please <a href="./dashboard/profile">click here</a> !');
+            return redirect()->route('home');
+          }
         
         $req->validate([
           'email' => 'required|email|regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix'

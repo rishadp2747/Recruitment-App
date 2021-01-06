@@ -35,12 +35,27 @@ class HomeController extends Controller
         $user = Auth::user();
         $u_type = $user->user_type;
         $uname = $user->name;
+        $email = $user->email;
         if($u_type==0){
-          $data = array('uname' => $uname );
+          $data_check = Studentdetail::where('Email',$email)->get()->first();
+          if($data_check===null){
+            $p_status = 'no';
+          }
+          else{
+            $p_status = 'yes';
+          }
+          $data = array( 'uname' => $uname , 'p_status' => $p_status);
           return view('student.dashboard')->with($data);
         }
         elseif($u_type==1){
-          $data = array( 'uname' => $uname );
+          $data_check = Companydetail::where('Email',$email)->get()->first();
+          if($data_check===null){
+              $p_status = 'no';
+            }
+            else{
+              $p_status = 'yes';
+            }
+            $data = array( 'uname' => $uname , 'p_status' => $p_status);
           return view('company.dashboard')->with($data);
         }
         elseif($u_type==2){
@@ -162,6 +177,7 @@ class HomeController extends Controller
             'aadhaar' => 'required|integer',
             'qualification0' => 'required|string',
             'board0' => 'required|string',
+            'specialisation0' => 'required|string',
             'institution0' => 'required|string',
             'cgpa0' => 'required|integer|min:1|max:100',
             'join0' => 'required|date_format:Y-m-d',
@@ -291,6 +307,7 @@ class HomeController extends Controller
             $acc = new Students_qualifications();
             $acc->email = $email;
             $na1 = 'course'.strval($i);
+            $na11 = 'specialisation'.strval($i);
             $na2 = 'cgpa'.strval($i);
             $na3 = 'board'.strval($i);
             $na4 = 'institution'.strval($i);
@@ -299,12 +316,8 @@ class HomeController extends Controller
             $na7 = 'cback'.strval($i);
             $na8 = 'hback'.strval($i);
             $na9 = 'qualification'.strval($i);
-            if($i==0){
-              $req->course0 = "unknown";
-              $req->cback0 = 0;
-              $req->hback0 = 0;
-            }
             $acc->course = $req->$na1;
+            $acc->specialisation = $req->$na11;
             $acc->cgpa = $req->$na2;
             $acc->board = $req->$na3;
             $acc->institution = $req->$na4;
