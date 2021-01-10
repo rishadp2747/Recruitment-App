@@ -8,8 +8,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  <meta name="theme-color" content="#2874A6" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <link rel="icon" type="image/png" href="img/fav1.png"/>
+  <link rel="icon" type="image/png" href="img/asap.png"/>
 
   <title>Student Register</title>
 
@@ -42,7 +43,7 @@
              </div>
          <hr>
               <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4"><i class="fas fa-user-graduate"></i>  <b>Student Register</b></h1>
+                <h1 class="h4 text-gray-900 mb-4"><i class="fas fa-user-graduate"></i>  <b>Student Registration</b></h1>
               </div>
               @if (\Session::has('info'))
                      <div class="alert alert-danger">
@@ -81,7 +82,7 @@
               <hr>
               @if (Route::has('login'))
               <div class="text-center">
-              <a class="small" href="{{ route('login') }}"><b>Already have an account ? Login !</b></a>
+              <a class="btn btn-user btn-block btn-primary" href="{{ route('login') }}">Have an account?<b> Log in</b></a>
               </div>
               @endif
             </div>

@@ -31,7 +31,7 @@ Route::get('/dashboard/rejected', [App\Http\Controllers\HomeController::class, '
 
 Route::get('/dashboard/jobs/add', [App\Http\Controllers\jobsController::class, 'add'])->name('addJob')->middleware('approval');
 
-Route::post('/dashboard/jobs/add', [App\Http\Controllers\jobsController::class, 'addtodb'])->name('addJob')->middleware('approval');
+Route::post('/dashboard/jobs/add', [App\Http\Controllers\jobsController::class, 'addtodb'])->name('addJobs')->middleware('approval');
 
 Route::get('/dashboard/jobs/view', [App\Http\Controllers\jobsController::class, 'view'])->name('viewJob')->middleware('approval');
 
@@ -43,7 +43,7 @@ Route::post('/dashboard/jobs/update/it', [App\Http\Controllers\jobsController::c
 
 Route::get('/dashboard/jobs/delete', [App\Http\Controllers\jobsController::class, 'delete'])->name('deleteJob')->middleware('approval');
 
-Route::post('/dashboard/jobs/delete', [App\Http\Controllers\jobsController::class, 'deletefromdb'])->name('deleteJob')->middleware('approval');
+Route::post('/dashboard/jobs/delete', [App\Http\Controllers\jobsController::class, 'deletefromdb'])->name('deleteJobs')->middleware('approval');
 
 Route::get('/dashboard/jobs/student/view', [App\Http\Controllers\studentJobsController::class, 'view'])->name('availableJobs')->middleware('approval');
 
@@ -61,7 +61,7 @@ Route::post('/dashboard/jobs/student/applied/delete', [App\Http\Controllers\stud
 
 Route::get('/dashboard/profile', [App\Http\Controllers\HomeController::class, 'profile'])->name('profile')->middleware('approval');
 
-Route::post('/dashboard/profile', [App\Http\Controllers\HomeController::class, 'profileUpdate'])->name('profile')->middleware('approval');
+Route::post('/dashboard/profile', [App\Http\Controllers\HomeController::class, 'profileUpdate'])->name('profiles')->middleware('approval');
 
 Route::get('/dashboard/jobs/applied/view', [App\Http\Controllers\jobsController::class, 'appliedview'])->name('appliedCheckJob')->middleware('approval');
 
@@ -81,15 +81,15 @@ Route::get('/dashboard/jobs/applied/reviewing', [App\Http\Controllers\jobsContro
 
 Route::get('/dashboard/students/delete', [App\Http\Controllers\UsersController::class, 'allowedusersview'])->name('studentdelete')->middleware('approval');
 
-Route::post('/dashboard/students/delete', [App\Http\Controllers\UsersController::class, 'deleteuserfromdb'])->name('studentdelete')->middleware('approval');
+Route::post('/dashboard/students/delete', [App\Http\Controllers\UsersController::class, 'deleteuserfromdb'])->name('studentdeletes')->middleware('approval');
 
 Route::get('/dashboard/students/add', [App\Http\Controllers\UsersController::class, 'adduserview'])->name('studentadd')->middleware('approval');
 
-Route::post('/dashboard/students/add', [App\Http\Controllers\UsersController::class, 'addusertodb'])->name('studentadd')->middleware('approval');
+Route::post('/dashboard/students/add', [App\Http\Controllers\UsersController::class, 'addusertodb'])->name('studentadds')->middleware('approval');
 
 Route::get('/dashboard/company/delete', [App\Http\Controllers\UsersController::class, 'allowedcompanyview'])->name('companydelete')->middleware('approval');
 
-Route::post('/dashboard/company/delete', [App\Http\Controllers\UsersController::class, 'deletecompanyfromdb'])->name('companydelete')->middleware('approval');
+Route::post('/dashboard/company/delete', [App\Http\Controllers\UsersController::class, 'deletecompanyfromdb'])->name('companydeletes')->middleware('approval');
 
 Route::get('/dashboard/company/approval', [App\Http\Controllers\UsersController::class, 'companyapprovalview'])->name('companyapproval')->middleware('approval');
 

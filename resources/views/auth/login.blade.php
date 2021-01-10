@@ -8,8 +8,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  <meta name="theme-color" content="#2874A6" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <link rel="icon" type="image/png" href="img/fav1.png"/>
+  <link rel="icon" type="image/png" href="img/asap.png"/>
 
   <title>Login</title>
 
@@ -79,14 +80,9 @@
                     </button>
                   </form>
                   <hr>
-                  @if (Route::has('password.request'))
-                  <div class="text-center">
-                    <a class="small" href="{{ route('password.request') }}"><b>Forgot Password ?</b></a>
-                  </div>
-                  @endif
                   @if (Route::has('register'))
                   <div class="text-center">
-                  <a class="small" href="{{ route('register') }}"><b>Create an Account !</b></a>
+                  <a class="btn btn-user btn-block btn-primary" href="{{ route('register') }}">Don't have an account?<b> Sign up</b></a>
                   </div>
                   @endif
                 </div>

@@ -23,7 +23,7 @@ $qual_num = 0;
                        {!! \Session::get('successinfo') !!}
                     </div>
                 @endif	  
-            <form class="user" method="POST" action="{{ route('addJob') }}">
+            <form class="user" method="POST" action="{{ route('addJobs') }}">
             @csrf
               <div class="form-group row">
                 <div class="col-sm-6 mb-3 mb-sm-0">
@@ -73,7 +73,7 @@ $qual_num = 0;
                     <p class="op p-1">Minimum Educational Qualification 1</p>
                 </div>
                 <div class="row">
-                  <div class="col-4">
+                  <div class="col-sm-4">
                     <div class="form-group">
                       <label for="qualification0" style="color:#161616;"><b>Qualification</b></label>
                         <select class="form-control" name="qualification0" id="qualification0">
@@ -87,7 +87,7 @@ $qual_num = 0;
                           @enderror
                       </div>
                   </div> 
-                  <div class="col-4">
+                  <div class="col-sm-4">
                     <div class="form-group">
                       <label class="mx-1" for="cgpa0" style="color:#161616;"><b>Percentage</b> (Convert cgpa into percentage)</label>
                       <input type="number" min="1" max="100" class="form-control form-control-user" placeholder="Percentage" name="cgpa0" value="@if(old('cgpa0')!== null){{ old('cgpa0') }}@else{{ '' }}@endif" id="cgpa0">
@@ -96,7 +96,7 @@ $qual_num = 0;
                       @enderror
                     </div>
                   </div>
-                  <div class="col-4">
+                  <div class="col-sm-4">
                     <div class="form-group">
                       <label class="mx-1" for="course0" style="color:#161616;"><b>Course Name</b></label>
                         <input type="text" min="1" max="100" class="form-control form-control-user" placeholder="Course Name" value="{{ old('course0') }}" name="course0" id="course0">
@@ -118,7 +118,7 @@ $qual_num = 0;
                    </div>
                   </div>
                   <div class="row">
-                    <div class="col-6">
+                    <div class="col-sm-6">
                       <div class="form-group">
                         <label class="mx-1" for="hbacklogs0" style="color:#161616;"><b>History of Backlogs</b></label>
                           <input type="number" min="0" max="100" class="form-control form-control-user" placeholder="input a number" name="hbacklogs0" id="hbacklogs0" value="{{ old('hbacklogs0') }}">
@@ -128,7 +128,7 @@ $qual_num = 0;
                       </div>
                     </div>
          
-                    <div class="col-6">
+                    <div class="col-sm-6">
                       <div class="form-group">
                         <label class="mx-1" for="cbacklogs0" style="color:#161616;"><b>Current Backlogs</b></label>
                           <input type="number" min="0" max="100" class="form-control form-control-user" placeholder="input a number" name="cbacklogs0" id="cbacklogs0" value="{{ old('cbacklogs0') }}">
@@ -139,7 +139,7 @@ $qual_num = 0;
                     </div>
                   </div>
                   <div class="row d-none" id="qual">
-              <div class="col-4">
+              <div class="col-sm-4">
                 <div class="form-group">
                   <label for="qulatification">Qualification <span style="color:red">*</span></label>
                     <select class="form-control" name="qualification" id="copyQual">
@@ -217,16 +217,16 @@ $(document).ready(function() {
                     '<p class="op p-1">Minimum Educational Qualification '+(id+1)+'</p>'+
                 '</div>'+
                 '<div class="row">'+
-                 "<div class='col-4'><div class='form-group'><label for='qualification0' style='color:#161616;'><b>Qualification</b></label><select class='form-control' name='qualification"+id+"' id='qualification"+id+"' onchange='qualChange("+id+")'><option value='' >Select</options>"+qSet.html()+"</select></div></div>"+
+                 "<div class='col-sm-4'><div class='form-group'><label for='qualification0' style='color:#161616;'><b>Qualification</b></label><select class='form-control' name='qualification"+id+"' id='qualification"+id+"' onchange='qualChange("+id+")'><option value='' >Select</options>"+qSet.html()+"</select></div></div>"+
 
-                 '<div class="col-4">'+
+                 '<div class="col-sm-4">'+
                     '<div class="form-group">'+
                       '<label class="mx-1" for="cgpa'+id+'" style="color:#161616;"><b>Percentage</b> (Convert cgpa into percentage)</label>'+
                       '<input type="number" min="1" max="100" class="form-control form-control-user" placeholder="Percentage" name="cgpa'+id+'"  id="cgpa'+id+'">'+
                     '</div>'+
                   '</div>'+
                  
-                 '<div class="col-4">'+
+                 '<div class="col-sm-4">'+
                   '<div class="form-group">'+
                    '<label class="mx-1" for="course0" style="color:#161616;"><b>Course Name</b></label>'+
                     '<input type="text" min="1" max="100" class="form-control form-control-user" placeholder="Course Name" name="course'+id+'" id="course'+id+'">'+
@@ -248,14 +248,14 @@ $(document).ready(function() {
 
     var row3 = '<div class="row">'+
 
-                  '<div class="col-6">'+
+                  '<div class="col-sm-6">'+
                     '<div class="form-group">'+
                     '<label class="mx-1" for="hbacklogs0" style="color:#161616;"><b>History of Backlogs</b></label>'+
                     '<input type="number" min="0" max="100" class="form-control form-control-user" placeholder="input a number" name="hbacklogs'+id+'" id="hbacklogs'+id+'">'+
                     '</div>'+
                   '</div>'+
 
-                  '<div class="col-6">'+
+                  '<div class="col-sm-6">'+
                     '<div class="form-group">'+
                     '<label class="mx-1" for="cbacklogs0" style="color:#161616;"><b>Current Backlogs</b></label>'+
                     '<input type="number" min="0" max="100" class="form-control form-control-user" placeholder="input a number" name="cbacklogs'+id+'" id="cbacklogs'+id+'">'+

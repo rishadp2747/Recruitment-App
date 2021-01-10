@@ -13,6 +13,19 @@
                     </div>
                 @endif
                 <p>Please note that once you click on delete button all the data associated with the company email will be erased including the jobs posted by the company and the process cannot be reversed.</p>
+                <div class="form-group row justify-content-center red-b-white">
+                  <div class="col-12">
+                    <div class="row p-2 justify-content-center">
+                      <p class="jobhead white"><i class="fas fa-exclamation-triangle"></i> <b>Delete All Company</b> <i class="fas fa-exclamation-triangle"></i></p>
+                    </div>
+                    <div class="row justify-content-center p-2">
+                      <p class="white" style="text-align: center;">*Click the below button to delete all the company data at once.</p>
+                    </div>
+                    <div class="row justify-content-center">
+                        <a class="btn btn-primary btn-user btn-block" href="#" data-toggle="modal" data-target="#deleteModal"><i class="fas fa-trash-alt"></i> Delete</a>
+                    </div>
+                  </div>
+              </div>
           <div class="card shadow mb-4">
             <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">Current Company List</h6>
@@ -42,7 +55,7 @@
    <td>{{$item->id}}</td>
    <td>{{$item->name}}</td>
    <td>{{$item->email}}</td>
-   <td><form method="POST" action="{{ route('companydelete') }}">@csrf<input type="hidden" name="id" value="{{ $item->id }}"><input type="hidden" name="email" value="{{ $item->email }}"><button class="btn btn-google btn-block"><i class="fas fa-trash-alt"></i> Delete</button></form></td>
+   <td><form method="POST" action="{{ route('companydeletes') }}">@csrf<input type="hidden" name="id" value="{{ $item->id }}"><input type="hidden" name="email" value="{{ $item->email }}"><button class="btn btn-google btn-block"><i class="fas fa-trash-alt"></i> Delete</button></form></td>
    </tr>
 @endforeach
 </tbody>
@@ -50,4 +63,27 @@
 </div>
 </div>
 </div>
+<!-- delete list Modal-->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete all students ?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Are you sure do you want to delete all company at once? please keep in mind that once you click the delete button all the data including the jobs posted by the company will be deleted.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" onclick="event.preventDefault();document.getElementById('wait-form').submit();" style="color:#fff;">Delete</a>
+          <form id="wait-form" action="{{ route('companydeletes') }}" method="POST">
+                                  @csrf
+                <input type="hidden" name="id" value="">
+                <input type="hidden" name="email" value="all">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection

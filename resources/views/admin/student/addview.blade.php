@@ -20,10 +20,10 @@
                        {!! \Session::get('successinfo') !!}
                     </div>
                 @endif	  
-            <form class="user" method="POST" action="{{ route('studentadd') }}">
+            <form class="user" method="POST" action="{{ route('studentadds') }}">
             @csrf
             <div class="form-group">
-                <input type="email" class="form-control form-control-user @error('email') is-invalid @enderror" id="email" placeholder="Email Address" name="email" value="{{ old('email') }}" required autocomplete="email">
+                <input type="text" class="form-control form-control-user" id="email" placeholder="Email Address" name="email" value="{{ old('email') }}" required>
                 @error('email')
                    <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                   @enderror

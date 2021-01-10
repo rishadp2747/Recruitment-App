@@ -1,21 +1,39 @@
-@extends('layouts.company')
+@extends('layouts.admin')
 
 @section('content')
 @php
    $i = 0; 
 @endphp
 @php
-$max_qual = $data_num; 
-$path = '/var/www/html/storage/uploads/company/students/selection'.str_replace(' ', '', strtolower($uname)).'.csv';
-$path_url = url('storage/uploads/company/students/selection'.str_replace(' ', '', strtolower($uname)).'.csv');
+$route = Route::currentRouteName();
 
+if($route=='approvedJob'){
+$path = '/var/www/html/storage/uploads/admin/students/approved'.str_replace(' ', '', strtolower($uname)).'.csv';
+$path_url = url('storage/uploads/admin/students/approved'.str_replace(' ', '', strtolower($uname)).'.csv');
+}
+elseif($route=='reviewingJob'){
+$path = '/var/www/html/storage/uploads/admin/students/reviewing'.str_replace(' ', '', strtolower($uname)).'.csv';
+$path_url = url('storage/uploads/admin/students/reviewing'.str_replace(' ', '', strtolower($uname)).'.csv');
+}
+elseif($route=='waitlistedJob'){
+$path = '/var/www/html/storage/uploads/admin/students/waitlisted'.str_replace(' ', '', strtolower($uname)).'.csv';
+$path_url = url('storage/uploads/admin/students/waitlisted'.str_replace(' ', '', strtolower($uname)).'.csv');
+}
+elseif($route=='rejectedJob'){
+$path = '/var/www/html/storage/uploads/admin/students/rejected'.str_replace(' ', '', strtolower($uname)).'.csv';
+$path_url = url('storage/uploads/admin/students/rejected'.str_replace(' ', '', strtolower($uname)).'.csv');
+}
+
+if($route=='approvedJob' || $route=='reviewingJob' || $route=='waitlistedJob' || $route=='rejectedJob'){
 if(file_exists($path)){
    File::delete($path);
 }
+}
 if(isset($applied) && isset($stud_det)){
-  $numb = 0;
+$max_qual = $data_num;
+$numb = 0;
 $numb2 = 0;
-$name_arr = array('Index','Application Id','Job Id','Job Name','Applied On','Application Status','Student Name','Student Email','Job Title','Status','Age','DOB','Phone No.','Skills','Volunteership','Linkedin URL','Github URL','Bio','Gender','Asap_Skills','Aadhaar');
+$name_arr = array('Index','Application Id','Job Id','Job Name','Applied On','Application Status','Student Name','Company Name','Company Email','Student Email','Job Title','Status','Age','DOB','Phone No.','Skills','Volunteership','Linkedin URL','Github URL','Bio','Gender','Asap_Skills','Aadhaar');
 for($x=1;$x<=$max_qual;$x++){
   $n1 = 'Qualification '.(string)$x;
   $n2 = 'Course '.(string)$x;
@@ -31,7 +49,7 @@ for($x=1;$x<=$max_qual;$x++){
 }
   foreach($applied as $ap){
     $numb = $numb +1;
-    ${"new" . $numb} = array($numb,$ap->U_Id,$ap->Job_Id,$ap->Job_Title,$ap->created_at,$ap->Status,$name[$numb-1]->name,$ap->Student_Email,$ap->Job_Title,$ap->Status);
+    ${"new" . $numb} = array($numb,$ap->U_Id,$ap->Job_Id,$ap->Job_Title,$ap->created_at,$ap->Status,$name[$numb-1]->name,$comp_name[$numb-1]->name,$ap->Company_Email,$ap->Student_Email,$ap->Job_Title,$ap->Status);
   }
   $hg = 0;
   foreach($stud_det as $st){
@@ -61,7 +79,7 @@ fputcsv($fp, $name_arr);
 for($f=1;$f<=$numb;$f++){
 	fputcsv($fp, ${"final" . $f});
 }
-fclose($fp); 
+fclose($fp);
 }
 
 @endphp
@@ -76,8 +94,8 @@ fclose($fp);
                        {!! \Session::get('successinfo') !!}
                     </div>
                 @endif
-          <p class="mb-4">Mark the applications as selected or not selected.</p>
-          @if (isset($applied))
+          <p class="mb-4">For further details click on know more.</p>
+          @if (($route=='approvedJob' || $route=='reviewingJob' || $route=='waitlistedJob' || $route=='rejectedJob') && isset($applied))
           <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
               <!-- Nested Row within Card Body -->
@@ -105,6 +123,7 @@ fclose($fp);
                     <tr>
                       <th>Application Id</th>
                       <th>Job Title</th>
+                      <th>Company Name</th>
                       <th>Student Name</th>
                       <th>Applied On</th>
                       <th>Status</th>
@@ -115,6 +134,7 @@ fclose($fp);
                     <tr>
                       <th>Application Id</th>
                       <th>Job Title</th>
+                      <th>Company Name</th>
                       <th>Student Name</th>
                       <th>Applied On</th>
                       <th>Status</th>
@@ -127,12 +147,30 @@ fclose($fp);
    <tr>
    <td>{{$item->U_Id}}</td>
    <td>{{$item->Job_Title}}</td>
+   <td>{{$comp_name[$i]->name}}</td>
    <td>{{$name[$i]->name}}</td>
    <td>{{$item->created_at}}</td>
    <td>{{$item->Status}}</td>
-   <td><form method="POST" action="{{ route('statuschangeselectedJob') }}">@csrf<input type="hidden" name="u_id" value="{{ $item->U_Id }}"><input type="hidden" name="status" value="Selected"><button class="btn btn-success btn-block"><i class="fas fa-clipboard-check"></i> Selected</button></form><br>
-    <form method="POST" action="{{ route('statuschangeselectedJob') }}">@csrf<input type="hidden" name="u_id" value="{{ $item->U_Id }}"><input type="hidden" name="status" value="NotSelected"><button class="btn btn-google btn-block"><i class="fas fa-times-circle"></i> Not Selected</button></form>
-    <hr><a href="/dashboard/jobs/company/applied/{{ $item->U_Id }}" class="btn btn-facebook btn-block"><i class="fas fa-info-circle"></i> Know More</a></td>
+   <td><a href="/dashboard/jobs/company/applied/{{ $item->U_Id }}" class="btn btn-facebook btn-block"><i class="fas fa-info-circle"></i> Know More</a>
+   <a class="btn btn-block btn-dark" onclick="event.preventDefault();document.getElementById('wait-form{{ $i }}').submit();" style="color:#fff;"><i class="fas fa-clock"></i> Waitlist</a>
+   <a class="btn btn-block btn-success" onclick="event.preventDefault();document.getElementById('approve-form{{ $i }}').submit();" style="color:#fff;"><i class="fas fa-check-circle"></i> Approve</a>
+   <a class="btn btn-block btn-danger" onclick="event.preventDefault();document.getElementById('reject-form{{ $i }}').submit();" style="color:#fff;"><i class="fas fa-times-circle"></i> Reject</a>
+          <form id="wait-form{{ $i }}" action="{{ route('statuschangeJob') }}" method="POST">
+                                  @csrf
+                <input type="hidden" name="u_id" value="{{ $item->U_Id }}">
+                <input type="hidden" name="status" value="Waitlisted">
+          </form>
+          <form id="approve-form{{ $i }}" action="{{ route('statuschangeJob') }}" method="POST">
+                                  @csrf
+                <input type="hidden" name="u_id" value="{{ $item->U_Id }}">
+                <input type="hidden" name="status" value="Approved">
+          </form>
+          <form id="reject-form{{ $i }}" action="{{ route('statuschangeJob') }}" method="POST">
+                                  @csrf
+                <input type="hidden" name="u_id" value="{{ $item->U_Id }}">
+                <input type="hidden" name="status" value="Rejected">
+          </form>
+   </td>
    </tr>
    @php
      $i++;  

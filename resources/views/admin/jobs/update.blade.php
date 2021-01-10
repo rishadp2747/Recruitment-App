@@ -1,4 +1,4 @@
-@extends('layouts.company')
+@extends('layouts.admin')
 
 @section('content')
           <!-- DataTales Example -->
@@ -12,10 +12,9 @@
                        {!! \Session::get('successinfo') !!}
                     </div>
                 @endif
-                <p>Please note that once you click on delete button the job will be deleted instantly and the process cannot be reversed.</p>
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Delete Posted Jobs</h6>
+              <h6 class="m-0 font-weight-bold text-primary">Update Posted Jobs</h6>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -23,22 +22,24 @@
                   <thead>
                     <tr>
                       <th>Job Id</th>
+                      <th>Company</th>
                       <th>Job Title</th>
                       <th>Preferred Gender</th>
                       <th>Age</th>
                       <th>Last Date</th>
-                      <th>Created At</th>
+                      <th>Updated On</th>
                       <th>Operation</th>
                     </tr>
                   </thead>
                   <tfoot>
                     <tr>
                       <th>Job Id</th>
+                      <th>Company</th>
                       <th>Job Title</th>
                       <th>Preferred Gender</th>
                       <th>Age</th>
                       <th>Last Date</th>
-                      <th>Created At</th>
+                      <th>Updated On</th>
                       <th>Operation</th>
                     </tr>
                   </tfoot>
@@ -46,12 +47,13 @@
 @foreach ($jobs as $item)
    <tr>
     <td>{{$item->Job_Id}}</td>
+    <td>{{$item->Email}}</td>
     <td>{{$item->Job_Title}}</td>
     <td>{{$item->gender}}</td>
     <td>{{$item->Min_Age}} - {{$item->Max_Age}}</td>
     <td>{{$item->last_date}}</td>
-   <td>{{$item->created_at}}</td>
-   <td><form method="POST" action="{{ route('deleteJobs') }}">@csrf<input type="hidden" name="id" value="{{ $item->Job_Id }}"><button class="btn btn-google btn-block"><i class="fas fa-trash-alt"></i> Delete</button></form></td>
+    <td>{{$item->updated_at}}</td>
+   <td><a href="{{ route('updateJob')}}/{{ $item->Job_Id }}" class="btn btn-facebook btn-block"><i class="fas fa-pencil-alt"></i> Update</a></td>
    </tr>
 @endforeach
 </tbody>

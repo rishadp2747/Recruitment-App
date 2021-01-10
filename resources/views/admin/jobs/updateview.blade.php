@@ -1,4 +1,4 @@
-@extends('layouts.company')
+@extends('layouts.admin')
 
 @section('content')
 @php
@@ -80,7 +80,7 @@
                     <p class="op p-1">Minimum Educational Qualification {{$ne}}</p>
                 </div>
                 <div class="row">
-                  <div class="col-sm-4">
+                  <div class="col-4">
                     <div class="form-group">
                       <label for="qualification{{$va}}" style="color:#161616;"><b>Qualification</b></label>
                         <select class="form-control" name="qualification{{$va}}" id="qualification{{$va}}">
@@ -94,7 +94,7 @@
                           @enderror
                       </div>
                   </div> 
-                  <div class="col-sm-4">
+                  <div class="col-4">
                     <div class="form-group">
                       <label class="mx-1" for="cgpa{{$va}}" style="color:#161616;"><b>Percentage</b> (Convert cgpa into percentage)</label>
                       <input type="number" min="1" max="100" class="form-control form-control-user" placeholder="Percentage" name="cgpa{{$va}}" value="{{ $it->cgpa }}" id="cgpa{{$va}}">
@@ -103,7 +103,7 @@
                       @enderror
                     </div>
                   </div>
-                  <div class="col-sm-4">
+                  <div class="col-4">
                     <div class="form-group">
                       <label class="mx-1" for="course{{$va}}" style="color:#161616;"><b>Course Name</b></label>
                         <input type="text" min="1" max="100" class="form-control form-control-user" placeholder="Course Name" value="{{ $it->course }}" name="course{{$va}}" id="course{{$va}}">
@@ -125,7 +125,7 @@
                    </div>
                   </div>
                   <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-6">
                       <div class="form-group">
                         <label class="mx-1" for="hbacklogs{{$va}}" style="color:#161616;"><b>History of Backlogs</b></label>
                           <input type="number" min="0" max="100" class="form-control form-control-user" placeholder="input a number" name="hbacklogs{{$va}}" id="hbacklogs{{$va}}" value="{{ $it->hbacklogs }}">
@@ -135,7 +135,7 @@
                       </div>
                     </div>
          
-                    <div class="col-sm-6">
+                    <div class="col-6">
                       <div class="form-group">
                         <label class="mx-1" for="cbacklogs{{$va}}" style="color:#161616;"><b>Current Backlogs</b></label>
                           <input type="number" min="0" max="100" class="form-control form-control-user" placeholder="input a number" name="cbacklogs{{$va}}" id="cbacklogs{{$va}}" value="{{ $it->cbacklogs }}">
@@ -152,7 +152,7 @@
                   @endphp
                   @endforeach
                   <div class="row d-none" id="qual">
-              <div class="col-sm-4">
+              <div class="col-4">
                 <div class="form-group">
                   <label for="qulatification">Qualification <span style="color:red">*</span></label>
                     <select class="form-control" name="qualification" id="copyQual">
@@ -229,16 +229,16 @@ $(document).ready(function() {
                     '<p class="op p-1">Minimum Educational Qualification '+(id+1)+'</p>'+
                 '</div>'+
                 '<div class="row">'+
-                 "<div class='col-sm-4'><div class='form-group'><label for='qualification0' style='color:#161616;'><b>Qualification</b></label><select class='form-control' name='qualification"+id+"' id='qualification"+id+"' onchange='qualChange("+id+")'><option value='' >Select</options>"+qSet.html()+"</select></div></div>"+
+                 "<div class='col-4'><div class='form-group'><label for='qualification0' style='color:#161616;'><b>Qualification</b></label><select class='form-control' name='qualification"+id+"' id='qualification"+id+"' onchange='qualChange("+id+")'><option value='' >Select</options>"+qSet.html()+"</select></div></div>"+
 
-                 '<div class="col-sm-4">'+
+                 '<div class="col-4">'+
                     '<div class="form-group">'+
                       '<label class="mx-1" for="cgpa'+id+'" style="color:#161616;"><b>Percentage</b> (Convert cgpa into percentage)</label>'+
                       '<input type="number" min="1" max="100" class="form-control form-control-user" placeholder="Percentage" name="cgpa'+id+'"  id="cgpa'+id+'">'+
                     '</div>'+
                   '</div>'+
                  
-                 '<div class="col-sm-4">'+
+                 '<div class="col-4">'+
                   '<div class="form-group">'+
                    '<label class="mx-1" for="course0" style="color:#161616;"><b>Course Name</b></label>'+
                     '<input type="text" min="1" max="100" class="form-control form-control-user" placeholder="Course Name" name="course'+id+'" id="course'+id+'">'+
@@ -260,14 +260,14 @@ $(document).ready(function() {
 
     var row3 = '<div class="row">'+
 
-                  '<div class="col-sm-6">'+
+                  '<div class="col-6">'+
                     '<div class="form-group">'+
                     '<label class="mx-1" for="hbacklogs0" style="color:#161616;"><b>History of Backlogs</b></label>'+
                     '<input type="number" min="0" max="100" class="form-control form-control-user" placeholder="input a number" name="hbacklogs'+id+'" id="hbacklogs'+id+'">'+
                     '</div>'+
                   '</div>'+
 
-                  '<div class="col-sm-6">'+
+                  '<div class="col-6">'+
                     '<div class="form-group">'+
                     '<label class="mx-1" for="cbacklogs0" style="color:#161616;"><b>Current Backlogs</b></label>'+
                     '<input type="number" min="0" max="100" class="form-control form-control-user" placeholder="input a number" name="cbacklogs'+id+'" id="cbacklogs'+id+'">'+

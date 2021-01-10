@@ -503,12 +503,24 @@ input[type="file"] {
     cursor: pointer;
 }
 
-.red {
-    color: #ff3232;
+.green {
+    color: #008F51 !important;
 }
 
-.green {
-    color: #008F51;
+.red {
+    color: #ff3232 !important;
+}
+
+.bluekgg {
+    color: #4e73df !important;
+}
+
+.black {
+    color: #000000 !important;
+}
+
+.yellowkyy {
+    color: #F1C40F !important;
 }
 
 .bg-green{
@@ -531,10 +543,6 @@ input[type="file"] {
     background-color: #ff3232;
     border-radius: 10px 10px 10px 10px;
     border: 3px solid #fff;
-}
-
-.black {
-    color: #000;
 }
 
 .border-grey {

@@ -8,8 +8,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  <meta name="theme-color" content="#2874A6" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <link rel="icon" type="image/png" href="<?php echo URL::asset('img/fav1.png'); ?>"/>
+  <link rel="icon" type="image/png" href="<?php echo URL::asset('img/asap.png'); ?>"/>
 
   <title>Approval Pending</title>
 

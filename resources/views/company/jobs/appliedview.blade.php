@@ -8,15 +8,15 @@
 $route = Route::currentRouteName();
 
 if($route=='approvedJob'){
-$path = public_path('storage/uploads/company/students/approved'.str_replace(' ', '', strtolower($uname)).'.csv');
+$path = '/var/www/html/storage/uploads/company/students/approved'.str_replace(' ', '', strtolower($uname)).'.csv';
 $path_url = url('storage/uploads/company/students/approved'.str_replace(' ', '', strtolower($uname)).'.csv');
 }
 elseif($route=='reviewingJob'){
-$path = public_path('storage/uploads/company/students/reviewing'.str_replace(' ', '', strtolower($uname)).'.csv');
+$path = '/var/www/html/storage/uploads/company/students/reviewing'.str_replace(' ', '', strtolower($uname)).'.csv';
 $path_url = url('storage/uploads/company/students/reviewing'.str_replace(' ', '', strtolower($uname)).'.csv');
 }
 elseif($route=='waitlistedJob'){
-$path = public_path('storage/uploads/company/students/waitlisted'.str_replace(' ', '', strtolower($uname)).'.csv');
+$path = '/var/www/html/storage/uploads/company/students/waitlisted'.str_replace(' ', '', strtolower($uname)).'.csv';
 $path_url = url('storage/uploads/company/students/waitlisted'.str_replace(' ', '', strtolower($uname)).'.csv');
 }
 
@@ -29,7 +29,7 @@ if(isset($applied) && isset($stud_det)){
 $max_qual = $data_num;
 $numb = 0;
 $numb2 = 0;
-$name_arr = array('Index','Application Id','Job Id','Job Name','Applied On','Application Status','Student Email','Job Title','Status','Age','DOB','Phone No.','Skills','Volunteership','Linkedin URL','Github URL','Bio','Gender','Asap_Skills','Aadhaar');
+$name_arr = array('Index','Application Id','Job Id','Job Name','Applied On','Application Status','Student Name','Student Email','Job Title','Status','Age','DOB','Phone No.','Skills','Volunteership','Linkedin URL','Github URL','Bio','Gender','Asap_Skills','Aadhaar');
 for($x=1;$x<=$max_qual;$x++){
   $n1 = 'Qualification '.(string)$x;
   $n2 = 'Course '.(string)$x;
@@ -45,7 +45,7 @@ for($x=1;$x<=$max_qual;$x++){
 }
   foreach($applied as $ap){
     $numb = $numb +1;
-    ${"new" . $numb} = array($numb,$ap->U_Id,$ap->Job_Id,$ap->Job_Title,$ap->created_at,$ap->Status,$ap->Student_Email,$ap->Job_Title,$ap->Status);
+    ${"new" . $numb} = array($numb,$ap->U_Id,$ap->Job_Id,$ap->Job_Title,$ap->created_at,$ap->Status,$name[$numb-1]->name,$ap->Student_Email,$ap->Job_Title,$ap->Status);
   }
   $hg = 0;
   foreach($stud_det as $st){
@@ -61,6 +61,9 @@ for($x=1;$x<=$max_qual;$x++){
         }
         elseif($fin->qualification==3){
             $qua = 'Post Graduation';
+        }
+        elseif($fin->qualification==4 || $fin->qualification==5){
+            $qua = 'Diploma';
         }
         array_push(${"new_3" . $numb2},$qua,$fin->course,$fin->specialisation,$fin->cgpa,$fin->board,$fin->institution,$fin->join,$fin->pass,$fin->cbacklogs,$fin->hbacklogs);  
       }

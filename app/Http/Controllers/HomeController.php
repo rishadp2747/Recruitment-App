@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Studentdetail;
 use App\Models\Companydetail;
 use App\Models\Qualifications;
+use App\Models\Job;
+use App\Models\Appliedjob;
 use App\Models\AsapCourses;
 use App\Models\Students_qualifications;
 use App\Models\Volunteership;
@@ -44,7 +46,19 @@ class HomeController extends Controller
           else{
             $p_status = 'yes';
           }
-          $data = array( 'uname' => $uname , 'p_status' => $p_status);
+          $a = Appliedjob::where('Student_Email',$email)->get();
+          $a_count = count($a);
+          $a_rev = Appliedjob::where('Student_Email',$email)->where('Status','Reviewing')->get();
+          $a_count_rev = count($a_rev);
+          $a_app = Appliedjob::where('Student_Email',$email)->where('Status','Approved')->get();
+          $a_count_app = count($a_app);
+          $a_rej = Appliedjob::where('Student_Email',$email)->where('Status','Rejected')->get();
+          $a_count_rej = count($a_rej);
+          $a_sel = Appliedjob::where('Student_Email',$email)->where('Status','Selected')->get();
+          $a_count_sel = count($a_sel);
+          $a_not = Appliedjob::where('Student_Email',$email)->where('Status','NotSelected')->get();
+          $a_count_not = count($a_not);
+          $data = array( 'uname' => $uname , 'p_status' => $p_status, 'a_count' => $a_count, 'a_count_rev' => $a_count_rev, 'a_count_app' => $a_count_app, 'a_count_rej' => $a_count_rej, 'a_count_sel' => $a_count_sel, 'a_count_not' => $a_count_not);
           return view('student.dashboard')->with($data);
         }
         elseif($u_type==1){
@@ -55,11 +69,60 @@ class HomeController extends Controller
             else{
               $p_status = 'yes';
             }
-            $data = array( 'uname' => $uname , 'p_status' => $p_status);
+            $j = Job::where('Email',$email)->get();
+            $j_count = count($j);
+            $a = Appliedjob::where('Company_Email',$email)->get();
+            $a_count = count($a);
+            $data = array( 'uname' => $uname , 'p_status' => $p_status, 'j_count' => $j_count, 'a_count' => $a_count);
           return view('company.dashboard')->with($data);
         }
         elseif($u_type==2){
-          $data = array( 'uname' => $uname );
+          $s = User::where('user_type',0)->get();
+          $s_count = count($s);
+          $c = User::where('user_type',1)->get();
+          $c_count = count($c);
+          $j = Job::get();
+          $j_count = count($j);
+          $a = Appliedjob::get();
+          $a_count = count($a);
+          $all_application = ["Applied","Reviewing","Waitlisted","Approved","Rejected","Selected","NotSelected"];
+          $gh = 1;
+          foreach($all_application as $it){
+            ${"ap".$gh} = Appliedjob::where('Status',$it)->get();
+            ${"c_".$gh} = count(${"ap".$gh});
+            $gh = $gh + 1;
+          }
+          $cert_applications = ["Selected","NotSelected"];
+          $ghh = 2;
+          foreach($cert_applications as $itt){
+            ${"d".$ghh} = Appliedjob::where('Status',$itt)->get();
+            if(${"d".$ghh}->isEmpty()){
+              ${"cert_count".$ghh} = 0;
+              ${"comp_n".$ghh} = 0;
+              ${"j".$ghh} = 0;
+              ${"vv".$ghh} = 0;
+              ${"f".$ghh} = 0;
+              ${"n".$ghh} = 0;
+            }
+            else{
+            ${"cert_count".$ghh} = 1;
+            ${"vv".$ghh} = 0;
+            ${"hg".$ghh} = 0;
+            foreach(${"d".$ghh} as $item){
+            ${"comp_n".$ghh}[] = User::select('name')->where('email',$item->Company_Email)->get()->first();
+            ${"n".$ghh}[] = User::select('name')->where('email',$item->Student_Email)->get()->first();
+            ${"f".$ghh}[] = Studentdetail::where('email',$item->Student_Email)->get()->first();
+            ${"j".$ghh}[] = Students_qualifications::where('email',$item->Student_Email)->get();
+            ${"val".$ghh} = ${"j".$ghh}[${"hg".$ghh}]->count();
+            if(${"val".$ghh}>${"vv".$ghh}){
+              ${"vv".$ghh} = ${"val".$ghh};
+            }
+            ${"hg".$ghh} = ${"hg".$ghh} + 1;
+            }
+            }
+            $ghh = $ghh + 1;
+          }
+          $data = array( 'uname' => $uname , 's_count' => $s_count, 'c_count' => $c_count, 'j_count' => $j_count, 'a_count' => $a_count, 'c_1' => $c_1, 'c_2' => $c_2, 'c_3' => $c_3, 'c_4' => $c_4, 'c_5' => $c_5, 'c_6' => $c_6, 'c_7' => $c_7, 'comp_name2' => $comp_n2, 'applied2' => $d2, 'stud_qual2' => $j2, 'data_num2' => $vv2, 'stud_det2' => $f2, 'name2' => $n2, 'comp_name3' => $comp_n3, 'applied3' => $d3, 'stud_qual3' => $j3, 'data_num3' => $vv3, 'stud_det3' => $f3, 'name3' => $n3, 'cert_count2' => $cert_count2, 'cert_count3' => $cert_count3);
           return view('admin.dashboard')->with($data);
         }
         else{
@@ -108,7 +171,7 @@ class HomeController extends Controller
         else{
           $stat = 'no';
         }
-        $data = array('stud_qual' => $stud_qual, 'status' => $stat, 'uname' => $uname , 'data' => $data , 'email' => $email, 'qualifications' => $qualification, 'asap' => $asap_courses, 'volunteership' => $volunteership );
+        $data = array('stud_qual' => $stud_qual, 'status' => $stat, 'uname' => $uname , 'data' => $data , 'email' => $email, 'qualifications' => $qualification, 'asap' => $asap_courses, 'volunteership_ss' => $volunteership );
         return view('student.profile')->with($data);
       }
       elseif($u_type==1){
@@ -168,10 +231,12 @@ class HomeController extends Controller
         $req->validate([
             'name' => 'required|string|min:2|max:100',
             'age' => 'required|integer|min:18|max:100',
-            'address' => 'required|string|min:10|max:500',
+            'address' => 'required|string|min:5|max:500',
             'bio' => 'required|string|min:5|max:200',
             'skills' => 'required|string|min:5|max:200',
             'dob' => 'required|date_format:Y-m-d',
+            'asapskills' => 'required',
+            'volunteership' => 'nullable|array',
             'phoneno' => 'required|digits:10',
             'gender' => 'required|in:male,female,other',
             'aadhaar' => 'required|integer',

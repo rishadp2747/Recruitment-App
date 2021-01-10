@@ -1,4 +1,4 @@
-@extends('layouts.company')
+@extends('layouts.admin')
 
 @section('content')
           <!-- DataTales Example -->
@@ -23,6 +23,7 @@
                   <thead>
                     <tr>
                       <th>Job Id</th>
+                      <th>Company</th>
                       <th>Job Title</th>
                       <th>Preferred Gender</th>
                       <th>Age</th>
@@ -34,6 +35,7 @@
                   <tfoot>
                     <tr>
                       <th>Job Id</th>
+                      <th>Company</th>
                       <th>Job Title</th>
                       <th>Preferred Gender</th>
                       <th>Age</th>
@@ -46,6 +48,7 @@
 @foreach ($jobs as $item)
    <tr>
     <td>{{$item->Job_Id}}</td>
+    <td>{{$item->Email}}</td>
     <td>{{$item->Job_Title}}</td>
     <td>{{$item->gender}}</td>
     <td>{{$item->Min_Age}} - {{$item->Max_Age}}</td>

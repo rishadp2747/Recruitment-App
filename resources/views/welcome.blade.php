@@ -8,7 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link rel="icon" type="image/png" href="img/fav1.png"/>
+  <meta name="theme-color" content="#2874A6" />
+  <link rel="icon" type="image/png" href="img/asap.png"/>
 
   <title>Welcome</title>
 

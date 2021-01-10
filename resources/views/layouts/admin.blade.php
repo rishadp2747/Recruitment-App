@@ -8,7 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link rel="icon" type="image/png" href="<?php echo URL::asset('img/fav1.png'); ?>"/>
+  <meta name="theme-color" content="#000000" />
+  <link rel="icon" type="image/png" href="<?php echo URL::asset('img/asap.png'); ?>"/>
 
   <title>Admin Dashboard</title>
 
@@ -145,6 +146,13 @@
         <a class="nav-link" href="{{ route('approvedJob') }}">
           <i class="fas fa-check-circle"></i>
           <span>Approved Applications</span></a>
+      </li>
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item @if($route=='selectedJob'){{ 'active' }} @endif">
+        <a class="nav-link" href="{{ route('selectedJob') }}">
+          <i class="fas fa-clipboard-check"></i>
+          <span>Final Applications</span></a>
       </li>
 
       <!-- Nav Item - Dashboard -->

@@ -8,7 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link rel="icon" type="image/png" href="<?php echo URL::asset('img/fav1.png'); ?>"/>
+  <meta name="theme-color" content="#117A65" />
+  <link rel="icon" type="image/png" href="<?php echo URL::asset('img/asap.png'); ?>"/>
 
   <title>Company Dashboard</title>
 
@@ -57,15 +58,6 @@
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
         </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item @if($route=='studentadd'){{ 'active' }} @endif">
-        <a class="nav-link" href="{{ route('studentadd') }}">
-          <i class="fas fa-user-plus"></i>
-            <span>Add Student</span></a>
-      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">

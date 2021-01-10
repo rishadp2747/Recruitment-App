@@ -35,7 +35,7 @@ $qual_num = $qual_num + 1;
                 <p>*If you encounter any technical fault in this form while filling, please refresh the form by <a class="btn btn-success btn-user" href=""><i class="fas fa-hand-point-up"></i> clicking here</a></p>
                 <a class="btn btn-danger btn-user btn-block cnsnt" href="#"><i class="fas fa-eye"></i> I have read the above sentence</a>
                 @endif
-            <form class="user u_form  @if($status=='no') {{ 'hidden' }} @endif" method="POST" action="{{ route('profile') }}" enctype="multipart/form-data">
+            <form class="user u_form  @if($status=='no') {{ 'hidden' }} @endif" method="POST" action="{{ route('profiles') }}" enctype="multipart/form-data">
               @csrf
               <div class="form-group row justify-content-center">
               <img @if($status=='yes'){{ 'disabled' }}@endif class="rounded-circle border-grey" width="120" height="120" src="@if(isset($data->Photo)){{ url('storage/uploads/student/photo/'.$data->Photo) }} @else{{ url('/img/default.png') }}@endif" id="photoview" onclick="clickPhotoUp()">
@@ -54,7 +54,7 @@ $qual_num = $qual_num + 1;
                 </div>
                 <div class="col-sm-6">
                 <label for="qulatification">Age <span style="color:red">*</span></label>
-                <input type="number" class="form-control form-control-user" placeholder="Age" name="age" value="@if(old('age')!== null){{ old('age') }}@elseif(isset($data->Age)){{ $data->Age }}@else{{ '' }}@endif" @if($status=='yes'){{ 'disabled' }}@endif required>
+                <input type="number" min="18" max="100" class="form-control form-control-user" placeholder="Age" name="age" value="@if(old('age')!== null){{ old('age') }}@elseif(isset($data->Age)){{ $data->Age }}@else{{ '' }}@endif" @if($status=='yes'){{ 'disabled' }}@endif required>
                   @error('age')
                   <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                  @enderror
@@ -62,10 +62,10 @@ $qual_num = $qual_num + 1;
               </div>
 
               <div class="row">
-                <div class="col-6">
+                <div class="col-sm-6">
                   <div class="form-group">
                   <label for="gender">Address<span style="color:red">*</span></label>
-                    <textarea class="form-control form-control-user" placeholder="Address" name="address" @if($status=='yes'){{ 'disabled' }}@endif required>@if(old('address')!== null){{ old('address') }}@elseif(isset($data->Address)){{ $data->Address }}@else{{ '' }}@endif</textarea>
+                    <textarea class="form-control form-control-user" min="5" max="500" placeholder="Address" name="address" @if($status=='yes'){{ 'disabled' }}@endif required>@if(old('address')!== null){{ old('address') }}@elseif(isset($data->Address)){{ $data->Address }}@else{{ '' }}@endif</textarea>
                     @error('address')
                       <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                     @enderror
@@ -73,10 +73,10 @@ $qual_num = $qual_num + 1;
 
                 </div>
 
-                <div class="col-6">
+                <div class="col-sm-6">
                   <div class="form-group">
                   <label for="gender">Give a short description about you.<span style="color:red">*</span></label>
-                  <textarea class="form-control form-control-user" placeholder="Bio" name="bio" @if($status=='yes'){{ 'disabled' }}@endif required>@if(old('bio')!== null){{ old('bio') }}@elseif(isset($data->Bio)){{ $data->Bio }}@else{{ '' }}@endif</textarea>
+                  <textarea min="5" max="200" class="form-control form-control-user" placeholder="Bio" name="bio" @if($status=='yes'){{ 'disabled' }}@endif required>@if(old('bio')!== null){{ old('bio') }}@elseif(isset($data->Bio)){{ $data->Bio }}@else{{ '' }}@endif</textarea>
                   @error('bio')
                     <p class="p-2 red-alert" role="alert">{{ $message }}</p>
                   @enderror
@@ -88,7 +88,7 @@ $qual_num = $qual_num + 1;
               
 
               <div class="row">
-                <div class="col-4">
+                <div class="col-sm-4">
                     <div class="form-group">
                     <label for="dob">Date of Birth<span style="color:red">*</span></label>
                       <input type="text" onfocus="(this.type='date')" class="form-control form-control-user" id="exampleInputPassword" placeholder="Date of Birth" name="dob" value="@if(old('dob')!== null){{ old('dob') }}@elseif(isset($data->DOB)){{ $data->DOB }}@else{{ '' }}@endif" @if($status=='yes'){{ 'disabled' }}@endif required>
@@ -98,7 +98,7 @@ $qual_num = $qual_num + 1;
                   </div>
                 </div>
 
-                <div class="col-4">
+                <div class="col-sm-4">
                   <div class="form-group">
                      <label for="phoneno">Mobile Number<span style="color:red">*</span></label>
                       <input type="tel" class="form-control form-control-user" placeholder="Phone Number" name="phoneno" value="@if(old('phoneno')!== null){{ old('phoneno') }}@elseif(isset($data->Phoneno)){{ $data->Phoneno }}@else{{ '' }}@endif" @if($status=='yes'){{ 'disabled' }}@endif required>
@@ -108,14 +108,14 @@ $qual_num = $qual_num + 1;
                   </div>
                 </div>
 
-                <div class="col-4">
+                <div class="col-sm-4">
                   <div class="form-group">
                   <label for="gender">Gender<span style="color:red">*</span></label>
                     <select class="form-control " name="gender" id="gender" @if($status=='yes'){{ 'disabled' }}@endif required>
-                      <option value="">Select your gender</option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
+                      <option value="" @if(old('')) {{'selected'}} @endif>Select your gender</option>
+                      <option value="male"  @if(old('male')) {{'selected'}} @endif>Male</option>
+                      <option value="female"  @if(old('female')) {{'selected'}} @endif>Female</option>
+                      <option value="other"  @if(old('other')) {{'selected'}} @endif>Other</option>
                     </select>
                       @error('gender')
                         <p class="p-2 red-alert" role="alert">{{ $message }}</p>
@@ -130,7 +130,7 @@ $qual_num = $qual_num + 1;
              
      
             <div class="form-group">
-            <label for="exampleInputEmail1">Completed Asap Courses</label>
+            <label for="exampleInputEmail1">Completed Asap Courses<span style="color:red">*</span></label>
             @if($status=='no')
               <div class="d-flex flex-wrap ">
                 @foreach ($asap as $item)
@@ -151,7 +151,7 @@ $qual_num = $qual_num + 1;
             </div>
 
             <div class="row">
-                <div class="col-6">
+                <div class="col-sm-6">
                     <div class="form-group">
                     <label for="exampleInputEmail1">Other Skills<span style="color:red">*</span></label>
                     <textarea rows="5" class="form-control form-control-user" placeholder="Skills" name="skills" @if($status=='yes'){{ 'disabled' }}@endif required>@if(old('skills')!== null){{ old('skills') }}@elseif(isset($data->Skills)){{ $data->Skills }}@else{{ '' }}@endif</textarea>
@@ -163,13 +163,13 @@ $qual_num = $qual_num + 1;
 
                 </div>
 
-                <div class="col-6">
+                <div class="col-sm-6">
 
                 <div class="form-group">
                       <label class="form-check-label" for="defaultCheck1">Volunteership</label>
                     @if($status=='no')
                       <select name="volunteership[]" class="selectpicker w-50 m-3" multiple data-live-search="true">
-                        @foreach ($volunteership as $item)
+                        @foreach ($volunteership_ss as $item)
                           <option value='{{$item->volunteerships}}' >{{$item->volunteerships}}</options>
                         @endforeach
                       </select>
@@ -195,7 +195,7 @@ $qual_num = $qual_num + 1;
 
             <div class="row">
 
-                <div class="col-6">
+                <div class="col-sm-6">
                     <div class="form-group">
                     <label class="form-check-label" for="defaultCheck1">Linkedin</label>
                     <input type="url" class="form-control form-control-user" placeholder="Linkedin URL" name="linkedin" value="@if(old('linkedin')!== null){{ old('linkedin') }}@elseif(isset($data->Linkedin)){{ $data->Linkedin }}@else{{ '' }}@endif" @if($status=='yes'){{ 'disabled' }}@endif>
@@ -207,7 +207,7 @@ $qual_num = $qual_num + 1;
 
                 </div>
 
-                <div class="col-6">
+                <div class="col-sm-6">
                   <div class="form-group">
                   <label class="form-check-label" for="defaultCheck1">Git</label>
                       <input type="url" class="form-control form-control-user" placeholder="Git URL" name="github" value="@if(old('github')!== null){{ old('github') }}@elseif(isset($data->Github)){{ $data->Github }}@else{{ '' }}@endif" @if($status=='yes'){{ 'disabled' }}@endif>
@@ -224,37 +224,15 @@ $qual_num = $qual_num + 1;
 
             </div>
 
-
-
-    
-
-              
-
-
-
-  <!---
-              <div class="form-group">
-                <textarea class="form-control form-control-user" placeholder="Volunteership" name="volunteership">@if(old('volunteership')!== null){{ old('volunteership') }}@elseif(isset($data->Volunteership)){{ $data->Volunteership }}@else{{ '' }}@endif</textarea>
-                @error('volunteership')
-                  <p class="p-2 red-alert" role="alert">{{ $message }}</p>
-                 @enderror
-              </div>
-
-
-              -->
-
-
-            
-
             <hr>
 
             <div class="acad0">
             @if($status=='no')
             <div class="form-group">
-                <p class="op p-2">Educational Details</p>
+                <p class="op p-2">Educational Details 1</p>
             </div>
             <div class="row">
-              <div class="col-4">
+              <div class="col-sm-4">
                 <div class="form-group">
                   <label for="qulatification">Qualification <span style="color:red">*</span></label>
                     <select class="form-control" name="qualification0" id="qualification0" onchange="qualChange(0)" required>
@@ -272,7 +250,7 @@ $qual_num = $qual_num + 1;
 
 
             <div class="row">
-            	<div class="col-4">
+            	<div class="col-sm-4">
                 <div class="form-group" id="course0e">
                   <label for="qulatification">Course Name <span style="color:red">*</span></label>
                     <select class="form-control" name="course0" id="course0" onchange="otherField('course0',0); courseChange(0);" required>
@@ -283,7 +261,7 @@ $qual_num = $qual_num + 1;
                   @enderror
                 </div>
              </div>
-             <div class="col-4">
+             <div class="col-sm-4">
                 <div class="form-group" id="specialisation0e">
                   <label for="specialisation">Specialisation <span style="color:red">*</span></label>
                     <select class="form-control" name="specialisation0" id="specialisation0" onchange="otherField('specialisation0',0)" required>
@@ -294,7 +272,7 @@ $qual_num = $qual_num + 1;
                   @enderror
                 </div>
              </div>
-              <div class="col-4">
+              <div class="col-sm-4">
                 <div class="form-group" id="board0e">
                   <label for="qulatification">Board/University <span style="color:red">*</span></label>
                     <select class="form-control" name="board0" id="board0" onchange="otherField('board0',0)" required>
@@ -321,7 +299,7 @@ $qual_num = $qual_num + 1;
 
 
             <div class="row">
-              <div class="col-4">
+              <div class="col-sm-4">
                 <div class="form-group">
                   <label for="percentage">Percentage<span style="color:red">*</span> (Convert cgpa into percentage) </label>
                   <input type="number" min="1" max="100" class="form-control form-control-user" placeholder="Percentage" name="cgpa0" value="@if(old('cgpa0')!== null){{ old('cgpa0') }}@elseif(isset($data->CGPA0)){{ $data->CGPA0 }}@else{{ '' }}@endif" required>
@@ -331,7 +309,7 @@ $qual_num = $qual_num + 1;
                 </div>
               </div>
 
-              <div class="col-2">
+              <div class="col-sm-2">
                 <div class="form-group">
                 <label for="join">Date of Joining<span style="color:red">*</span></label>
                 <input type="text" onfocus="(this.type='date')" class="form-control form-control-user" placeholder="Year of joining" name="join0" value="@if(old('join0')!== null){{ old('join0') }}@elseif(isset($data->Join0)){{ $data->Join0 }}@else{{ '' }}@endif" required>
@@ -342,7 +320,7 @@ $qual_num = $qual_num + 1;
                 </div>
               </div>
 
-              <div class="col-2">
+              <div class="col-sm-2">
                 <div class="form-group">
                 <label for="join">Date of Passing<span style="color:red">*</span></label>
                 <input type="text" onfocus="(this.type='date')" class="form-control form-control-user" placeholder="Year of passing" name="pass0" value="@if(old('pass0')!== null){{ old('pass0') }}@elseif(isset($data->Pass0)){{ $data->Pass0 }}@else{{ '' }}@endif" required>
@@ -351,7 +329,7 @@ $qual_num = $qual_num + 1;
                  @enderror
                 </div>
               </div>
-              <div class="col-2">
+              <div class="col-sm-2">
                     <div class="form-group">
                     <label for="join">History of Backlogs<span style="color:red">*</span></label>
                     <input type="number" min="0" max="100" class="form-control form-control-user" placeholder="History of Backlogs" name="hback0" value="@if(old('hback0')!== null){{ old('hback0') }}@elseif(isset($data->Hback0)){{ $data->Hback0 }}@else{{ '' }}@endif" id="hback0" required>
@@ -361,7 +339,7 @@ $qual_num = $qual_num + 1;
                     </div>
                   </div>
 
-                  <div class="col-2">
+                  <div class="col-sm-2">
                     <div class="form-group">
                     <label for="join">Current Backlogs<span style="color:red">*</span></label>
                     <input type="number" min="0" max="100" class="form-control form-control-user" placeholder="Current Backlogs" name="cback0" value="@if(old('cback0')!== null){{ old('cback0') }}@elseif(isset($data->Cback0)){{ $data->Cback0 }}@else{{ '' }}@endif" id="cback0" required>
@@ -374,7 +352,7 @@ $qual_num = $qual_num + 1;
           </div>
 
           <div class="row d-none" id="qual">
-              <div class="col-4">
+              <div class="col-sm-4">
                 <div class="form-group">
                   <label for="qulatification">Qualification <span style="color:red">*</span></label>
                     <select class="form-control" name="qualification1" id="copyQual">
@@ -415,21 +393,21 @@ $qual_num = $qual_num + 1;
          @endphp
          <div class="row">
            
-           <div class="col-4">
+           <div class="col-sm-4">
              <div class="form-group">
                <label for="qulatification">Qualification</label>
                  <input type="text" class="form-control form-control-user" disabled value="@foreach($qualifications as $items)@if($items->id==$it->qualification){{ $items->qualification }}@endif @endforeach">
              </div>
            </div>
 
-           <div class="col-4">
+           <div class="col-sm-4">
               <div class="form-group">
                 <label for="qulatification">Course</label>
                   <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->course)){{ $it->course }}@else{{ '' }}@endif">
               </div>
             </div>
 
-           <div class="col-4">
+           <div class="col-sm-4">
              <div class="form-group">
                <label for="qulatification">Specialisation</label>
                  <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->specialisation)){{ $it->specialisation }}@else{{ '' }}@endif">
@@ -439,13 +417,13 @@ $qual_num = $qual_num + 1;
          </div>
 
          <div class="row">
-         	<div class="col-6">
+         	<div class="col-sm-6">
              <div class="form-group">
                <label for="qulatification">Board/University</label>
                  <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->board)){{ $it->board }}@else{{ '' }}@endif">
              </div>
            </div>
-         	<div class="col-6">
+         	<div class="col-sm-6">
          	<div class="form-group">
                <label for="qulatification">Institution Name</label>
                  <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->institution)){{ $it->institution }}@else{{ '' }}@endif">
@@ -454,21 +432,21 @@ $qual_num = $qual_num + 1;
          </div>
 
          <div class="row">
-           <div class="col-4">
+           <div class="col-sm-4">
              <div class="form-group">
                <label for="qulatification">CGPA</label>
                  <input type="number" class="form-control form-control-user" disabled value="@if(isset($it->cgpa)){{ $it->cgpa }}@else{{ '' }}@endif">
              </div>
            </div>
 
-           <div class="col-4">
+           <div class="col-sm-4">
              <div class="form-group">
                <label for="qulatification">History of Backlogs</label>
                  <input type="number" class="form-control form-control-user" disabled value="@if(isset($it->hbacklogs)){{ $it->hbacklogs }}@else{{ '' }}@endif">
              </div>
            </div>
 
-           <div class="col-4">
+           <div class="col-sm-4">
              <div class="form-group">
                <label for="qulatification">Current Backlogs</label>
                  <input type="number" class="form-control form-control-user" disabled value="@if(isset($it->cbacklogs)){{ $it->cbacklogs }}@else{{ '' }}@endif">
@@ -477,14 +455,14 @@ $qual_num = $qual_num + 1;
          </div>
 
          <div class="row">
-           <div class="col-6">
+           <div class="col-sm-6">
              <div class="form-group">
                <label for="qulatification">Date of joining</label>
                  <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->join)){{ $it->join }}@else{{ '' }}@endif">
              </div>
            </div>
 
-           <div class="col-6">
+           <div class="col-sm-6">
              <div class="form-group">
                <label for="qulatification">Date of passing</label>
                  <input type="text" class="form-control form-control-user" disabled value="@if(isset($it->pass)){{ $it->pass }}@else{{ '' }}@endif">
@@ -499,7 +477,7 @@ $qual_num = $qual_num + 1;
 
             <div class="row">
 
-              <div class="col-6">
+              <div class="col-sm-6">
               
               <div class="form-group row justify-content-center">
                 <div class="col-sm-6">
@@ -531,7 +509,7 @@ $qual_num = $qual_num + 1;
               </div>
 
 
-              <div class="col-6">
+              <div class="col-sm-6">
 
               <div class="form-group row justify-content-center">
                 <div class="col-sm-6">
@@ -623,24 +601,24 @@ $(document).ready(function() {
 
     //alert(qual);
 
-    var row1 = "<hr><div class='row'><div class='col-4'><div class='form-group'><label for='qulatification'>Qualification <span style='color:red'>*</span></label><select class='form-control' name='qualification"+id+"' id='qualification"+id+"' onchange='qualChange("+id+")'><option value='' >Please select your option</options>"+qSet.html()+"</select></div></div></div>";
+    var row1 = "<hr><div class='form-group'><p class='op p-2'>Educational Details "+(id+1)+"</p></div><div class='row'><div class='col-sm-4'><div class='form-group'><label for='qulatification'>Qualification <span style='color:red'>*</span></label><select class='form-control' name='qualification"+id+"' id='qualification"+id+"' onchange='qualChange("+id+")'><option value='' >Please select your option</options>"+qSet.html()+"</select></div></div></div>";
      
     var row2 =  '<div class="row">'+
-                 '<div class="col-4">'+
+                 '<div class="col-sm-4">'+
                   '<div class="form-group" id="course'+id+'e">'+
                    '<label for="qulatification">Course Name<span style="color:red">*</span></label>'+
                     "<select class='form-control' name='course"+id+"' id='course"+id+"' onchange='otherField("+'&#39;'+'course'+id+'&#39;'+","+id+"); courseChange("+id+");'><option value='' >Please select your option</options></select>"+
                 '</div>'+
              '</div>'+
 
-            '<div class="col-4">'+
+            '<div class="col-sm-4">'+
                 '<div class="form-group" id="specialisation'+id+'e">'+
                   '<label for="qulatification">Specialisation<span style="color:red">*</span></label>'+
                     "<select class='form-control' name='specialisation"+id+"' id='specialisation"+id+"' onchange='otherField("+'&#39;'+'specialisation'+id+'&#39;'+","+id+")'><option value='' >Please select your option</options></select>"+
                 '</div>'+
              '</div>'+
 
-              '<div class="col-4">'+
+              '<div class="col-sm-4">'+
                 '<div class="form-group" id="board'+id+'e">'+
                   '<label for="qulatification">Board/University<span style="color:red">*</span></label>'+
                    "<select class='form-control' name='board"+id+"' id='board"+id+"' onchange='otherField("+'&#39;'+'board'+id+'&#39;'+","+id+")'><option value='' >Please select your option</options></select>"+
@@ -661,14 +639,14 @@ $(document).ready(function() {
 
     var row4 = '<div class="row">'+
 
-                  '<div class="col-4">'+
+                  '<div class="col-sm-4">'+
                     '<div class="form-group">'+
                       '<label for="percentage">Percentage<span style="color:red">*</span> (Convert cgpa into percentage) </label>'+
                       '<input type="number" min="1" max="100" class="form-control form-control-user" placeholder="Percentage" name=cgpa'+id+'>'+
                     '</div>'+
                   '</div>'+
 
-                  '<div class="col-2">'+
+                  '<div class="col-sm-2">'+
                     '<div class="form-group">'+
                     '<label for="join">Date of Joining<span style="color:red">*</span></label>'+
                     '<input type="text" onfocus="(this.type=&#39;date&#39;)" class="form-control form-control-user" placeholder="Year of joining" name=join'+id+'>'+
@@ -676,21 +654,21 @@ $(document).ready(function() {
                     '</div>'+
                   '</div>'+
 
-                  '<div class="col-2">'+
+                  '<div class="col-sm-2">'+
                     '<div class="form-group">'+
                     '<label for="join">Date of Passing<span style="color:red">*</span></label>'+
                     '<input type="text" onfocus="(this.type=&#39;date&#39;)" class="form-control form-control-user" placeholder="Year of passing" name=pass'+id+'>'+
                     '</div>'+
                   '</div>'+
 
-                  '<div class="col-2">'+
+                  '<div class="col-sm-2">'+
                     '<div class="form-group">'+
                     '<label for="join">History of Backlogs<span style="color:red">*</span></label>'+
                     '<input type="number" min="0" max="100" class="form-control form-control-user" placeholder="History of Backlogs" name=hback'+id+' id=hback'+id+'>'+
                     '</div>'+
                   '</div>'+
 
-                  '<div class="col-2">'+
+                  '<div class="col-sm-2">'+
                     '<div class="form-group">'+
                     '<label for="join">Current Backlogs<span style="color:red">*</span></label>'+
                     '<input type="number" min="0" max="100" class="form-control form-control-user" placeholder="Current Backlogs" name=cback'+id+' id=cback'+id+'>'+
@@ -853,8 +831,8 @@ function otherField(name,num){
  		 elem.innerHTML = '<option value="" >Please select your option</options>';
 
  		 var opt = document.createElement('option');
-         opt.value = 'BTech';
-         opt.innerHTML = 'BTech';
+         opt.value = 'B.Tech';
+         opt.innerHTML = 'B.Tech';
          el.appendChild(opt);
 
          var opt2 = document.createElement('option');
@@ -882,11 +860,6 @@ function otherField(name,num){
          opt5.innerHTML = 'BBA';
          el.appendChild(opt5);
 
-         var opt55 = document.createElement('option');
-         opt55.value = 'Diploma';
-         opt55.innerHTML = 'Diploma';
-         el.appendChild(opt55);
-
          var opt6 = document.createElement('option');
          opt6.value = 'others';
          opt6.innerHTML = 'Others';
@@ -900,6 +873,28 @@ function otherField(name,num){
          x.className = "form-control form-control-user";
          x.placeholder = "Type here";
          element.appendChild(x);
+ 	}
+ 	else if(val=='5' || val=='4'){
+ 		el.innerHTML = '<option value="" >Please select your option</options>';
+ 		 ele.innerHTML = '<option value="" >Please select your option</options>';
+ 		 elem.innerHTML = '<option value="" >Please select your option</options>';
+
+ 		 var opt = document.createElement('option');
+         opt.value = 'Diploma';
+         opt.innerHTML = 'Diploma';
+         opt.selected = true;
+         el.appendChild(opt);
+         courseChange(num);
+
+         elem.remove();
+         var x = document.createElement("INPUT");
+         x.setAttribute("type", "text");
+         x.id = name4;
+         x.name = name4;
+         x.className = "form-control form-control-user";
+         x.placeholder = "Type here";
+         element.appendChild(x);
+
  	}
  }
 
@@ -940,7 +935,7 @@ function otherField(name,num){
  	else if(val=='Humanities'){
  	  el.innerHTML = '<option value="" >Please select your option</options><option value="others" selected>Not Applicable</options>';
  	}
- 	else if(val=='BTech'){
+ 	else if(val=='B.Tech' || val=='Diploma'){
  	  el.innerHTML = '<option value="" >Please select your option</options>';
 
  	     var opt = document.createElement('option');
@@ -978,7 +973,7 @@ function otherField(name,num){
          opt3.innerHTML = 'Others';
          el.appendChild(opt3);
  	}
- 	else if(val=='BSc' || val=='BCA' || val=='B.Com' || val=='BA' || val=='BBA' || val=='Diploma'){
+ 	else if(val=='BSc' || val=='BCA' || val=='B.Com' || val=='BA' || val=='BBA'){
  	     el.innerHTML = '<option value="" >Please select your option</options><option value="others">Others</options>';
  	}
 

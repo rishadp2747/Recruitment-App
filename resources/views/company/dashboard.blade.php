@@ -3,6 +3,41 @@
 @section('content')
 <!-- Page Heading -->
 <p class="p mb-4 text-gray-800">{{ $uname }} you are successfully logged in.</p>
+@if($p_status=='yes')
+	<div class="row">
+            <div class="col-xl-6 col-md-6 mb-4">
+              <div class="card border-left-dark shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Jobs Posted</div>
+                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ $j_count }}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-tools fa-2x black"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Applications Recieved</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $a_count }}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-file-alt fa-2x green"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+	</div>
+@endif
 <div class="container bg-green rounded">
 	<div class="row justify-content-center">
 		<p class="h3 p-2 white bld">Quick Tour <i class="fas fa-info-circle"></i></p>
@@ -39,7 +74,7 @@
 		<p class="h5 p-2 white bld">2. Application Section <i class="fas fa-file-alt"></i></p>
 		<div class="col-12">
 			<div class="row p-2 justify-content-left">
-				<p class="text-info-3"><b class="green-but">Applied Applications</b> : When a user applies for your job it first appears in the applied applications section.<br><br><b class="green-but">Reviewing Applications</b> : Once you click on know more of a application present in the applied applications section it is automatically marked as reviewing and is moved to the reviewing section (you can know more, Approve, Reject or waitlist the application from here. you can also download a excel file of all the candidates from here).<br><br><b class="green-but">Waitlisted Applications</b> : All the applications that you have marked as wailisted will be available here (you can know more, Approve or Reject the application from here. you can also download a excel file of all the candidates from here).<br><br><b class="green-but">Approved Applications</b> : All the applications that you have marked as approved will be available here (you can view the details of each applications by clicking on the know more button and you can also download a excel file of all the candidates from here).<br><br><b class="green-but">Rejected Applications</b> : All the applications that you have marked as rejected will be available here (you can view the details of each applications by clicking on the know more button).<br><br><b class="green-but">Final Applications</b> : Here you can see all the approved applications and if the the candidate is selected after the interview you can click the selected button over there to mark the candidate as selected and if the candidate failed in the interview mark the candidate as not selected.</p>
+				<p class="text-info-3"><b class="green-but">Applied Applications</b> : When a user applies for your job it first appears in the applied applications section.<br><br><b class="green-but">Reviewing Applications</b> : Once you click on know more of a application present in the applied applications section it is automatically marked as reviewing and is moved to the reviewing section (you can know more, Approve, Reject or waitlist the application from here. you can also download a excel file of all the candidates from here).<br><br><b class="green-but">Waitlisted Applications</b> : All the applications that you have marked as waitlisted will be available here (you can know more, Approve or Reject the application from here. you can also download a excel file of all the candidates from here).<br><br><b class="green-but">Approved Applications</b> : All the applications that you have marked as approved will be available here (you can view the details of each applications by clicking on the know more button and you can also download a excel file of all the candidates from here).<br><br><b class="green-but">Rejected Applications</b> : All the applications that you have marked as rejected will be available here (you can view the details of each applications by clicking on the know more button).<br><br><b class="green-but">Final Applications</b> : Here you can see all the approved applications and if the the candidate is selected after the interview you can click the selected button over there to mark the candidate as selected and if the candidate failed in the interview mark the candidate as not selected.</p>
 			</div>
 		</div>
 	</div>

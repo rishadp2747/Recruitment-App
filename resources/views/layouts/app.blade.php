@@ -6,6 +6,8 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="theme-color" content="#1A5276" />
+    <link rel="icon" type="image/png" href="<?php echo URL::asset('img/asap.png'); ?>"/>
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 

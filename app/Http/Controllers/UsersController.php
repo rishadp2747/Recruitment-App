@@ -9,6 +9,7 @@ use App\Models\Appliedjob;
 use App\Models\Studentdetail;
 use App\Models\User;
 use App\Models\Allowed_users;
+use App\Models\Students_qualifications;
 use Auth;
 
 class UsersController extends Controller
@@ -39,49 +40,88 @@ class UsersController extends Controller
       $u_type = $user->user_type;
       $uname = $user->name;
       $email = $user->email;
-      if($u_type==1 || $u_type==2){
-        $data_check = Companydetail::where('Email',$email)->get()->first();
-          if($data_check===null){
-            session()->flash('errorinfo_prof', 'In order to do any operation in this dashboard you have to complete your profile first. To complete your profile please <a href="./dashboard/profile">click here</a> !');
-            return redirect()->route('home');
-          }
+      if($u_type==2){
         
         $req->validate([
-          'email' => 'required|email|regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix'
+          'email' => 'required|string'
           ]);
 
-        if($email==$req->email){
-          session()->flash('errorinfo', 'You cannot add yourself as a student !');
-          return redirect()->route('studentadd');  
+          $exception_st = '';
+          $succs = 0;
+          $userss = explode(",",$req->email);
+       foreach($userss as $it){
+        $it = str_replace(' ', '', $it);
+        if(!filter_var($it, FILTER_VALIDATE_EMAIL)){
+          if($exception_st==''){
+            $exception_st = $exception_st.$it;
+            continue; 
+        }
+        else{
+          $exception_st = $exception_st.', '.$it;
+          continue;
+        }
         }
 
-        $u_ex = User::where('email', '=', $req->email)->where('user_type', '=', 1)->exists();
+        if($email==$it){
+          if($exception_st==''){
+              $exception_st = $exception_st.$it;
+              continue;  
+          }
+          else{
+            $exception_st = $exception_st.', '.$it;
+            continue;
+          }
+        }
+
+        $u_ex = User::where('email', '=', $it)->where('user_type', '=', 1)->exists();
 
         if($u_ex){
-          session()->flash('errorinfo', 'You are trying to add a company user as a student which is not permitted !');
-          return redirect()->route('studentadd');  
+          if($exception_st==''){
+            $exception_st = $exception_st.$it;
+            continue;  
+        }
+        else{
+          $exception_st = $exception_st.', '.$it;
+          continue;
+        } 
         }
 
         $u_exist = Allowed_users::where('email', '=', $req->email)->exists();
 
         if($u_exist){
-          session()->flash('errorinfo', 'User is already in the allowed list !');
-          return redirect()->route('studentadd');  
+          $succs = $succs + 1;
+          continue;  
         }
 
         $a_usr = new Allowed_users;
-        $a_usr->Email = $req->email;
+        $a_usr->Email = $it;
         $a_usr->Admin_Email = $email;
         if($a_usr->save()){
-          session()->flash('status', 'Student Added Successfully !');
-          return redirect()->route('home');
+          $succs = $succs + 1;
+          continue;
         } 
         else{
-          session()->flash('errorinfo', 'Something went wrong while adding the student, please try again !');
-          return redirect()->route('studentadd');  
+          if($exception_st==''){
+            $exception_st = $exception_st.$it;
+            continue;  
         }
+        else{
+          $exception_st = $exception_st.', '.$it;
+          continue;
+        }  
+        }
+      }
+        
+       if(!empty($exception_st)){
+          $statement = $succs.' Students added successfully. Adding these users ( '.$exception_st.' ) failed, please cross check for any errors and try again.';
+       }
+       else{
+         $statement = $succs.' Students added successfully !';
+       }
 
-
+          session()->flash('status', $statement);
+          return redirect()->route('home');
+ 
       }
       else{
         session()->flash('status', 'You are not allowed to do that operation !');
@@ -208,6 +248,76 @@ class UsersController extends Controller
       $email = $user->email;
       if($u_type==2){
 
+        if($req->email=='all'){
+          $exception_st = '';
+          $n = Allowed_users::select('Email','id')->get();
+          foreach($n as $reqd){
+            $id = $reqd->id;
+            $email2 = $reqd->Email;
+            $u_ex = User::where('email', '=', $email2)->exists();
+            if($u_ex){
+              $data2 = User::where('email',$email2)->where('user_type',0);
+              $count2 = $data2->delete();
+            }
+            else{
+              $count2 = 1;
+            }
+            if($count2===1){
+              $data = Allowed_users::where('id',$id);
+              $count1 = $data->delete();
+              $s_ex = Studentdetail::where('email', '=', $email2)->exists();
+              if($s_ex){
+                $data3 = Studentdetail::where('Email',$email2);
+                $count3 = $data3->delete();
+              }
+              else{
+                $count3 = 1;
+              }
+              $j_ex = Appliedjob::where('Student_Email', '=', $email2)->exists();
+              if($j_ex){
+                $data4 = Appliedjob::where('Student_Email',$email2);
+                $count4 = $data4->delete();
+              }
+              else{
+                $count4 = 1;
+              }
+              $kl_ex = Students_qualifications::where('email', '=', $email2)->exists();
+              if($kl_ex){
+                $data5 = Students_qualifications::where('email',$email2);
+                $count5 = $data5->delete();
+              }
+              else{
+                $count5 = 1;
+              }
+            }
+            else{
+              $count1 = 0;
+              $count3 = 0;
+              $count4 = 0;
+              $count5 = 0;
+            }
+            if($count1===1 && $count2===1 && $count3===1 && $count4===1 && $count5===1){
+              continue;
+            }
+            else{
+              if($exception_st==''){
+                $exception_st = $exception_st.$email2;
+            }
+            else{
+                $exception_st = $exception_st.', '.$email2;
+            }
+            }
+          }
+          if($exception_st==''){
+            session()->flash('status', 'All students deleted successfully !');
+            return redirect()->route('home');
+          }
+          else{
+            session()->flash('status', 'All students except ( '.$exception_st.' ) deleted successfully !');
+            return redirect()->route('home');
+          }
+        }
+        else{
         $id = $req->id;
         $email2 = $req->email;
         $u_ex = User::where('email', '=', $email2)->exists();
@@ -237,13 +347,22 @@ class UsersController extends Controller
           else{
             $count4 = 1;
           }
+          $kl_ex = Students_qualifications::where('email', '=', $email2)->exists();
+              if($kl_ex){
+                $data5 = Students_qualifications::where('email',$email2);
+                $count5 = $data5->delete();
+              }
+              else{
+                $count5 = 1;
+              }
         }
         else{
           $count1 = 0;
           $count3 = 0;
           $count4 = 0;
+          $count5 = 0;
         }
-        if($count1===1 && $count2===1 && $count3===1 && $count4===1){
+        if($count1===1 && $count2===1 && $count3===1 && $count4===1 && $count5===1){
           session()->flash('status', 'User ('.$email2.') Deleted Successfully !');
           return redirect()->route('studentdelete');
         }
@@ -251,6 +370,7 @@ class UsersController extends Controller
           session()->flash('errorinfo', 'Error in deleting the selected user, please try again !');
           return redirect()->route('studentdelete');
         }
+      }
 
       }
       else{
@@ -267,6 +387,72 @@ class UsersController extends Controller
       $email = $user->email;
       if($u_type==2){
 
+        if($req->email=='all'){
+          $exception_st = '';
+          $n = User::where('user_type',1)->get();
+          foreach($n as $reqd){
+            $email2 = $reqd->email;
+            $u_ex = User::where('email', '=', $email2)->exists();
+            if($u_ex){
+              $data2 = User::where('email',$email2);
+              $count2 = $data2->delete();
+            }
+            else{
+              $count2 = 1;
+            }
+            if($count2===1){
+              $f_ex = Job::where('email', '=', $email2)->exists();
+              if($f_ex){
+                $data1 = Job::where('Email',$email2);
+                $count1 = $data3->delete();
+              }
+              else{
+                $count1 = 1;
+              }
+              $s_ex = Companydetail::where('email', '=', $email2)->exists();
+              if($s_ex){
+                $data3 = Companydetail::where('Email',$email2);
+                $count3 = $data3->delete();
+              }
+              else{
+                $count3 = 1;
+              }
+              $j_ex = Appliedjob::where('Company_Email', '=', $email2)->exists();
+              if($j_ex){
+                $data4 = Appliedjob::where('Company_Email',$email2);
+                $count4 = $data4->delete();
+              }
+              else{
+                $count4 = 1;
+              }
+            }
+            else{
+              $count1 = 0;
+              $count3 = 0;
+              $count4 = 0;
+            }
+            if($count1===1 && $count2===1 && $count3===1 && $count4===1){
+              continue;
+            }
+            else{
+              if($exception_st==''){
+                  $exception_st = $exception_st.$email2;
+              }
+              else{
+                  $exception_st = ', '.$exception_st.$email2;
+              }
+            }
+          }
+          if($exception_st==''){
+            session()->flash('status', 'All company deleted successfully !');
+            return redirect()->route('home');
+          }
+          else{
+            session()->flash('status', 'All company except ( '.$exception_st.' ) deleted successfully !');
+            return redirect()->route('home');
+          }
+        }
+        else{
         $id = $req->id;
         $email2 = $req->email;
         $u_ex = User::where('email', '=', $email2)->exists();
@@ -316,7 +502,7 @@ class UsersController extends Controller
           session()->flash('errorinfo', 'Error in deleting the selected company, please try again !');
           return redirect()->route('companydelete');
         }
-
+      }
       }
       else{
         session()->flash('status', 'You are not allowed to do that operation !');
